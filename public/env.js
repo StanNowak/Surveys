@@ -3,7 +3,8 @@
 
 // Auto-detect deployment environment
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const baseUrl = isLocalhost ? '' : window.location.origin;
+const isGitHubPages = window.location.hostname === 'stannowak.github.io';
+const baseUrl = isLocalhost ? '' : (isGitHubPages ? '/Surveys' : window.location.origin);
 
 window.__SURVEY_CONFIG__ = {
     // Survey metadata
