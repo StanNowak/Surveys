@@ -60,16 +60,16 @@
     </div>
 
     <div class="info">
-        <h3>🎯 Quick Start</h3>
-        <p>Choose your survey experience:</p>
+        <h3>🎯 Try the Demo</h3>
+        <p>Experience the full avalanche problem comprehension survey:</p>
         <div style="text-align: center;">
-            <a href="./public/?uuid=demo-user&bank=demo" class="survey-link demo-link">
-                📝 Demo Survey (Small Bank with just two avalanche problems)
-            </a>
             <a href="./public/?uuid=full-test&bank=full" class="survey-link">
-                🔬 Full Survey (Complete demo Bank with randomization)
+                🔬 Start Demo Survey
             </a>
         </div>
+        <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9em;">
+            Complete demo bank with randomization, timing capture, and feedback
+        </p>
     </div>
 
     <div class="info">
@@ -91,19 +91,20 @@
         <p>The survey supports URL parameters for customization:</p>
         <ul>
             <li><span class="code">uuid</span> - Unique participant identifier</li>
-            <li><span class="code">bank</span> - Item bank selection (demo/full)</li>
+            <li><span class="code">bank</span> - Item bank selection</li>
             <li><span class="code">config</span> - Configuration file selection</li>
         </ul>
         
         <p><strong>Example:</strong> <br>
-        <span class="code">./public/?uuid=participant-123&bank=demo</span></p>
+        <span class="code">./public/?uuid=participant-123&bank=full</span></p>
     </div>
 
     <div class="info">
-        <h3>📁 Item Banks Available</h3>
+        <h3>📁 Survey Content</h3>
         <ul>
-            <li><strong>Demo Bank</strong> - 2 assessment + 3 diagnostic questions (quick testing)</li>
-            <li><strong>Full Bank</strong> - 8 assessment + 3 diagnostic questions (complete experience)</li>
+            <li><strong>Avalanche Problem Blocks</strong> - 8 avalanche problem scenarios with 4 questions each</li>
+            <li><strong>Individual Diagnostic Questions</strong> - 3 general knowledge assessment questions</li>
+            <li><strong>Background Questions</strong> - 3 demographic and experience questions</li>
         </ul>
     </div>
 
@@ -123,14 +124,12 @@
     <script>
         // Add some interactivity
         document.addEventListener('DOMContentLoaded', function() {
-            // Generate a random UUID for demo links if none provided
-            const links = document.querySelectorAll('.survey-link');
-            links.forEach(link => {
-                if (link.href.includes('uuid=demo-user') || link.href.includes('uuid=full-test')) {
-                    const randomId = 'user-' + Math.random().toString(36).substr(2, 9);
-                    link.href = link.href.replace(/uuid=[^&]+/, 'uuid=' + randomId);
-                }
-            });
+            // Generate a random UUID for demo link
+            const surveyLink = document.querySelector('.survey-link');
+            if (surveyLink && surveyLink.href.includes('uuid=full-test')) {
+                const randomId = 'demo-' + Math.random().toString(36).substr(2, 9);
+                surveyLink.href = surveyLink.href.replace(/uuid=[^&]+/, 'uuid=' + randomId);
+            }
         });
     </script>
 </body>
