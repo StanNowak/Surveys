@@ -17,8 +17,10 @@ export function grade(surveyModel, itemBank) {
         items: []
     };
     
-    // Get all testlet items from the bank for grading
+    // Get all testlet items AND diagnostic items from the bank for grading
     const allItems = [];
+    
+    // Add testlet items (assessment questions)
     if (itemBank.testlets) {
         itemBank.testlets.forEach(testlet => {
             if (testlet.items) {
@@ -26,6 +28,15 @@ export function grade(surveyModel, itemBank) {
             }
         });
     }
+    
+    // Add diagnostic items
+    if (itemBank.diagnostics) {
+        allItems.push(...itemBank.diagnostics);
+    }
+    
+    console.log(`📋 Found ${allItems.length} total items to grade (testlets + diagnostics)`);
+    console.log(`📋 Testlet items: ${itemBank.testlets ? itemBank.testlets.reduce((sum, t) => sum + (t.items?.length || 0), 0) : 0}`);
+    console.log(`📋 Diagnostic items: ${itemBank.diagnostics ? itemBank.diagnostics.length : 0}`);
     
     // Grade each item
     allItems.forEach(item => {

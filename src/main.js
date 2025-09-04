@@ -83,8 +83,43 @@ async function initSurvey() {
         survey.onComplete.add(function(sender, options) {
             console.log('✅ Survey completed!');
             
-            // Get timing data
+            // Ensure final page timing is captured
+            if (sender._timingInstrument && sender.currentPage) {
+                const currentPage = sender.currentPage;
+                if (currentPage.elements && currentPage.elements.length > 0) {
+                    // Find the question name from the current page
+                    const questionElement = currentPage.elements.find(el => el.name && !el.name.includes('_intro'));
+                    if (questionElement) {
+                        const questionName = questionElement.name;
+                        const responseTime = sender._timingInstrument.endTiming(questionName);
+                        if (responseTime !== null) {
+                            const timingFieldName = `rt_${questionName}_final`;
+                            sender.setValue(timingFieldName, responseTime);
+                            console.log(`💾 Final page timing: ${timingFieldName} = ${responseTime}ms`);
+                            
+                            // Store final question's idle time
+                            const questionIdleTime = sender._timingInstrument.getQuestionIdleTime(questionName);
+                            const idleFieldName = `idle_${questionName}_ms`;
+                            sender.setValue(idleFieldName, questionIdleTime);
+                            console.log(`💾 Final page idle time: ${idleFieldName} = ${questionIdleTime}ms`);
+                        }
+                    }
+                }
+            }
+            
+            // Get timing data (including idle time)
             const timingData = window.getTimingData(sender);
+            
+            // Ensure idle time is captured
+            if (sender._timingInstrument) {
+                const totalIdle = sender._timingInstrument.getTotalIdleTime();
+                sender.setValue('idle_ms', totalIdle);
+                console.log(`💤 Total idle time: ${totalIdle}ms`);
+            }
+            
+            // Get updated timing data after adding idle_ms
+            const finalTimingData = window.getTimingData(sender);
+            console.log('⏱️ Complete timing data:', finalTimingData);
             
             // Grade the survey responses
             const gradingResults = grade(sender, builder.bankData);
@@ -97,7 +132,7 @@ async function initSurvey() {
                 bankVersion: builder.bankData?.schema_version || "unknown",
                 data: {
                     ...sender.data,
-                    ...timingData
+                    ...finalTimingData
                 },
                 grading: gradingResults
             };

@@ -1055,51 +1055,6 @@
       "key": "B",
       "explain": "Effective group management involves exposing only one person to avalanche hazard at a time while maintaining communication and rescue capability.",
       "tags": ["group", "management", "exposure"]
-    },
-    {
-      "id": "decision_making",
-      "construct": "decision_making",
-      "form": "A",
-      "stem": "Good avalanche decision-making is characterized by:",
-      "choices": [
-        {"value": "A", "text": "Making quick decisions based on first impressions"},
-        {"value": "B", "text": "Systematic observation, assessment, and willingness to change plans"},
-        {"value": "C", "text": "Relying primarily on avalanche forecasts"},
-        {"value": "D", "text": "Following the most experienced group member without question"}
-      ],
-      "key": "B",
-      "explain": "Good avalanche decision-making involves systematic observation and assessment of conditions with the flexibility to change plans based on new information.",
-      "tags": ["decision_making", "systematic", "flexibility"]
-    },
-    {
-      "id": "rescue_preparedness",
-      "construct": "rescue",
-      "form": "A",
-      "stem": "Essential components of avalanche rescue preparedness include:",
-      "choices": [
-        {"value": "A", "text": "Carrying rescue equipment but not practicing with it"},
-        {"value": "B", "text": "Having rescue equipment, training, and regular practice"},
-        {"value": "C", "text": "Relying on professional rescue services"},
-        {"value": "D", "text": "Avoiding avalanche terrain entirely"}
-      ],
-      "key": "B",
-      "explain": "Effective rescue preparedness requires having proper equipment, training in its use, and regular practice to maintain skills.",
-      "tags": ["rescue", "preparedness", "training"]
-    },
-    {
-      "id": "weather_interpretation",
-      "construct": "weather_assessment",
-      "form": "A",
-      "stem": "When interpreting weather information for avalanche assessment:",
-      "choices": [
-        {"value": "A", "text": "Focus only on current conditions"},
-        {"value": "B", "text": "Consider recent weather history and current trends together"},
-        {"value": "C", "text": "Rely only on avalanche bulletins"},
-        {"value": "D", "text": "Weather information is not relevant to avalanche assessment"}
-      ],
-      "key": "B",
-      "explain": "Effective weather interpretation for avalanche assessment requires considering both recent weather history that created current conditions and ongoing trends.",
-      "tags": ["weather", "interpretation", "history"]
     }
   ]
 }

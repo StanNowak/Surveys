@@ -13,6 +13,8 @@ class TimingInstrument {
         this.totalIdleTime = 0;
         this.isVisible = true;
         this.currentQuestionName = null;
+        this.questionIdleTimes = new Map(); // Track idle time per question
+        this.excludedFromIdle = new Set(); // Questions to exclude from idle time tracking
         
         // Set up visibility change listener for idle time tracking
         this.setupIdleTracking();
@@ -30,15 +32,35 @@ class TimingInstrument {
                 if (this.isVisible) {
                     this.idleStartTime = now;
                     this.isVisible = false;
-                    console.log('📱 Page hidden - starting idle timer');
+                    const isExcluded = this.currentQuestionName && 
+                        (this.isExcludedFromIdle(this.currentQuestionName) || this.matchesExclusionPattern(this.currentQuestionName));
+                    const excludedMsg = isExcluded ? ` (excluded: ${this.currentQuestionName})` : '';
+                    console.log(`📱 Page hidden - starting idle timer${excludedMsg}`);
                 }
             } else {
                 // Page became visible - stop idle timer
                 if (!this.isVisible && this.idleStartTime) {
                     const idleTime = now - this.idleStartTime;
-                    this.totalIdleTime += idleTime;
+                    
+                    // Only add to total idle time if current question is not excluded
+                    const isExcluded = this.currentQuestionName && 
+                        (this.isExcludedFromIdle(this.currentQuestionName) || this.matchesExclusionPattern(this.currentQuestionName));
+                    
+                    if (!isExcluded) {
+                        this.totalIdleTime += idleTime;
+                        console.log(`📱 Page visible - added ${idleTime}ms idle time (total: ${this.totalIdleTime}ms)`);
+                    } else {
+                        console.log(`📱 Page visible - idle time NOT counted (excluded: ${this.currentQuestionName}), ${idleTime}ms ignored`);
+                    }
+                    
+                    // Always track per-question idle time for analysis (regardless of exclusion)
+                    if (this.currentQuestionName) {
+                        const currentQuestionIdle = this.questionIdleTimes.get(this.currentQuestionName) || 0;
+                        this.questionIdleTimes.set(this.currentQuestionName, currentQuestionIdle + idleTime);
+                        console.log(`📊 Question "${this.currentQuestionName}" idle: +${idleTime}ms (total: ${currentQuestionIdle + idleTime}ms)`);
+                    }
+                    
                     this.isVisible = true;
-                    console.log(`📱 Page visible - added ${idleTime}ms idle time (total: ${this.totalIdleTime}ms)`);
                 }
             }
         };
@@ -50,16 +72,35 @@ class TimingInstrument {
             if (this.isVisible) {
                 this.idleStartTime = Date.now();
                 this.isVisible = false;
-                console.log('🔍 Window blur - starting idle timer');
+                const excludedMsg = this.currentQuestionName && this.isExcludedFromIdle(this.currentQuestionName) 
+                    ? ` (excluded: ${this.currentQuestionName})` : '';
+                console.log(`🔍 Window blur - starting idle timer${excludedMsg}`);
             }
         });
         
         window.addEventListener('focus', () => {
             if (!this.isVisible && this.idleStartTime) {
                 const idleTime = Date.now() - this.idleStartTime;
-                this.totalIdleTime += idleTime;
+                
+                // Only add to total idle time if current question is not excluded
+                const isExcluded = this.currentQuestionName && 
+                    (this.isExcludedFromIdle(this.currentQuestionName) || this.matchesExclusionPattern(this.currentQuestionName));
+                
+                if (!isExcluded) {
+                    this.totalIdleTime += idleTime;
+                    console.log(`🔍 Window focus - added ${idleTime}ms idle time (total: ${this.totalIdleTime}ms)`);
+                } else {
+                    console.log(`🔍 Window focus - idle time NOT counted (excluded: ${this.currentQuestionName}), ${idleTime}ms ignored`);
+                }
+                
+                // Always track per-question idle time for analysis (regardless of exclusion)
+                if (this.currentQuestionName) {
+                    const currentQuestionIdle = this.questionIdleTimes.get(this.currentQuestionName) || 0;
+                    this.questionIdleTimes.set(this.currentQuestionName, currentQuestionIdle + idleTime);
+                    console.log(`📊 Question "${this.currentQuestionName}" idle: +${idleTime}ms (total: ${currentQuestionIdle + idleTime}ms)`);
+                }
+                
                 this.isVisible = true;
-                console.log(`🔍 Window focus - added ${idleTime}ms idle time (total: ${this.totalIdleTime}ms)`);
             }
         });
     }
@@ -105,6 +146,92 @@ class TimingInstrument {
     }
     
     /**
+     * Get idle time for a specific question
+     * @param {string} questionName - Question name
+     * @returns {number} Idle time in milliseconds for this question
+     */
+    getQuestionIdleTime(questionName) {
+        let questionIdle = this.questionIdleTimes.get(questionName) || 0;
+        
+        // If currently idle and on this question, add current idle session
+        if (!this.isVisible && this.idleStartTime && this.currentQuestionName === questionName) {
+            questionIdle += Date.now() - this.idleStartTime;
+        }
+        
+        return questionIdle;
+    }
+    
+    /**
+     * Get all per-question idle times
+     * @returns {Object} Object with question names as keys and idle times as values
+     */
+    getAllQuestionIdleTimes() {
+        const result = {};
+        
+        // Add all recorded question idle times
+        for (const [questionName, idleTime] of this.questionIdleTimes) {
+            result[questionName] = idleTime;
+        }
+        
+        // Add current idle time if currently idle
+        if (!this.isVisible && this.idleStartTime && this.currentQuestionName) {
+            const currentIdle = Date.now() - this.idleStartTime;
+            result[this.currentQuestionName] = (result[this.currentQuestionName] || 0) + currentIdle;
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Exclude a question from idle time tracking
+     * @param {string} questionName - Question name to exclude
+     */
+    excludeFromIdleTracking(questionName) {
+        this.excludedFromIdle.add(questionName);
+        console.log(`🚫 Question "${questionName}" excluded from idle time tracking`);
+    }
+    
+    /**
+     * Include a question in idle time tracking (remove from exclusion)
+     * @param {string} questionName - Question name to include
+     */
+    includeInIdleTracking(questionName) {
+        this.excludedFromIdle.delete(questionName);
+        console.log(`✅ Question "${questionName}" included in idle time tracking`);
+    }
+    
+    /**
+     * Check if a question is excluded from idle time tracking
+     * @param {string} questionName - Question name to check
+     * @returns {boolean} True if excluded
+     */
+    isExcludedFromIdle(questionName) {
+        return this.excludedFromIdle.has(questionName);
+    }
+    
+    /**
+     * Exclude questions by pattern (e.g., all intro pages, demographics, etc.)
+     * @param {string|RegExp} pattern - Pattern to match question names
+     */
+    excludeByPattern(pattern) {
+        const regex = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
+        console.log(`🚫 Excluding questions matching pattern: ${regex}`);
+        
+        // Note: This will only apply to future questions since we don't have 
+        // a complete list of all questions at this point
+        this.excludePattern = regex;
+    }
+    
+    /**
+     * Check if a question name matches the exclusion pattern
+     * @param {string} questionName - Question name to check
+     * @returns {boolean} True if matches exclusion pattern
+     */
+    matchesExclusionPattern(questionName) {
+        return this.excludePattern && this.excludePattern.test(questionName);
+    }
+    
+    /**
      * Reset all timing data
      */
     reset() {
@@ -141,13 +268,16 @@ function isQuestionPage(page) {
         return false;
     }
     
-    // Check if page has actual survey questions (not just HTML elements)
-    return page.elements.some(element => 
-        element.type && 
-        element.type !== 'html' && 
-        element.name && 
-        !element.name.startsWith('background_')
-    );
+    // Check if page has actual survey questions
+    // SurveyJS elements might not have 'type' property, so check for 'name' and exclude background
+    const hasQuestion = page.elements.some(element => {
+        const hasName = element.name && typeof element.name === 'string';
+        const isNotBackground = !element.name?.startsWith('background_');
+        const isNotIntro = !element.name?.includes('_intro');
+        return hasName && isNotBackground && isNotIntro;
+    });
+    
+    return hasQuestion;
 }
 
 /**
@@ -179,6 +309,7 @@ function attachTiming(survey) {
         // End timing for previous page if it was a question page
         if (previousPage && isQuestionPage(previousPage)) {
             const prevQuestionName = extractQuestionName(previousPage, sender);
+            console.log(`⏱️  Ending timing for: ${prevQuestionName}`);
             const responseTime = timing.endTiming(prevQuestionName);
             
             if (responseTime !== null) {
@@ -186,12 +317,19 @@ function attachTiming(survey) {
                 const timingFieldName = `rt_${prevQuestionName}_final`;
                 sender.setValue(timingFieldName, responseTime);
                 console.log(`💾 Stored timing: ${timingFieldName} = ${responseTime}ms`);
+                
+                // Store per-question idle time for analysis
+                const questionIdleTime = timing.getQuestionIdleTime(prevQuestionName);
+                const idleFieldName = `idle_${prevQuestionName}_ms`;
+                sender.setValue(idleFieldName, questionIdleTime);
+                console.log(`💾 Stored question idle time: ${idleFieldName} = ${questionIdleTime}ms`);
             }
         }
         
         // Start timing for new page if it's a question page
         if (currentPage && isQuestionPage(currentPage)) {
             const questionName = extractQuestionName(currentPage, sender);
+            console.log(`⏱️  Starting timing for: ${questionName}`);
             timing.startTiming(questionName);
         }
     });
@@ -263,7 +401,7 @@ function getTimingData(survey) {
     
     // Extract timing fields from survey data
     const timingFields = Object.keys(surveyData).filter(key => 
-        key.startsWith('rt_') || key === 'idle_ms'
+        key.startsWith('rt_') || key.startsWith('idle_') || key === 'idle_ms'
     );
     
     const timingData = {};
