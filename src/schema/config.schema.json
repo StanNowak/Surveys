@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Avalanche Survey Configuration Schema",
+  "description": "Schema for survey configuration including routing, UI, and quiz settings",
+  "type": "object",
+  "required": ["routing", "ui", "quiz", "background"],
+  "properties": {
+    "routing": {
+      "type": "object",
+      "description": "Survey routing and randomization settings",
+      "required": ["randomize_blocks", "blocks_to_draw", "randomize_within_block", "include_diagnostics"],
+      "properties": {
+        "randomize_blocks": {
+          "type": "boolean",
+          "description": "Whether to randomize the order of testlet blocks"
+        },
+        "blocks_to_draw": {
+          "type": "integer",
+          "description": "Number of testlet blocks to include in the survey",
+          "minimum": 1
+        },
+        "randomize_within_block": {
+          "type": "boolean",
+          "description": "Whether to randomize questions within each testlet"
+        },
+        "include_diagnostics": {
+          "type": "boolean",
+          "description": "Whether to include diagnostic questions"
+        }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "description": "User interface settings",
+      "required": ["one_question_per_page", "auto_advance", "progress_bar"],
+      "properties": {
+        "one_question_per_page": {
+          "type": "boolean",
+          "description": "Display one question per page"
+        },
+        "auto_advance": {
+          "type": "boolean",
+          "description": "Automatically advance to next question after selection"
+        },
+        "progress_bar": {
+          "type": "boolean",
+          "description": "Show progress bar"
+        }
+      }
+    },
+    "quiz": {
+      "type": "object",
+      "description": "Quiz behavior and feedback settings",
+      "required": ["feedback_mode", "show_explanations"],
+      "properties": {
+        "feedback_mode": {
+          "type": "string",
+          "description": "Type of feedback to show at the end",
+          "enum": ["full", "summary", "none"]
+        },
+        "show_explanations": {
+          "type": "boolean",
+          "description": "Whether to show answer explanations in feedback"
+        }
+      }
+    },
+    "background": {
+      "type": "object",
+      "description": "Background questionnaire settings",
+      "required": ["enabled", "url", "splitOnePerPage"],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether to include background questionnaire"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL path to background questionnaire JSON file"
+        },
+        "splitOnePerPage": {
+          "type": "boolean",
+          "description": "Whether to split background questions into separate pages"
+        }
+      }
+    }
+  }
+}

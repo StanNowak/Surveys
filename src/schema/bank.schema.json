@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Avalanche Survey Item Bank Schema",
+  "description": "Schema for avalanche assessment item banks containing testlets and diagnostic questions",
+  "type": "object",
+  "required": ["schema_version", "testlets", "diagnostics"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Version of the schema format",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "testlets": {
+      "type": "array",
+      "description": "Array of avalanche problem testlets",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/testlet"
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "description": "Array of diagnostic questions",
+      "items": {
+        "$ref": "#/definitions/question"
+      }
+    }
+  },
+  "definitions": {
+    "testlet": {
+      "type": "object",
+      "required": ["ap_type", "label", "items"],
+      "properties": {
+        "ap_type": {
+          "type": "string",
+          "description": "Avalanche problem type identifier",
+          "enum": [
+            "storm",
+            "wind",
+            "persistent",
+            "deep_persistent",
+            "cornice",
+            "loose_dry",
+            "loose_wet",
+            "wet_slab"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the testlet"
+        },
+        "items": {
+          "type": "array",
+          "description": "Questions in this testlet",
+          "minItems": 4,
+          "items": {
+            "$ref": "#/definitions/question"
+          }
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "required": ["id", "construct", "stem", "choices", "key", "explain"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the question",
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "construct": {
+          "type": "string",
+          "description": "Assessment construct category",
+          "enum": ["development", "behaviour", "assessment", "mitigation"]
+        },
+        "form": {
+          "type": "string",
+          "description": "Form variant (A, B, etc.) for questions with multiple versions"
+        },
+        "stem": {
+          "type": "string",
+          "description": "The question text",
+          "minLength": 1
+        },
+        "choices": {
+          "type": "array",
+          "description": "Answer choices",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["value", "text"],
+            "properties": {
+              "value": {
+                "type": "string",
+                "description": "Choice identifier"
+              },
+              "text": {
+                "type": "string",
+                "description": "Choice display text",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "key": {
+          "type": "string",
+          "description": "Correct answer choice value",
+          "minLength": 1
+        },
+        "explain": {
+          "type": "string",
+          "description": "Explanation for the correct answer",
+          "minLength": 1
+        },
+        "tags": {
+          "type": "array",
+          "description": "Optional tags for categorization",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

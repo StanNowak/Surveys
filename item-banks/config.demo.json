@@ -1,0 +1,22 @@
+{
+  "routing": {
+    "randomize_blocks": true,
+    "blocks_to_draw": 2,
+    "randomize_within_block": true,
+    "include_diagnostics": true
+  },
+  "ui": {
+    "one_question_per_page": true,
+    "auto_advance": true,
+    "progress_bar": true
+  },
+  "quiz": {
+    "feedback_mode": "full",
+    "show_explanations": true
+  },
+  "background": {
+    "enabled": true,
+    "url": "/item-banks/background.json",
+    "splitOnePerPage": false
+  }
+}

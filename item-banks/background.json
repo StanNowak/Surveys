@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "title": "Background Information",
+  "description": "Please answer the following questions about your background and experience.",
+  "pages": [
+    {
+      "name": "background",
+      "title": "Background Information",
+      "elements": [
+        {
+          "type": "html",
+          "name": "background_intro",
+          "html": "<p>Please answer a few quick questions about your winter backcountry experience.</p>"
+        },
+        {
+          "type": "radiogroup",
+          "name": "primary_activity",
+          "title": "What is your primary winter backcountry activity?",
+          "isRequired": true,
+          "choices": [
+            { "value": "skiing", "text": "Backcountry skiing" },
+            { "value": "snowboarding", "text": "Backcountry snowboarding" },
+            { "value": "snowshoeing", "text": "Snowshoeing" },
+            { "value": "mountaineering", "text": "Winter mountaineering" },
+            { "value": "other", "text": "Other" }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "experience_years",
+          "title": "How many years of backcountry winter experience do you have?",
+          "isRequired": true,
+          "choices": [
+            { "value": "0-1", "text": "0-1 years" },
+            { "value": "2-5", "text": "2-5 years" },
+            { "value": "6-10", "text": "6-10 years" },
+            { "value": "11-20", "text": "11-20 years" },
+            { "value": "20+", "text": "20+ years" }
+          ]
+        },
+        {
+          "type": "radiogroup",
+          "name": "highest_training",
+          "title": "What is the highest level of formal avalanche training you have completed?",
+          "isRequired": true,
+          "choices": [
+            { "value": "none", "text": "No formal training" },
+            { "value": "awareness", "text": "Avalanche Awareness" },
+            { "value": "level1", "text": "Level 1 (Recreational)" },
+            { "value": "level2", "text": "Level 2 (Advanced Recreational)" },
+            { "value": "pro1", "text": "Professional Level 1" },
+            { "value": "pro2", "text": "Professional Level 2" }
+          ]
+        }
+      ]
+    }
+  ]
+}

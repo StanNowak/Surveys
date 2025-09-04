@@ -1,0 +1,1105 @@
+{
+  "schema_version": "1.0.0",
+  "testlets": [
+    {
+      "ap_type": "storm",
+      "label": "Storm Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "storm_formation_a",
+          "construct": "development",
+          "form": "A",
+          "stem": "Storm slab avalanches typically form when:",
+          "choices": [
+            {"value": "A", "text": "New snow loads exceed the strength of underlying weak layers"},
+            {"value": "B", "text": "Wind redistributes snow into wind-loaded terrain"},
+            {"value": "C", "text": "Temperature gradients create depth hoar"},
+            {"value": "D", "text": "Solar radiation weakens surface layers"}
+          ],
+          "key": "A",
+          "explain": "Storm slabs form when rapid loading from new snowfall exceeds the strength of the existing snowpack or creates new weak layers.",
+          "tags": ["storm", "formation", "loading"]
+        },
+        {
+          "id": "storm_formation_b",
+          "construct": "development",
+          "form": "B",
+          "stem": "The primary factor in storm slab development is:",
+          "choices": [
+            {"value": "A", "text": "Wind speed during the storm"},
+            {"value": "B", "text": "Rate and amount of new snow accumulation"},
+            {"value": "C", "text": "Air temperature during snowfall"},
+            {"value": "D", "text": "Existing snowpack density"}
+          ],
+          "key": "B",
+          "explain": "The rate and total amount of new snow accumulation is the primary driver of storm slab formation, creating loading stress on weak layers.",
+          "tags": ["storm", "formation", "accumulation"]
+        },
+        {
+          "id": "storm_identification_a",
+          "construct": "behaviour",
+          "form": "A",
+          "stem": "Storm slabs are most easily identified by:",
+          "choices": [
+            {"value": "A", "text": "Recent avalanche activity on similar aspects and elevations"},
+            {"value": "B", "text": "Hollow sounds when traveling on the snowpack"},
+            {"value": "C", "text": "Visible wind loading on lee slopes"},
+            {"value": "D", "text": "Surface hoar crystal formation"}
+          ],
+          "key": "A",
+          "explain": "Recent avalanche activity on similar terrain is the most reliable indicator of storm slab instability.",
+          "tags": ["storm", "identification", "signs"]
+        },
+        {
+          "id": "storm_identification_b",
+          "construct": "behaviour",
+          "form": "B",
+          "stem": "Key signs of storm slab instability include:",
+          "choices": [
+            {"value": "A", "text": "Rapid settlement sounds in new snow"},
+            {"value": "B", "text": "Shooting cracks and recent avalanche activity"},
+            {"value": "C", "text": "Warm temperatures and solar exposure"},
+            {"value": "D", "text": "Faceted grains in the old snow surface"}
+          ],
+          "key": "B",
+          "explain": "Shooting cracks and recent avalanche activity are classic signs of storm slab instability and propagation potential.",
+          "tags": ["storm", "identification", "instability"]
+        },
+        {
+          "id": "storm_distribution_a",
+          "construct": "assessment",
+          "form": "A",
+          "stem": "Storm slabs are typically distributed:",
+          "choices": [
+            {"value": "A", "text": "Only on steep, wind-loaded slopes"},
+            {"value": "B", "text": "Broadly across all aspects and elevations that received new snow"},
+            {"value": "C", "text": "Primarily on south-facing slopes"},
+            {"value": "D", "text": "Only in areas with existing weak layers"}
+          ],
+          "key": "B",
+          "explain": "Storm slabs can form broadly across all terrain that received significant new snow, regardless of aspect or wind loading.",
+          "tags": ["storm", "distribution", "terrain"]
+        },
+        {
+          "id": "storm_distribution_b",
+          "construct": "assessment",
+          "form": "B",
+          "stem": "The spatial distribution of storm slabs is primarily controlled by:",
+          "choices": [
+            {"value": "A", "text": "Elevation and aspect"},
+            {"value": "B", "text": "New snow accumulation patterns"},
+            {"value": "C", "text": "Wind direction and speed"},
+            {"value": "D", "text": "Existing snowpack structure"}
+          ],
+          "key": "B",
+          "explain": "Storm slab distribution follows new snow accumulation patterns, making them widespread during storm events.",
+          "tags": ["storm", "distribution", "accumulation"]
+        },
+        {
+          "id": "storm_management_a",
+          "construct": "mitigation",
+          "form": "A",
+          "stem": "When storm slabs are present, the best management strategy is:",
+          "choices": [
+            {"value": "A", "text": "Avoid avalanche terrain until the snowpack stabilizes"},
+            {"value": "B", "text": "Travel only on wind-scoured ridges"},
+            {"value": "C", "text": "Stick to north-facing slopes"},
+            {"value": "D", "text": "Use aggressive terrain management with careful route finding"}
+          ],
+          "key": "A",
+          "explain": "Storm slabs often require avoiding avalanche terrain entirely until the new snow bonds and stabilizes.",
+          "tags": ["storm", "management", "avoidance"]
+        },
+        {
+          "id": "storm_management_b",
+          "construct": "mitigation",
+          "form": "B",
+          "stem": "During active storm slab conditions, terrain choices should prioritize:",
+          "choices": [
+            {"value": "A", "text": "Slopes steeper than 35 degrees for better skiing"},
+            {"value": "B", "text": "Simple terrain with easy escape routes"},
+            {"value": "C", "text": "Wind-loaded terrain for deeper snow"},
+            {"value": "D", "text": "Complex terrain to avoid other users"}
+          ],
+          "key": "B",
+          "explain": "Simple terrain with easy escape routes reduces exposure and consequences when storm slabs are active.",
+          "tags": ["storm", "management", "terrain"]
+        }
+      ]
+    },
+    {
+      "ap_type": "wind",
+      "label": "Wind Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "wind_formation_a",
+          "construct": "development",
+          "form": "A",
+          "stem": "Wind slabs form when:",
+          "choices": [
+            {"value": "A", "text": "Strong winds transport and deposit snow on lee slopes"},
+            {"value": "B", "text": "Temperature inversions create weak layers"},
+            {"value": "C", "text": "Solar radiation creates surface crusts"},
+            {"value": "D", "text": "New snowfall accumulates rapidly"}
+          ],
+          "key": "A",
+          "explain": "Wind slabs form when wind transports snow and deposits it on lee slopes, creating wind-loaded terrain features.",
+          "tags": ["wind", "formation", "transport"]
+        },
+        {
+          "id": "wind_formation_b",
+          "construct": "development",
+          "form": "B",
+          "stem": "The critical wind speed for wind slab formation is typically:",
+          "choices": [
+            {"value": "A", "text": "Greater than 15 mph (25 km/h)"},
+            {"value": "B", "text": "Greater than 5 mph (8 km/h)"},
+            {"value": "C", "text": "Greater than 40 mph (64 km/h)"},
+            {"value": "D", "text": "Wind speed is not important"}
+          ],
+          "key": "A",
+          "explain": "Winds greater than 15 mph can effectively transport snow and create wind slab formation.",
+          "tags": ["wind", "formation", "speed"]
+        },
+        {
+          "id": "wind_identification_a",
+          "construct": "behaviour",
+          "form": "A",
+          "stem": "Wind slabs can be identified by:",
+          "choices": [
+            {"value": "A", "text": "Visible wind loading, pillows, and cornices on lee slopes"},
+            {"value": "B", "text": "Uniform snow distribution across all aspects"},
+            {"value": "C", "text": "Soft, unconsolidated snow surfaces"},
+            {"value": "D", "text": "Absence of wind effects on the snow surface"}
+          ],
+          "key": "A",
+          "explain": "Wind loading features like pillows, cornices, and drifts on lee slopes are classic signs of wind slab formation.",
+          "tags": ["wind", "identification", "features"]
+        },
+        {
+          "id": "wind_identification_b",
+          "construct": "behaviour",
+          "form": "B",
+          "stem": "A key indicator of wind slab instability is:",
+          "choices": [
+            {"value": "A", "text": "Smooth, rounded snow surfaces"},
+            {"value": "B", "text": "Hollow sounds and drumming when traveling"},
+            {"value": "C", "text": "Warm air temperatures"},
+            {"value": "D", "text": "Recent rainfall"}
+          ],
+          "key": "B",
+          "explain": "Hollow sounds and drumming indicate a stiff wind slab over a weak layer, suggesting instability.",
+          "tags": ["wind", "identification", "sounds"]
+        },
+        {
+          "id": "wind_distribution_a",
+          "construct": "assessment",
+          "form": "A",
+          "stem": "Wind slabs are typically found:",
+          "choices": [
+            {"value": "A", "text": "On windward slopes exposed to wind"},
+            {"value": "B", "text": "On lee slopes and in wind-loaded terrain features"},
+            {"value": "C", "text": "Uniformly distributed across all aspects"},
+            {"value": "D", "text": "Only at high elevations"}
+          ],
+          "key": "B",
+          "explain": "Wind slabs form on lee slopes and in terrain features where wind deposits transported snow.",
+          "tags": ["wind", "distribution", "lee"]
+        },
+        {
+          "id": "wind_distribution_b",
+          "construct": "assessment",
+          "form": "B",
+          "stem": "The distribution of wind slabs changes with:",
+          "choices": [
+            {"value": "A", "text": "Time of day"},
+            {"value": "B", "text": "Wind direction and terrain features"},
+            {"value": "C", "text": "Air temperature only"},
+            {"value": "D", "text": "Snowpack age"}
+          ],
+          "key": "B",
+          "explain": "Wind direction determines which slopes become wind-loaded, and terrain features control where snow is deposited.",
+          "tags": ["wind", "distribution", "direction"]
+        },
+        {
+          "id": "wind_management_a",
+          "construct": "mitigation",
+          "form": "A",
+          "stem": "When managing wind slab risk, you should:",
+          "choices": [
+            {"value": "A", "text": "Avoid lee slopes and wind-loaded terrain features"},
+            {"value": "B", "text": "Travel only during high winds"},
+            {"value": "C", "text": "Focus on the steepest available terrain"},
+            {"value": "D", "text": "Ignore wind direction when route planning"}
+          ],
+          "key": "A",
+          "explain": "Avoiding lee slopes and wind-loaded features is the primary strategy for managing wind slab risk.",
+          "tags": ["wind", "management", "avoidance"]
+        },
+        {
+          "id": "wind_management_b",
+          "construct": "mitigation",
+          "form": "B",
+          "stem": "Wind slab terrain management should consider:",
+          "choices": [
+            {"value": "A", "text": "Only current wind conditions"},
+            {"value": "B", "text": "Recent wind history and terrain features"},
+            {"value": "C", "text": "Snow temperature only"},
+            {"value": "D", "text": "Avalanche activity from other regions"}
+          ],
+          "key": "B",
+          "explain": "Recent wind history creates the wind slabs, and terrain features determine where they form and are most dangerous.",
+          "tags": ["wind", "management", "history"]
+        }
+      ]
+    },
+    {
+      "ap_type": "persistent",
+      "label": "Persistent Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "persistent_formation_a",
+          "construct": "development",
+          "form": "A",
+          "stem": "Persistent slabs form when:",
+          "choices": [
+            {"value": "A", "text": "Strong layers develop over persistent weak layers"},
+            {"value": "B", "text": "New snow falls during warm weather"},
+            {"value": "C", "text": "Wind creates surface crusts"},
+            {"value": "D", "text": "Rain falls on existing snow"}
+          ],
+          "key": "A",
+          "explain": "Persistent slabs form when cohesive layers develop over persistent weak layers like surface hoar, facets, or crusts.",
+          "tags": ["persistent", "formation", "weak_layer"]
+        },
+        {
+          "id": "persistent_formation_b",
+          "construct": "development",
+          "form": "B",
+          "stem": "The weak layer in persistent slabs is characterized by:",
+          "choices": [
+            {"value": "A", "text": "Recent formation during the current storm"},
+            {"value": "B", "text": "Long-term presence and poor bonding properties"},
+            {"value": "C", "text": "High strength and good bonding"},
+            {"value": "D", "text": "Rapid healing and strengthening"}
+          ],
+          "key": "B",
+          "explain": "Persistent weak layers are characterized by their long-term presence and poor bonding properties that resist strengthening.",
+          "tags": ["persistent", "formation", "bonding"]
+        },
+        {
+          "id": "persistent_identification_a",
+          "construct": "behaviour",
+          "form": "A",
+          "stem": "Persistent slabs are difficult to identify because:",
+          "choices": [
+            {"value": "A", "text": "They show obvious signs of instability"},
+            {"value": "B", "text": "They may appear stable but can fail unexpectedly"},
+            {"value": "C", "text": "They only exist for short periods"},
+            {"value": "D", "text": "They are always accompanied by recent avalanche activity"}
+          ],
+          "key": "B",
+          "explain": "Persistent slabs are dangerous because they may appear stable but can fail unexpectedly on persistent weak layers.",
+          "tags": ["persistent", "identification", "deception"]
+        },
+        {
+          "id": "persistent_identification_b",
+          "construct": "behaviour",
+          "form": "B",
+          "stem": "Signs that may indicate persistent slab presence include:",
+          "choices": [
+            {"value": "A", "text": "Obvious recent instability and shooting cracks"},
+            {"value": "B", "text": "Subtle signs like isolated whumpfs and propagating test results"},
+            {"value": "C", "text": "Warm temperatures and solar heating"},
+            {"value": "D", "text": "Active wind loading"}
+          ],
+          "key": "B",
+          "explain": "Persistent slabs often show subtle signs like isolated whumpfs and propagating stability test results rather than obvious instability.",
+          "tags": ["persistent", "identification", "subtle"]
+        },
+        {
+          "id": "persistent_distribution_a",
+          "construct": "assessment",
+          "form": "A",
+          "stem": "Persistent slabs are typically distributed:",
+          "choices": [
+            {"value": "A", "text": "Only on specific aspects where weak layers formed"},
+            {"value": "B", "text": "Randomly across the landscape"},
+            {"value": "C", "text": "Only at treeline elevations"},
+            {"value": "D", "text": "Only on steep slopes greater than 40 degrees"}
+          ],
+          "key": "A",
+          "explain": "Persistent slabs are typically found on specific aspects and elevations where the persistent weak layer formed.",
+          "tags": ["persistent", "distribution", "aspect"]
+        },
+        {
+          "id": "persistent_distribution_b",
+          "construct": "assessment",
+          "form": "B",
+          "stem": "The spatial pattern of persistent weak layers is controlled by:",
+          "choices": [
+            {"value": "A", "text": "Recent weather only"},
+            {"value": "B", "text": "Historical weather patterns during weak layer formation"},
+            {"value": "C", "text": "Current wind conditions"},
+            {"value": "D", "text": "Slope angle only"}
+          ],
+          "key": "B",
+          "explain": "The distribution of persistent weak layers reflects the weather patterns that existed when they originally formed.",
+          "tags": ["persistent", "distribution", "history"]
+        },
+        {
+          "id": "persistent_management_a",
+          "construct": "mitigation",
+          "form": "A",
+          "stem": "Managing persistent slab risk requires:",
+          "choices": [
+            {"value": "A", "text": "Conservative terrain choices and careful observation"},
+            {"value": "B", "text": "Aggressive testing of slope stability"},
+            {"value": "C", "text": "Waiting for obvious signs of instability"},
+            {"value": "D", "text": "Focusing only on recent weather conditions"}
+          ],
+          "key": "A",
+          "explain": "Persistent slabs require conservative terrain choices and careful observation since they may not show obvious signs of instability.",
+          "tags": ["persistent", "management", "conservative"]
+        },
+        {
+          "id": "persistent_management_b",
+          "construct": "mitigation",
+          "form": "B",
+          "stem": "When persistent slabs are suspected, the best approach is:",
+          "choices": [
+            {"value": "A", "text": "Test slopes extensively before committing to steep terrain"},
+            {"value": "B", "text": "Avoid avalanche terrain until the weak layer strengthens or is buried deeply"},
+            {"value": "C", "text": "Travel in large groups for safety"},
+            {"value": "D", "text": "Focus on south-facing slopes only"}
+          ],
+          "key": "B",
+          "explain": "When persistent slabs are suspected, avoiding avalanche terrain until the weak layer strengthens or is deeply buried is often the safest approach.",
+          "tags": ["persistent", "management", "patience"]
+        }
+      ]
+    },
+    {
+      "ap_type": "deep_persistent",
+      "label": "Deep Persistent Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "deep_formation_a",
+          "construct": "development",
+          "form": "A",
+          "stem": "Deep persistent slabs form when:",
+          "choices": [
+            {"value": "A", "text": "Weak layers develop deep in the snowpack early in the season"},
+            {"value": "B", "text": "Recent storms create surface instability"},
+            {"value": "C", "text": "Wind loading occurs at high elevations"},
+            {"value": "D", "text": "Spring warming begins"}
+          ],
+          "key": "A",
+          "explain": "Deep persistent slabs form when weak layers develop deep in the snowpack, typically early in the season, and persist as the snowpack builds above them.",
+          "tags": ["deep_persistent", "formation", "early_season"]
+        },
+        {
+          "id": "deep_formation_b",
+          "construct": "development",
+          "form": "B",
+          "stem": "The most common weak layer types in deep persistent slabs are:",
+          "choices": [
+            {"value": "A", "text": "New snow interfaces from recent storms"},
+            {"value": "B", "text": "Depth hoar and faceted grains near the ground"},
+            {"value": "C", "text": "Wind crusts from recent wind events"},
+            {"value": "D", "text": "Sun crusts from recent warm weather"}
+          ],
+          "key": "B",
+          "explain": "Depth hoar and faceted grains that form near the ground or at significant interfaces are the most common weak layers in deep persistent slabs.",
+          "tags": ["deep_persistent", "formation", "depth_hoar"]
+        },
+        {
+          "id": "deep_identification_a",
+          "construct": "behaviour",
+          "form": "A",
+          "stem": "Deep persistent slabs are extremely difficult to identify because:",
+          "choices": [
+            {"value": "A", "text": "They show clear signs of surface instability"},
+            {"value": "B", "text": "The weak layer is buried deep and may not show surface signs"},
+            {"value": "C", "text": "They only occur in specific terrain types"},
+            {"value": "D", "text": "They are always accompanied by recent avalanche activity"}
+          ],
+          "key": "B",
+          "explain": "Deep persistent slabs are dangerous because the weak layer is buried deep in the snowpack and may not produce obvious surface signs of instability.",
+          "tags": ["deep_persistent", "identification", "buried"]
+        },
+        {
+          "id": "deep_identification_b",
+          "construct": "behaviour",
+          "form": "B",
+          "stem": "The best way to identify deep persistent slab potential is through:",
+          "choices": [
+            {"value": "A", "text": "Surface observations of recent weather effects"},
+            {"value": "B", "text": "Snowpack analysis and understanding of early season weak layer development"},
+            {"value": "C", "text": "Observing current wind loading patterns"},
+            {"value": "D", "text": "Waiting for obvious avalanche activity"}
+          ],
+          "key": "B",
+          "explain": "Identifying deep persistent slab potential requires understanding snowpack structure and the history of early season weak layer development.",
+          "tags": ["deep_persistent", "identification", "analysis"]
+        },
+        {
+          "id": "deep_distribution_a",
+          "construct": "assessment",
+          "form": "A",
+          "stem": "Deep persistent slabs are typically distributed:",
+          "choices": [
+            {"value": "A", "text": "Across broad areas where early season weak layers formed"},
+            {"value": "B", "text": "Only on recently wind-loaded slopes"},
+            {"value": "C", "text": "Only on south-facing aspects"},
+            {"value": "D", "text": "Only at specific elevations"}
+          ],
+          "key": "A",
+          "explain": "Deep persistent slabs can be distributed across broad areas where early season weak layers formed, making them particularly dangerous.",
+          "tags": ["deep_persistent", "distribution", "broad"]
+        },
+        {
+          "id": "deep_distribution_b",
+          "construct": "assessment",
+          "form": "B",
+          "stem": "The elevation distribution of deep persistent slabs is typically:",
+          "choices": [
+            {"value": "A", "text": "Limited to high alpine zones only"},
+            {"value": "B", "text": "Broad, potentially affecting all elevations where weak layers formed"},
+            {"value": "C", "text": "Concentrated at treeline elevations only"},
+            {"value": "D", "text": "Limited to low elevation areas"}
+          ],
+          "key": "B",
+          "explain": "Deep persistent slabs can affect broad elevation ranges where the early season weak layer development occurred.",
+          "tags": ["deep_persistent", "distribution", "elevation"]
+        },
+        {
+          "id": "deep_management_a",
+          "construct": "mitigation",
+          "form": "A",
+          "stem": "Managing deep persistent slab risk requires:",
+          "choices": [
+            {"value": "A", "text": "Very conservative terrain choices and avoiding avalanche terrain entirely"},
+            {"value": "B", "text": "Standard terrain management practices"},
+            {"value": "C", "text": "Aggressive stability testing"},
+            {"value": "D", "text": "Focusing only on recent weather conditions"}
+          ],
+          "key": "A",
+          "explain": "Deep persistent slabs often require avoiding avalanche terrain entirely due to their unpredictable nature and potential for large, destructive avalanches.",
+          "tags": ["deep_persistent", "management", "avoidance"]
+        },
+        {
+          "id": "deep_management_b",
+          "construct": "mitigation",
+          "form": "B",
+          "stem": "When deep persistent slabs are a concern, the most appropriate response is:",
+          "choices": [
+            {"value": "A", "text": "Increase group size for safety"},
+            {"value": "B", "text": "Avoid steep terrain and focus on low-angle, simple terrain"},
+            {"value": "C", "text": "Travel during the warmest part of the day"},
+            {"value": "D", "text": "Focus on wind-loaded terrain for better snow quality"}
+          ],
+          "key": "B",
+          "explain": "When deep persistent slabs are a concern, avoiding steep terrain and focusing on low-angle, simple terrain is the most appropriate risk management strategy.",
+          "tags": ["deep_persistent", "management", "terrain"]
+        }
+      ]
+    },
+    {
+      "ap_type": "cornice",
+      "label": "Cornice Fall Avalanche Problems",
+      "items": [
+        {
+          "id": "cornice_formation_a",
+          "construct": "development",
+          "form": "A",
+          "stem": "Cornices form when:",
+          "choices": [
+            {"value": "A", "text": "Wind deposits snow over ridge crests creating overhanging features"},
+            {"value": "B", "text": "Heavy snowfall accumulates on ridge tops"},
+            {"value": "C", "text": "Solar radiation melts and refreezes ridge snow"},
+            {"value": "D", "text": "Temperature gradients create weak layers"}
+          ],
+          "key": "A",
+          "explain": "Cornices form when wind transports snow over ridge crests and deposits it as overhanging features on the lee side.",
+          "tags": ["cornice", "formation", "wind"]
+        },
+        {
+          "id": "cornice_formation_b",
+          "construct": "development",
+          "form": "B",
+          "stem": "Cornice growth is primarily controlled by:",
+          "choices": [
+            {"value": "A", "text": "Air temperature"},
+            {"value": "B", "text": "Wind speed, direction, and available snow for transport"},
+            {"value": "C", "text": "Slope angle below the ridge"},
+            {"value": "D", "text": "Existing snowpack stability"}
+          ],
+          "key": "B",
+          "explain": "Cornice growth depends on wind speed and direction to transport snow, and the availability of snow to be transported and deposited.",
+          "tags": ["cornice", "formation", "transport"]
+        },
+        {
+          "id": "cornice_identification_a",
+          "construct": "behaviour",
+          "form": "A",
+          "stem": "Cornices can be identified by:",
+          "choices": [
+            {"value": "A", "text": "Overhanging snow features extending beyond ridge crests"},
+            {"value": "B", "text": "Uniform snow distribution across ridge tops"},
+            {"value": "C", "text": "Absence of wind effects on ridges"},
+            {"value": "D", "text": "Soft, unconsolidated snow on ridge crests"}
+          ],
+          "key": "A",
+          "explain": "Cornices are visible as overhanging snow features that extend beyond the true ridge crest, often appearing as lips or waves.",
+          "tags": ["cornice", "identification", "overhang"]
+        },
+        {
+          "id": "cornice_identification_b",
+          "construct": "behaviour",
+          "form": "B",
+          "stem": "Signs of cornice instability include:",
+          "choices": [
+            {"value": "A", "text": "Recent cornice fall debris and cracking sounds"},
+            {"value": "B", "text": "Smooth, rounded cornice edges"},
+            {"value": "C", "text": "Cold temperatures and clear skies"},
+            {"value": "D", "text": "Absence of wind"}
+          ],
+          "key": "A",
+          "explain": "Recent cornice fall debris and cracking or settling sounds indicate cornice instability and potential for failure.",
+          "tags": ["cornice", "identification", "instability"]
+        },
+        {
+          "id": "cornice_distribution_a",
+          "construct": "assessment",
+          "form": "A",
+          "stem": "Cornices are typically found:",
+          "choices": [
+            {"value": "A", "text": "On lee sides of ridge crests and terrain features"},
+            {"value": "B", "text": "On windward sides of ridges"},
+            {"value": "C", "text": "Uniformly distributed across all ridge systems"},
+            {"value": "D", "text": "Only at high elevations above treeline"}
+          ],
+          "key": "A",
+          "explain": "Cornices form on the lee sides of ridge crests where wind deposits transported snow as overhanging features.",
+          "tags": ["cornice", "distribution", "lee"]
+        },
+        {
+          "id": "cornice_distribution_b",
+          "construct": "assessment",
+          "form": "B",
+          "stem": "Cornice distribution is primarily determined by:",
+          "choices": [
+            {"value": "A", "text": "Slope steepness below the ridge"},
+            {"value": "B", "text": "Prevailing wind direction and ridge orientation"},
+            {"value": "C", "text": "Snow temperature"},
+            {"value": "D", "text": "Vegetation patterns"}
+          ],
+          "key": "B",
+          "explain": "Cornice distribution is controlled by prevailing wind direction and how ridges are oriented relative to those winds.",
+          "tags": ["cornice", "distribution", "wind_direction"]
+        },
+        {
+          "id": "cornice_management_a",
+          "construct": "mitigation",
+          "form": "A",
+          "stem": "When traveling near cornices, you should:",
+          "choices": [
+            {"value": "A", "text": "Stay well back from ridge crests and avoid areas below cornices"},
+            {"value": "B", "text": "Travel directly on the cornice for the best views"},
+            {"value": "C", "text": "Test cornice stability by jumping on the edge"},
+            {"value": "D", "text": "Only worry about cornices during warm weather"}
+          ],
+          "key": "A",
+          "explain": "Safe cornice travel requires staying well back from ridge crests and avoiding terrain below cornices where falling debris could cause injury or trigger avalanches.",
+          "tags": ["cornice", "management", "distance"]
+        },
+        {
+          "id": "cornice_management_b",
+          "construct": "mitigation",
+          "form": "B",
+          "stem": "The primary concern with cornice falls is:",
+          "choices": [
+            {"value": "A", "text": "Getting lost in poor visibility"},
+            {"value": "B", "text": "Triggering avalanches on slopes below and direct impact hazard"},
+            {"value": "C", "text": "Creating difficult travel conditions"},
+            {"value": "D", "text": "Blocking access routes"}
+          ],
+          "key": "B",
+          "explain": "Cornice falls can trigger avalanches on slopes below and pose direct impact hazards to anyone in the fall zone.",
+          "tags": ["cornice", "management", "trigger"]
+        }
+      ]
+    },
+    {
+      "ap_type": "loose_dry",
+      "label": "Loose Dry Avalanche Problems",
+      "items": [
+        {
+          "id": "loose_dry_formation_a",
+          "construct": "development",
+          "form": "A",
+          "stem": "Loose dry avalanches typically form when:",
+          "choices": [
+            {"value": "A", "text": "Cohesionless snow lacks sufficient bonding to remain in place"},
+            {"value": "B", "text": "Strong wind creates wind slabs"},
+            {"value": "C", "text": "Rain falls on the snow surface"},
+            {"value": "D", "text": "Temperature gradients create depth hoar"}
+          ],
+          "key": "A",
+          "explain": "Loose dry avalanches form when cohesionless snow, such as new snow or surface hoar, lacks sufficient bonding to remain in place on steep slopes.",
+          "tags": ["loose_dry", "formation", "cohesion"]
+        },
+        {
+          "id": "loose_dry_formation_b",
+          "construct": "development",
+          "form": "B",
+          "stem": "The most common trigger for loose dry avalanches is:",
+          "choices": [
+            {"value": "A", "text": "Wind loading"},
+            {"value": "B", "text": "A person or natural disturbance on steep slopes"},
+            {"value": "C", "text": "Temperature changes"},
+            {"value": "D", "text": "Cornice falls"}
+          ],
+          "key": "B",
+          "explain": "Loose dry avalanches are commonly triggered by people or natural disturbances that overcome the minimal cohesion in loose surface snow.",
+          "tags": ["loose_dry", "formation", "trigger"]
+        },
+        {
+          "id": "loose_dry_identification_a",
+          "construct": "behaviour",
+          "form": "A",
+          "stem": "Loose dry avalanches can be identified by:",
+          "choices": [
+            {"value": "A", "text": "Point release patterns that fan out downslope"},
+            {"value": "B", "text": "Linear fracture lines across slopes"},
+            {"value": "C", "text": "Uniform slab releases"},
+            {"value": "D", "text": "Deep, persistent weak layers"}
+          ],
+          "key": "A",
+          "explain": "Loose dry avalanches are characterized by point release patterns that start small and fan out as they entrain more snow downslope.",
+          "tags": ["loose_dry", "identification", "pattern"]
+        },
+        {
+          "id": "loose_dry_identification_b",
+          "construct": "behaviour",
+          "form": "B",
+          "stem": "Surface conditions that indicate loose dry avalanche potential include:",
+          "choices": [
+            {"value": "A", "text": "Hard, wind-crusted surfaces"},
+            {"value": "B", "text": "Loose, unconsolidated snow that moves easily when disturbed"},
+            {"value": "C", "text": "Wet, sticky snow conditions"},
+            {"value": "D", "text": "Frozen, icy surfaces"}
+          ],
+          "key": "B",
+          "explain": "Loose, unconsolidated snow that moves easily when disturbed indicates conditions favorable for loose dry avalanche formation.",
+          "tags": ["loose_dry", "identification", "surface"]
+        },
+        {
+          "id": "loose_dry_distribution_a",
+          "construct": "assessment",
+          "form": "A",
+          "stem": "Loose dry avalanches are typically distributed:",
+          "choices": [
+            {"value": "A", "text": "On steep slopes (typically >30°) with loose surface snow"},
+            {"value": "B", "text": "Only on wind-loaded terrain features"},
+            {"value": "C", "text": "Exclusively on north-facing aspects"},
+            {"value": "D", "text": "Only at high elevations"}
+          ],
+          "key": "A",
+          "explain": "Loose dry avalanches occur on steep slopes where loose, cohesionless snow cannot maintain stability, typically on slopes steeper than 30 degrees.",
+          "tags": ["loose_dry", "distribution", "steepness"]
+        },
+        {
+          "id": "loose_dry_distribution_b",
+          "construct": "assessment",
+          "form": "B",
+          "stem": "The aspect distribution of loose dry avalanches is primarily controlled by:",
+          "choices": [
+            {"value": "A", "text": "Wind direction only"},
+            {"value": "B", "text": "Where loose surface snow conditions exist"},
+            {"value": "C", "text": "Elevation only"},
+            {"value": "D", "text": "Existing weak layers"}
+          ],
+          "key": "B",
+          "explain": "Loose dry avalanches can occur on any aspect where loose surface snow conditions exist on sufficiently steep terrain.",
+          "tags": ["loose_dry", "distribution", "conditions"]
+        },
+        {
+          "id": "loose_dry_management_a",
+          "construct": "mitigation",
+          "form": "A",
+          "stem": "Managing loose dry avalanche risk involves:",
+          "choices": [
+            {"value": "A", "text": "Avoiding steep terrain with loose surface conditions"},
+            {"value": "B", "text": "Traveling only during cold weather"},
+            {"value": "C", "text": "Focusing on wind-loaded terrain"},
+            {"value": "D", "text": "Using aggressive stability testing"}
+          ],
+          "key": "A",
+          "explain": "Managing loose dry avalanche risk involves recognizing loose surface conditions and avoiding sufficiently steep terrain where these avalanches can occur.",
+          "tags": ["loose_dry", "management", "avoidance"]
+        },
+        {
+          "id": "loose_dry_management_b",
+          "construct": "mitigation",
+          "form": "B",
+          "stem": "When loose dry conditions exist, terrain management should focus on:",
+          "choices": [
+            {"value": "A", "text": "Steeper terrain for better snow quality"},
+            {"value": "B", "text": "Moderate angle terrain and safe runout zones"},
+            {"value": "C", "text": "Complex, channeled terrain"},
+            {"value": "D", "text": "Areas with terrain traps"}
+          ],
+          "key": "B",
+          "explain": "When loose dry conditions exist, choosing moderate angle terrain with safe runout zones reduces the risk of being caught or carried into terrain traps.",
+          "tags": ["loose_dry", "management", "runout"]
+        }
+      ]
+    },
+    {
+      "ap_type": "loose_wet",
+      "label": "Loose Wet Avalanche Problems",
+      "items": [
+        {
+          "id": "loose_wet_formation_a",
+          "construct": "development",
+          "form": "A",
+          "stem": "Loose wet avalanches form when:",
+          "choices": [
+            {"value": "A", "text": "Free water reduces bonding in surface snow layers"},
+            {"value": "B", "text": "Cold temperatures strengthen the snowpack"},
+            {"value": "C", "text": "Wind creates surface crusts"},
+            {"value": "D", "text": "New dry snow accumulates"}
+          ],
+          "key": "A",
+          "explain": "Loose wet avalanches form when free water from melting or rain reduces the bonding strength in surface snow layers.",
+          "tags": ["loose_wet", "formation", "water"]
+        },
+        {
+          "id": "loose_wet_formation_b",
+          "construct": "development",
+          "form": "B",
+          "stem": "The primary cause of loose wet avalanche formation is:",
+          "choices": [
+            {"value": "A", "text": "Wind loading"},
+            {"value": "B", "text": "Solar heating, warm temperatures, or rainfall"},
+            {"value": "C", "text": "Cold temperatures and clear skies"},
+            {"value": "D", "text": "Persistent weak layers"}
+          ],
+          "key": "B",
+          "explain": "Solar heating, warm air temperatures, or rainfall introduce free water into the snowpack, leading to loose wet avalanche formation.",
+          "tags": ["loose_wet", "formation", "heating"]
+        },
+        {
+          "id": "loose_wet_identification_a",
+          "construct": "behaviour",
+          "form": "A",
+          "stem": "Loose wet avalanches can be identified by:",
+          "choices": [
+            {"value": "A", "text": "Point releases of wet, heavy snow that entrains material downslope"},
+            {"value": "B", "text": "Linear crown faces across slopes"},
+            {"value": "C", "text": "Dry, powdery debris"},
+            {"value": "D", "text": "Wind-transported snow deposits"}
+          ],
+          "key": "A",
+          "explain": "Loose wet avalanches are characterized by point releases of wet, heavy snow that entrains more material as they flow downslope.",
+          "tags": ["loose_wet", "identification", "wet"]
+        },
+        {
+          "id": "loose_wet_identification_b",
+          "construct": "behaviour",
+          "form": "B",
+          "stem": "Surface conditions indicating loose wet avalanche potential include:",
+          "choices": [
+            {"value": "A", "text": "Dry, cold snow surfaces"},
+            {"value": "B", "text": "Wet, sticky snow and free water on the surface"},
+            {"value": "C", "text": "Hard, frozen crusts"},
+            {"value": "D", "text": "Loose, dry powder"}
+          ],
+          "key": "B",
+          "explain": "Wet, sticky snow conditions and visible free water on the snow surface indicate loose wet avalanche potential.",
+          "tags": ["loose_wet", "identification", "sticky"]
+        },
+        {
+          "id": "loose_wet_distribution_a",
+          "construct": "assessment",
+          "form": "A",
+          "stem": "Loose wet avalanches typically occur:",
+          "choices": [
+            {"value": "A", "text": "On sun-exposed slopes during warming periods"},
+            {"value": "B", "text": "Only on shaded, north-facing slopes"},
+            {"value": "C", "text": "Exclusively during cold, clear weather"},
+            {"value": "D", "text": "Only at high elevations"}
+          ],
+          "key": "A",
+          "explain": "Loose wet avalanches typically occur on sun-exposed slopes during periods of solar heating and warming temperatures.",
+          "tags": ["loose_wet", "distribution", "solar"]
+        },
+        {
+          "id": "loose_wet_distribution_b",
+          "construct": "assessment",
+          "form": "B",
+          "stem": "The timing of loose wet avalanche activity typically follows:",
+          "choices": [
+            {"value": "A", "text": "Cold morning temperatures"},
+            {"value": "B", "text": "Diurnal warming cycles and solar heating patterns"},
+            {"value": "C", "text": "Wind speed variations"},
+            {"value": "D", "text": "Barometric pressure changes"}
+          ],
+          "key": "B",
+          "explain": "Loose wet avalanche activity typically follows diurnal warming cycles, with activity increasing as solar heating and warm temperatures introduce water into the snowpack.",
+          "tags": ["loose_wet", "distribution", "diurnal"]
+        },
+        {
+          "id": "loose_wet_management_a",
+          "construct": "mitigation",
+          "form": "A",
+          "stem": "Managing loose wet avalanche risk involves:",
+          "choices": [
+            {"value": "A", "text": "Early morning travel before warming begins"},
+            {"value": "B", "text": "Traveling during the warmest part of the day"},
+            {"value": "C", "text": "Focusing only on north-facing slopes"},
+            {"value": "D", "text": "Ignoring temperature and weather conditions"}
+          ],
+          "key": "A",
+          "explain": "Managing loose wet avalanche risk often involves early morning travel before solar heating and warming temperatures create wet snow conditions.",
+          "tags": ["loose_wet", "management", "timing"]
+        },
+        {
+          "id": "loose_wet_management_b",
+          "construct": "mitigation",
+          "form": "B",
+          "stem": "When loose wet conditions develop, the best strategy is:",
+          "choices": [
+            {"value": "A", "text": "Continue on steep, sun-exposed slopes"},
+            {"value": "B", "text": "Retreat to cooler aspects or lower angle terrain"},
+            {"value": "C", "text": "Increase travel speed"},
+            {"value": "D", "text": "Focus on the steepest available terrain"}
+          ],
+          "key": "B",
+          "explain": "When loose wet conditions develop, retreating to cooler aspects or lower angle terrain reduces exposure to loose wet avalanche risk.",
+          "tags": ["loose_wet", "management", "retreat"]
+        }
+      ]
+    },
+    {
+      "ap_type": "wet_slab",
+      "label": "Wet Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "wet_slab_formation_a",
+          "construct": "development",
+          "form": "A",
+          "stem": "Wet slab avalanches form when:",
+          "choices": [
+            {"value": "A", "text": "Water infiltration weakens bonds between snow layers"},
+            {"value": "B", "text": "Cold temperatures strengthen weak layers"},
+            {"value": "C", "text": "Wind creates new surface layers"},
+            {"value": "D", "text": "Dry snow accumulates rapidly"}
+          ],
+          "key": "A",
+          "explain": "Wet slab avalanches form when water infiltration from melting or rain weakens the bonds between snow layers, particularly at layer interfaces.",
+          "tags": ["wet_slab", "formation", "infiltration"]
+        },
+        {
+          "id": "wet_slab_formation_b",
+          "construct": "development",
+          "form": "B",
+          "stem": "The weak layer in wet slab avalanches is typically:",
+          "choices": [
+            {"value": "A", "text": "Recently formed surface hoar"},
+            {"value": "B", "text": "An interface that becomes lubricated by water infiltration"},
+            {"value": "C", "text": "Deep, persistent faceted grains"},
+            {"value": "D", "text": "Wind-formed crusts"}
+          ],
+          "key": "B",
+          "explain": "Wet slab weak layers are typically interfaces between snow layers that become lubricated and weakened by water infiltration.",
+          "tags": ["wet_slab", "formation", "interface"]
+        },
+        {
+          "id": "wet_slab_identification_a",
+          "construct": "behaviour",
+          "form": "A",
+          "stem": "Wet slab avalanches can be identified by:",
+          "choices": [
+            {"value": "A", "text": "Linear fractures and cohesive wet snow blocks"},
+            {"value": "B", "text": "Point release patterns of loose snow"},
+            {"value": "C", "text": "Dry, powdery debris"},
+            {"value": "D", "text": "Wind-scoured surfaces"}
+          ],
+          "key": "A",
+          "explain": "Wet slab avalanches are characterized by linear fractures and the release of cohesive blocks of wet, heavy snow.",
+          "tags": ["wet_slab", "identification", "linear"]
+        },
+        {
+          "id": "wet_slab_identification_b",
+          "construct": "behaviour",
+          "form": "B",
+          "stem": "Signs of potential wet slab instability include:",
+          "choices": [
+            {"value": "A", "text": "Cold, dry snow conditions"},
+            {"value": "B", "text": "Water percolation, pinwheeling snow, and recent wet avalanche activity"},
+            {"value": "C", "text": "Strong, cold winds"},
+            {"value": "D", "text": "Fresh, dry snowfall"}
+          ],
+          "key": "B",
+          "explain": "Water percolation through the snowpack, pinwheeling snow on slopes, and recent wet avalanche activity are signs of wet slab instability.",
+          "tags": ["wet_slab", "identification", "percolation"]
+        },
+        {
+          "id": "wet_slab_distribution_a",
+          "construct": "assessment",
+          "form": "A",
+          "stem": "Wet slab avalanches typically occur:",
+          "choices": [
+            {"value": "A", "text": "On slopes receiving significant water input from melting or rain"},
+            {"value": "B", "text": "Only on shaded, north-facing slopes"},
+            {"value": "C", "text": "Exclusively during cold, dry conditions"},
+            {"value": "D", "text": "Only on wind-loaded terrain"}
+          ],
+          "key": "A",
+          "explain": "Wet slab avalanches occur on slopes that receive significant water input from solar melting, warm temperatures, or rainfall.",
+          "tags": ["wet_slab", "distribution", "water_input"]
+        },
+        {
+          "id": "wet_slab_distribution_b",
+          "construct": "assessment",
+          "form": "B",
+          "stem": "The elevation pattern of wet slab avalanches typically follows:",
+          "choices": [
+            {"value": "A", "text": "Only high elevation areas"},
+            {"value": "B", "text": "The elevation of the rain-snow line or active melting zone"},
+            {"value": "C", "text": "Only low elevation areas"},
+            {"value": "D", "text": "Random distribution across all elevations"}
+          ],
+          "key": "B",
+          "explain": "Wet slab avalanches typically occur at elevations where rain is falling or where active melting is occurring, following the rain-snow line or melting zone.",
+          "tags": ["wet_slab", "distribution", "elevation"]
+        },
+        {
+          "id": "wet_slab_management_a",
+          "construct": "mitigation",
+          "form": "A",
+          "stem": "Managing wet slab avalanche risk requires:",
+          "choices": [
+            {"value": "A", "text": "Avoiding slopes with water infiltration and evidence of weakening"},
+            {"value": "B", "text": "Traveling during the warmest part of the day"},
+            {"value": "C", "text": "Focusing on the steepest terrain available"},
+            {"value": "D", "text": "Ignoring weather and temperature trends"}
+          ],
+          "key": "A",
+          "explain": "Managing wet slab risk requires avoiding slopes showing evidence of water infiltration and bond weakening between snow layers.",
+          "tags": ["wet_slab", "management", "avoidance"]
+        },
+        {
+          "id": "wet_slab_management_b",
+          "construct": "mitigation",
+          "form": "B",
+          "stem": "When wet slab conditions are developing, the best approach is:",
+          "choices": [
+            {"value": "A", "text": "Continue with normal travel plans"},
+            {"value": "B", "text": "Retreat early before conditions deteriorate further"},
+            {"value": "C", "text": "Test slopes extensively"},
+            {"value": "D", "text": "Travel in larger groups"}
+          ],
+          "key": "B",
+          "explain": "When wet slab conditions are developing, retreating early before conditions deteriorate further is the safest management approach.",
+          "tags": ["wet_slab", "management", "early_retreat"]
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "id": "risk_assessment_general",
+      "construct": "risk_assessment",
+      "form": "A",
+      "stem": "When assessing avalanche risk, the most important factor to consider is:",
+      "choices": [
+        {"value": "A", "text": "Recent weather conditions only"},
+        {"value": "B", "text": "The combination of snowpack, weather, and terrain factors"},
+        {"value": "C", "text": "Avalanche bulletins only"},
+        {"value": "D", "text": "Personal experience only"}
+      ],
+      "key": "B",
+      "explain": "Effective avalanche risk assessment requires considering the interaction of snowpack conditions, weather factors, and terrain characteristics together.",
+      "tags": ["risk_assessment", "general", "factors"]
+    },
+    {
+      "id": "terrain_selection",
+      "construct": "terrain_management",
+      "form": "A",
+      "stem": "Conservative terrain selection during unstable conditions involves:",
+      "choices": [
+        {"value": "A", "text": "Choosing the steepest slopes for the best snow quality"},
+        {"value": "B", "text": "Avoiding avalanche terrain and choosing simple, low-angle terrain"},
+        {"value": "C", "text": "Traveling in complex, channeled terrain"},
+        {"value": "D", "text": "Focusing on terrain traps for shelter"}
+      ],
+      "key": "B",
+      "explain": "Conservative terrain selection involves avoiding avalanche terrain entirely and choosing simple, low-angle terrain with good escape routes and minimal consequences.",
+      "tags": ["terrain", "selection", "conservative"]
+    },
+    {
+      "id": "group_management",
+      "construct": "group_management",
+      "form": "A",
+      "stem": "Effective avalanche risk management for groups includes:",
+      "choices": [
+        {"value": "A", "text": "Traveling together as a tight group at all times"},
+        {"value": "B", "text": "One person exposing themselves to hazard at a time with group communication"},
+        {"value": "C", "text": "Splitting up to cover more terrain quickly"},
+        {"value": "D", "text": "Following other groups' tracks without assessment"}
+      ],
+      "key": "B",
+      "explain": "Effective group management involves exposing only one person to avalanche hazard at a time while maintaining communication and rescue capability.",
+      "tags": ["group", "management", "exposure"]
+    },
+    {
+      "id": "decision_making",
+      "construct": "decision_making",
+      "form": "A",
+      "stem": "Good avalanche decision-making is characterized by:",
+      "choices": [
+        {"value": "A", "text": "Making quick decisions based on first impressions"},
+        {"value": "B", "text": "Systematic observation, assessment, and willingness to change plans"},
+        {"value": "C", "text": "Relying primarily on avalanche forecasts"},
+        {"value": "D", "text": "Following the most experienced group member without question"}
+      ],
+      "key": "B",
+      "explain": "Good avalanche decision-making involves systematic observation and assessment of conditions with the flexibility to change plans based on new information.",
+      "tags": ["decision_making", "systematic", "flexibility"]
+    },
+    {
+      "id": "rescue_preparedness",
+      "construct": "rescue",
+      "form": "A",
+      "stem": "Essential components of avalanche rescue preparedness include:",
+      "choices": [
+        {"value": "A", "text": "Carrying rescue equipment but not practicing with it"},
+        {"value": "B", "text": "Having rescue equipment, training, and regular practice"},
+        {"value": "C", "text": "Relying on professional rescue services"},
+        {"value": "D", "text": "Avoiding avalanche terrain entirely"}
+      ],
+      "key": "B",
+      "explain": "Effective rescue preparedness requires having proper equipment, training in its use, and regular practice to maintain skills.",
+      "tags": ["rescue", "preparedness", "training"]
+    },
+    {
+      "id": "weather_interpretation",
+      "construct": "weather_assessment",
+      "form": "A",
+      "stem": "When interpreting weather information for avalanche assessment:",
+      "choices": [
+        {"value": "A", "text": "Focus only on current conditions"},
+        {"value": "B", "text": "Consider recent weather history and current trends together"},
+        {"value": "C", "text": "Rely only on avalanche bulletins"},
+        {"value": "D", "text": "Weather information is not relevant to avalanche assessment"}
+      ],
+      "key": "B",
+      "explain": "Effective weather interpretation for avalanche assessment requires considering both recent weather history that created current conditions and ongoing trends.",
+      "tags": ["weather", "interpretation", "history"]
+    }
+  ]
+}
