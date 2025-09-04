@@ -1,0 +1,40 @@
+[build]
+  # No build process needed - this is a static site
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "21.7.1"
+
+[[headers]]
+  # Apply to all files
+  for = "/*"
+  [headers.values]
+    # Enable CORS for item banks and assets
+    Access-Control-Allow-Origin = "*"
+    # Cache static assets
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  # Don't cache HTML files
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  # Don't cache JSON config files
+  for = "/item-banks/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
+    Content-Type = "application/json"
+
+# Redirect root to /public/
+[[redirects]]
+  from = "/"
+  to = "/public/"
+  status = 302
+
+# SPA fallback for any missing routes
+[[redirects]]
+  from = "/public/*"
+  to = "/public/index.html"
+  status = 200

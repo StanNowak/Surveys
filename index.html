@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurveyJS Avalanche Prediction Survey</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .survey-link {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            margin: 10px;
+            transition: background-color 0.2s;
+        }
+        .survey-link:hover {
+            background: #0056b3;
+        }
+        .demo-link {
+            background: #28a745;
+        }
+        .demo-link:hover {
+            background: #1e7e34;
+        }
+        .info {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏔️ Avalanche Prediction Survey</h1>
+        <p>A SurveyJS-powered research tool for avalanche risk assessment</p>
+    </div>
+
+    <div class="info">
+        <h3>🎯 Quick Start</h3>
+        <p>Choose your survey experience:</p>
+        <div style="text-align: center;">
+            <a href="./public/?uuid=demo-user" class="survey-link demo-link">
+                📝 Demo Survey (Small Bank)
+            </a>
+            <a href="./public/?uuid=full-test" class="survey-link">
+                🔬 Full Survey (Complete Bank)
+            </a>
+        </div>
+    </div>
+
+    <div class="info">
+        <h3>📊 Features</h3>
+        <ul>
+            <li><strong>Background Questionnaire</strong> - 3 quick demographic questions</li>
+            <li><strong>Assessment Questions</strong> - Avalanche prediction scenarios</li>
+            <li><strong>Diagnostic Questions</strong> - Risk assessment knowledge check</li>
+            <li><strong>Auto-advance</strong> - One question per page with automatic progression</li>
+            <li><strong>Timing Capture</strong> - Per-question response times and idle tracking</li>
+            <li><strong>Immediate Feedback</strong> - Graded results with explanations</li>
+            <li><strong>Data Download</strong> - JSON export of all responses and timing</li>
+        </ul>
+    </div>
+
+    <div class="info">
+        <h3>🔧 Configuration</h3>
+        <p>The survey supports URL parameters for customization:</p>
+        <ul>
+            <li><span class="code">uuid</span> - Unique participant identifier</li>
+            <li><span class="code">bank</span> - Item bank selection (demo/full)</li>
+            <li><span class="code">config</span> - Configuration file selection</li>
+        </ul>
+        
+        <p><strong>Example:</strong> <br>
+        <span class="code">./public/?uuid=participant-123&bank=demo</span></p>
+    </div>
+
+    <div class="info">
+        <h3>📁 Item Banks Available</h3>
+        <ul>
+            <li><strong>Demo Bank</strong> - 2 assessment + 3 diagnostic questions (quick testing)</li>
+            <li><strong>Full Bank</strong> - 8 assessment + 3 diagnostic questions (complete experience)</li>
+        </ul>
+    </div>
+
+    <div class="info">
+        <h3>💾 Data Output</h3>
+        <p>Survey completion automatically downloads a JSON file containing:</p>
+        <ul>
+            <li>All survey responses</li>
+            <li>Per-question response times (<span class="code">rt_questionname_final</span>)</li>
+            <li>Per-question idle times (<span class="code">idle_questionname_ms</span>)</li>
+            <li>Total idle time (<span class="code">idle_ms</span>)</li>
+            <li>Grading results with correct/incorrect answers</li>
+            <li>Participant UUID and timestamps</li>
+        </ul>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate a random UUID for demo links if none provided
+            const links = document.querySelectorAll('.survey-link');
+            links.forEach(link => {
+                if (link.href.includes('uuid=demo-user') || link.href.includes('uuid=full-test')) {
+                    const randomId = 'user-' + Math.random().toString(36).substr(2, 9);
+                    link.href = link.href.replace(/uuid=[^&]+/, 'uuid=' + randomId);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

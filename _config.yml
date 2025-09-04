@@ -1,0 +1,28 @@
+# GitHub Pages configuration
+# This enables GitHub Pages to serve static files correctly
+
+# Include all files and directories
+include:
+  - public/
+  - src/
+  - item-banks/
+  - scripts/
+
+# Don't exclude JavaScript modules
+exclude:
+  - node_modules/
+  - .git/
+  - .github/
+  - README.md
+  - TASK.xml
+  - start-server.sh
+
+# Use no Jekyll processing for pure static site
+plugins: []
+markdown: kramdown
+highlighter: rouge
+
+# Serve files as-is (important for ES modules)
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
