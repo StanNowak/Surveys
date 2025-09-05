@@ -7,19 +7,18 @@ const isGitHubPages = window.location.hostname === 'stannowak.github.io';
 const baseUrl = isLocalhost ? '' : (isGitHubPages ? '/Surveys' : window.location.origin);
 
 window.__SURVEY_CONFIG__ = {
-    // Survey metadata
-    TITLE: "Avalanche Survey Prototype",
-    
-    // Data source URLs (works for both local and deployed)
-    BACKGROUND_URL: `${baseUrl}/item-banks/background.json`,
-    BANK_URL: `${baseUrl}/item-banks/bank.full.dummy.json`,
+    TITLE: "Avalanche Problems",
+    BANK_URL: `${baseUrl}/item-banks/bank.demo.json`,
     CONFIG_URL: `${baseUrl}/item-banks/config.demo.json`,
-    
-    // Backend endpoints (leave empty for local-only mode)
-    SAVE_URL: "",
-    QUOTA_ENDPOINT: "",
-    
-    // Deployment info
-    IS_DEPLOYED: !isLocalhost,
-    BASE_URL: baseUrl
+    BACKGROUND_URL: `${baseUrl}/item-banks/background.json`,
+
+    MODE: "test",                 // "test" | "prod"
+    SURVEY_ID: "ap_v1",
+
+    // Leave empty in Pages/Netlify to stay client-only (JSON download only)
+    ASSIGN_URL: "",
+    SAVE_URL:   "",
+
+    // field name where we store derived experience band
+    STRATUM_FROM_FIELD: "experience_band"
 };

@@ -1,0 +1,7 @@
+# backend env and local overrides
+packages/backend/postgrest/.env
+public/env.local.js
+*.sqlite
+*.db
+.DS_Store
+node_modules/

@@ -7,6 +7,93 @@ import './instrumentation.js';
 import defaultLogic from './logic.default.js';
 import { grade, renderFeedback, downloadSurveyData } from './feedback.js';
 
+// Get configuration
+const cfg = window.__SURVEY_CONFIG__ || {};
+
+function backendEnabled() {
+  return cfg.MODE === "prod" && !!cfg.ASSIGN_URL && !!cfg.SAVE_URL;
+}
+
+async function rpc(url, body) {
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+function downloadJSON(filename, dataObj) {
+  const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: "application/json" });
+  const a = Object.assign(document.createElement("a"), {
+    href: URL.createObjectURL(blob),
+    download: filename
+  });
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+function deriveExperienceBand(years, training) {
+  const y = String(years || ""); 
+  const t = String(training || "");
+  
+  // Novice: 0-1 years OR no formal training/awareness only
+  if (["0-1"].includes(y) || ["none", "awareness"].includes(t)) return "novice";
+  
+  // Intermediate: 2-5 years OR level 1 training
+  if (["2-5"].includes(y) || ["level1"].includes(t)) return "intermediate";
+  
+  // Advanced: 6+ years OR level 2+ training
+  return "advanced";
+}
+
+async function getAssignedPair(bank, survey) {
+  const apList = (bank.testlets || []).map(t => t.ap_type).filter(Boolean);
+  const years = survey.getValue("experience_years");
+  const training = survey.getValue("highest_training");
+  const stratum = deriveExperienceBand(years, training) || "global";
+  survey.setValue(cfg.STRATUM_FROM_FIELD, stratum);
+
+  if (backendEnabled()) {
+    const uuid = new URLSearchParams(location.search).get("uuid") || crypto.randomUUID();
+    try {
+      const out = await rpc(cfg.ASSIGN_URL, { p_uuid: uuid, p_stratum: stratum, p_ap_list: apList });
+      survey.setValue("__assigned_pair", out.pair);
+      survey.setValue("__assigned_stratum", out.stratum || stratum);
+      return out;
+    } catch (e) {
+      console.warn("assign_pair failed, falling back to local:", e);
+    }
+  }
+  // local fallback
+  const pairs = [];
+  for (let i=0;i<apList.length;i++) for (let j=i+1;j<apList.length;j++) pairs.push([apList[i], apList[j]]);
+  const pick = pairs[Math.floor(Math.random() * pairs.length)];
+  survey.setValue("__assigned_pair", pick);
+  survey.setValue("__assigned_stratum", stratum);
+  return { pair: pick, stratum };
+}
+
+async function onCompleteSubmit(survey, assigned) {
+  const uuid = new URLSearchParams(location.search).get("uuid") || crypto.randomUUID();
+  const payload = {
+    uuid,
+    survey_id: cfg.SURVEY_ID || "ap_v1",
+    pair: assigned?.pair || survey.getValue("__assigned_pair"),
+    stratum: assigned?.stratum || survey.getValue("__assigned_stratum") || "global",
+    panel_member: !!survey.getValue("__panel_member"),
+    bank_version: survey.getValue("__bank_version"),
+    config_version: survey.getValue("__config_version"),
+    answers: survey.data,
+    timings: window.__timings || {}
+  };
+
+  if (backendEnabled()) {
+    try { await rpc(cfg.SAVE_URL, { p_payload: payload }); } catch (e) { console.warn("submit_response failed:", e); }
+  }
+  downloadJSON(`survey_${payload.uuid}_${Date.now()}.json`, payload);
+}
+
 
 /**
  * Initialize the survey application
@@ -79,8 +166,32 @@ async function initSurvey() {
         survey.setValue('response_uuid', uuid);
         survey.setValue('survey_start_time', defaultLogic.getCurrentTimestamp());
         
+        // Store bank and config versions for backend tracking
+        survey.setValue('__bank_version', builder.bankData?.schema_version || 'unknown');
+        survey.setValue('__config_version', builder.config?.version || 'unknown');
+        
+        // Variable to store assignment for completion
+        let assignedPair = null;
+        
+        // Set up page change handler for pair assignment
+        survey.onCurrentPageChanged.add(async function(sender, options) {
+            // Check if we just completed the background section and need to assign pairs
+            if (!assignedPair && sender.getValue("experience_years") && sender.getValue("highest_training")) {
+                console.log('🎯 Background questions completed, assigning pair...');
+                console.log('Experience years:', sender.getValue("experience_years"));
+                console.log('Training level:', sender.getValue("highest_training"));
+                try {
+                    assignedPair = await getAssignedPair(builder.bankData, sender);
+                    console.log('✅ Pair assigned:', assignedPair);
+                } catch (error) {
+                    console.error('❌ Failed to assign pair:', error);
+                    // Continue with local fallback - getAssignedPair handles this
+                }
+            }
+        });
+        
         // Set up completion handler
-        survey.onComplete.add(function(sender, options) {
+        survey.onComplete.add(async function(sender, options) {
             console.log('✅ Survey completed!');
             
             // Ensure final page timing is captured
@@ -107,9 +218,6 @@ async function initSurvey() {
                 }
             }
             
-            // Get timing data (including idle time)
-            const timingData = window.getTimingData(sender);
-            
             // Ensure idle time is captured
             if (sender._timingInstrument) {
                 const totalIdle = sender._timingInstrument.getTotalIdleTime();
@@ -124,6 +232,14 @@ async function initSurvey() {
             // Grade the survey responses
             const gradingResults = grade(sender, builder.bankData);
             console.log('🎯 Grading results:', gradingResults);
+            
+            // Backend integration: submit response if enabled
+            try {
+                await onCompleteSubmit(sender, assignedPair);
+                console.log('✅ Response submitted to backend (if enabled)');
+            } catch (error) {
+                console.error('❌ Failed to submit to backend:', error);
+            }
             
             const responseData = {
                 ts: defaultLogic.getCurrentTimestamp(),
@@ -157,9 +273,6 @@ async function initSurvey() {
                     container.innerHTML = feedbackHtml;
                 }
             }, 100);
-            
-            // Trigger JSON download
-            downloadSurveyData(responseData, uuid);
             
             console.log('🎉 Survey completion process finished!');
         });

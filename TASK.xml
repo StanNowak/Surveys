@@ -1,112 +1,383 @@
-<project name="avalanche-surveyjs-prototype">
+<task name="Add Dockerized backend, keep static default, enable local override">
   <context>
-    <goal>Vanilla JS SurveyJS runner that loads external item bank + config + background, randomizes 2 AP testlets (uniform, no backend), shuffles within blocks, renders one-question-per-page with auto-advance, captures per-item timing, shows end-of-survey feedback, and downloads the full response as a JSON file on completion.</goal>
-    <constraints>
-      <c>No backend services. No BIB/quota API. No DB writes.</c>
-      <c>External JSON files for background, bank, and config (swap without rebuild).</c>
-      <c>Clean vanilla JS; easy to add serverless or Docker later without refactor.</c>
-    </constraints>
+    <repo>
+      <!-- Your current static runner remains. We'll add backend files and minimal frontend hooks. -->
+    </repo>
+    <requirements>
+      - Do NOT break static GitHub Pages/Netlify: default stays "download JSON on finish".
+      - Add Dockerized Postgres16 + PostgREST v12 backend under packages/backend/.
+      - Provide per-survey schema (s_ap_v1) and core tables: responses, pair_counts, allocations.
+      - RPC functions: assign_pair (BIB least-used, stratified), submit_response (writes + increments), delete_by_uuid, export_ndjson.
+      - Front-end env knobs: MODE ("test"|"prod"), SURVEY_ID, ASSIGN_URL, SAVE_URL, STRATUM_FROM_FIELD.
+      - TEST mode: never POST; always download JSON. PROD mode: POST when URLs present; still download JSON as fallback.
+      - Compute experience band → stratum from background answers.
+      - Local-only override via public/env.local.js that autoloads only on localhost.
+      - Add smoke tests (curl) and brief docs.
+      - Add basic .gitignore updates (env, tmp, local overrides).
+    </requirements>
   </context>
 
-  <milestone id="M0" title="Scaffold repo & static page">
-    <files>
-      <add path="public/index.html"/>
-      <add path="public/env.example.js"/>
-      <add path="public/styles.css"/>
-      <add path="src/main.js"/>
-      <add path="README.md"/>
-    </files>
-    <steps>
-      <s>Create index.html with &lt;div id="surveyContainer"&gt;, load survey-core (CDN CSS+JS), then env.js and src/main.js (type=module).</s>
-      <s>env.example.js defines window.__SURVEY_CONFIG__ with BACKGROUND_URL, BANK_URL, CONFIG_URL, TITLE; leave SAVE_URL and QUOTA_ENDPOINT empty.</s>
-      <s>README quickstart: copy env.example.js → env.js, run a static server (e.g., npx serve public).</s>
-    </steps>
+  <milestone name="M1: Backend skeleton (Docker + SQL + RPC)" id="m1">
+    <changeset>
+      <add path="packages/backend/docker-compose.yml"><![CDATA[
+version: '3.8'
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: surveys
+    ports: ["5432:5432"]
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d
+  postgrest:
+    image: postgrest/postgrest:v12.2.0
+    depends_on: [db]
+    env_file: postgrest/.env
+    ports: ["8787:3000"]
+]]></add>
+      <add path="packages/backend/postgrest/.env.example"><![CDATA[
+PGRST_DB_URI=postgres://postgres:postgres@db:5432/surveys
+PGRST_DB_SCHEMAS=s_ap_v1
+PGRST_DB_ANON_ROLE=web_anon
+PGRST_SERVER_HOST=0.0.0.0
+PGRST_SERVER_PORT=3000
+PGRST_OPENAPI_SERVER_PROXY_URI=http://localhost:8787
+]]></add>
+      <add path="packages/backend/db/init/001-core.sql"><![CDATA[
+CREATE ROLE web_anon NOLOGIN;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE SCHEMA IF NOT EXISTS s_ap_v1;
+GRANT USAGE ON SCHEMA s_ap_v1 TO web_anon;
+
+CREATE TABLE IF NOT EXISTS s_ap_v1.pair_counts(
+  stratum    text NOT NULL DEFAULT 'global',
+  ap_a       text NOT NULL,
+  ap_b       text NOT NULL,
+  count      int  NOT NULL DEFAULT 0,
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (stratum, ap_a, ap_b)
+);
+
+CREATE TABLE IF NOT EXISTS s_ap_v1.allocations(
+  uuid       text PRIMARY KEY,
+  stratum    text NOT NULL DEFAULT 'global',
+  assignment jsonb NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS s_ap_v1.responses(
+  id             uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  uuid           text NOT NULL,
+  survey_id      text NOT NULL,
+  payload        jsonb NOT NULL,
+  panel_member   boolean,
+  bank_version   text,
+  config_version text,
+  created_at     timestamptz NOT NULL DEFAULT now()
+);
+
+GRANT USAGE ON SCHEMA s_ap_v1 TO web_anon;
+]]></add>
+      <add path="packages/backend/db/init/002-rpc.sql"><![CDATA[
+-- Assign least-used pair, stratified by p_stratum (experience band)
+CREATE OR REPLACE FUNCTION s_ap_v1.assign_pair(
+  p_uuid text,
+  p_stratum text,
+  p_ap_list text[]
+) RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER AS $$
+DECLARE r record; best record; s text;
+BEGIN
+  s := COALESCE(p_stratum,'global');
+
+  SELECT assignment INTO r FROM s_ap_v1.allocations
+   WHERE uuid=p_uuid AND stratum=s;
+  IF FOUND THEN RETURN r.assignment; END IF;
+
+  WITH pairs AS (
+    SELECT LEAST(a,b) ap_a, GREATEST(a,b) ap_b
+    FROM unnest(p_ap_list) a CROSS JOIN unnest(p_ap_list) b
+    WHERE a < b
+  ), counts AS (
+    SELECT p.ap_a, p.ap_b, COALESCE(c.count,0) ct
+    FROM pairs p
+    LEFT JOIN s_ap_v1.pair_counts c
+      ON c.stratum=s AND c.ap_a=p.ap_a AND c.ap_b=p.ap_b
+  )
+  SELECT ap_a, ap_b, ct INTO best
+  FROM counts
+  ORDER BY ct ASC, random() LIMIT 1;
+
+  INSERT INTO s_ap_v1.allocations(uuid, stratum, assignment)
+  VALUES (p_uuid, s,
+    jsonb_build_object('pair', jsonb_build_array(best.ap_a, best.ap_b), 'stratum', s))
+  ON CONFLICT (uuid) DO NOTHING;
+
+  RETURN jsonb_build_object('pair', jsonb_build_array(best.ap_a, best.ap_b), 'stratum', s);
+END $$;
+
+-- Save response and increment counts (increment-on-submit)
+CREATE OR REPLACE FUNCTION s_ap_v1.submit_response(p_payload jsonb)
+RETURNS boolean
+LANGUAGE plpgsql SECURITY DEFINER AS $$
+DECLARE a text; b text; s text;
+BEGIN
+  a := (p_payload->'pair'->>0);
+  b := (p_payload->'pair'->>1);
+  s := COALESCE(p_payload->>'stratum','global');
+
+  INSERT INTO s_ap_v1.pair_counts(stratum, ap_a, ap_b, count)
+  VALUES (s, LEAST(a,b), GREATEST(a,b), 1)
+  ON CONFLICT (stratum, ap_a, ap_b)
+  DO UPDATE SET count = s_ap_v1.pair_counts.count + 1, updated_at=now();
+
+  INSERT INTO s_ap_v1.responses(
+    uuid, survey_id, payload, panel_member, bank_version, config_version
+  ) VALUES (
+    p_payload->>'uuid',
+    p_payload->>'survey_id',
+    p_payload,
+    (p_payload->>'panel_member')::boolean,
+    p_payload->>'bank_version',
+    p_payload->>'config_version'
+  );
+
+  RETURN true;
+END $$;
+
+-- GDPR helpers
+CREATE OR REPLACE FUNCTION s_ap_v1.delete_by_uuid(p_uuid text)
+RETURNS integer LANGUAGE sql SECURITY DEFINER AS $$
+  WITH del AS (DELETE FROM s_ap_v1.responses WHERE uuid = p_uuid RETURNING 1)
+  SELECT COALESCE((SELECT count(*) FROM del), 0);
+$$;
+
+CREATE OR REPLACE FUNCTION s_ap_v1.export_ndjson()
+RETURNS SETOF text LANGUAGE sql SECURITY DEFINER AS $$
+  SELECT payload::text FROM s_ap_v1.responses ORDER BY created_at;
+$$;
+
+GRANT EXECUTE ON FUNCTION s_ap_v1.assign_pair(text,text,text[]) TO web_anon;
+GRANT EXECUTE ON FUNCTION s_ap_v1.submit_response(jsonb)          TO web_anon;
+GRANT EXECUTE ON FUNCTION s_ap_v1.delete_by_uuid(text)            TO web_anon;
+GRANT EXECUTE ON FUNCTION s_ap_v1.export_ndjson()                 TO web_anon;
+]]></add>
+      <add path="packages/backend/README.md"><![CDATA[
+# Backend (Postgres + PostgREST)
+
+## Dev quickstart
+1) cp postgrest/.env.example postgrest/.env
+2) docker compose up
+3) RPC endpoints:
+   - POST http://localhost:8787/rpc/assign_pair
+   - POST http://localhost:8787/rpc/submit_response
+   - POST http://localhost:8787/rpc/delete_by_uuid
+   - GET  http://localhost:8787/rpc/export_ndjson
+
+## Smoke tests
+curl -s http://localhost:8787/rpc/assign_pair -H 'Content-Type: application/json' \
+  -d '{"p_uuid":"U1","p_stratum":"novice","p_ap_list":["storm","wind","persistent","cornice"]}'
+
+curl -s http://localhost:8787/rpc/submit_response -H 'Content-Type: application/json' \
+  -d '{"uuid":"U1","survey_id":"ap_v1","pair":["persistent","wind"],"stratum":"novice","answers":{},"timings":{},"panel_member":true}'
+]]></add>
+    </changeset>
     <acceptance>
-      <a>Opening /public/index.html via a static server shows an empty Survey container, no console errors.</a>
+      - docker compose up starts DB+PostgREST
+      - /rpc/assign_pair returns a JSON object with "pair"
+      - /rpc/submit_response returns true and counts increment in DB
     </acceptance>
   </milestone>
 
-  <milestone id="M1" title="Schemas + linter + demo data (incl. Background)">
-    <files>
-      <add path="src/schema/bank.schema.json"/>
-      <add path="src/schema/config.schema.json"/>
-      <add path="scripts/lint-bank.mjs"/>
-      <add path="item-banks/background.json"/>
-      <add path="item-banks/bank.demo.json"/>
-      <add path="item-banks/config.demo.json"/>
-    </files>
-    <steps>
-      <s>bank.schema.json: schema_version; testlets[ap_type,label,items[] {id,construct ∈ {development,behaviour,assessment,mitigation},form?,stem,choices[{value,text}],key,explain,tags?}]; diagnostics[] same Q/A + format.</s>
-      <s>config.schema.json: routing (randomize_blocks, blocks_to_draw, randomize_within_block, include_diagnostics); quiz (feedback_mode, show_explanations); ui (one_question_per_page, auto_advance, progress_bar); background (enabled,url,splitOnePerPage).</s>
-      <s>scripts/lint-bank.mjs validates: schema, unique ids, each testlet has all four constructs, each item has a single key present in choices, non-empty explain.</s>
-      <s>background.json: add the four Background pages from our draft (activities, winters & days, training, services).</s>
-      <s>bank.demo.json: Storm + Persistent (4 constructs each) and 3 diagnostics from our draft survey.</s>
-      <s>config.demo.json: { "routing": { "randomize_blocks": true, "blocks_to_draw": 2, "randomize_within_block": true, "include_diagnostics": true }, "ui": { "one_question_per_page": true, "auto_advance": true, "progress_bar": true }, "quiz": { "feedback_mode": "full", "show_explanations": true }, "background": { "enabled": true, "url": "/item-banks/background.json", "splitOnePerPage": false } }.</s>
-    </steps>
+  <milestone name="M2: Front-end env knobs + local override + conditional wiring" id="m2">
+    <changeset>
+      <modify path="public/env.example.js"><![CDATA[
+window.__SURVEY_CONFIG__ = {
+  TITLE: "Avalanche Problems",
+  BANK_URL: "/item-banks/bank.demo.json",
+  CONFIG_URL: "/item-banks/config.demo.json",
+  BACKGROUND_URL: "/item-banks/background.json",
+
+  MODE: "test",                 // "test" | "prod"
+  SURVEY_ID: "ap_v1",
+
+  // Leave empty in Pages/Netlify to stay client-only (JSON download only)
+  ASSIGN_URL: "",
+  SAVE_URL:   "",
+
+  // field name where we store derived experience band
+  STRATUM_FROM_FIELD: "experience_band"
+};
+]]></modify>
+      <add path="public/env.local.js"><![CDATA[
+// Loads ONLY on localhost via index.html snippet.
+// Do NOT commit real secrets here; this is dev-only.
+window.__SURVEY_CONFIG__ = Object.assign({}, window.__SURVEY_CONFIG__, {
+  MODE: "prod",
+  ASSIGN_URL: "http://localhost:8787/rpc/assign_pair",
+  SAVE_URL:   "http://localhost:8787/rpc/submit_response",
+});
+]]></add>
+      <modify path="public/index.html"><![CDATA[
+<!-- ensure env.js is loaded first as you already do -->
+<script src="/public/env.js"></script>
+<script>
+  // Auto-load local overrides only in local dev
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    const s = document.createElement("script");
+    s.src = "/public/env.local.js";
+    document.head.appendChild(s);
+  }
+</script>
+]]></modify>
+      <modify path="src/main.js"><![CDATA[
+const cfg = window.__SURVEY_CONFIG__ || {};
+
+function backendEnabled() {
+  return cfg.MODE === "prod" && !!cfg.ASSIGN_URL && !!cfg.SAVE_URL;
+}
+
+async function rpc(url, body) {
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+function downloadJSON(filename, dataObj) {
+  const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: "application/json" });
+  const a = Object.assign(document.createElement("a"), {
+    href: URL.createObjectURL(blob),
+    download: filename
+  });
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+function deriveExperienceBand(winters, days) {
+  const w = String(winters || ""); const d = String(days || "");
+  if (["first","2"].includes(w) || ["1-2","3-5"].includes(d)) return "novice";
+  if (["3-5","6-10"].includes(w) || ["6-10","11-20"].includes(d)) return "intermediate";
+  return "advanced";
+}
+
+async function getAssignedPair(bank, survey) {
+  const apList = (bank.testlets || []).map(t => t.ap_type).filter(Boolean);
+  const winters = survey.getValue("bg_winters");
+  const days    = survey.getValue("bg_days_per_winter");
+  const stratum = deriveExperienceBand(winters, days) || "global";
+  survey.setValue(cfg.STRATUM_FROM_FIELD, stratum);
+
+  if (backendEnabled()) {
+    const uuid = new URLSearchParams(location.search).get("uuid") || crypto.randomUUID();
+    try {
+      const out = await rpc(cfg.ASSIGN_URL, { p_uuid: uuid, p_stratum: stratum, p_ap_list: apList });
+      survey.setValue("__assigned_pair", out.pair);
+      survey.setValue("__assigned_stratum", out.stratum || stratum);
+      return out;
+    } catch (e) {
+      console.warn("assign_pair failed, falling back to local:", e);
+    }
+  }
+  // local fallback
+  const pairs = [];
+  for (let i=0;i<apList.length;i++) for (let j=i+1;j<apList.length;j++) pairs.push([apList[i], apList[j]]);
+  const pick = pairs[Math.floor(Math.random() * pairs.length)];
+  survey.setValue("__assigned_pair", pick);
+  survey.setValue("__assigned_stratum", stratum);
+  return { pair: pick, stratum };
+}
+
+async function onCompleteSubmit(survey, assigned) {
+  const uuid = new URLSearchParams(location.search).get("uuid") || crypto.randomUUID();
+  const payload = {
+    uuid,
+    survey_id: cfg.SURVEY_ID || "ap_v1",
+    pair: assigned?.pair || survey.getValue("__assigned_pair"),
+    stratum: assigned?.stratum || survey.getValue("__assigned_stratum") || "global",
+    panel_member: !!survey.getValue("__panel_member"),
+    bank_version: survey.getValue("__bank_version"),
+    config_version: survey.getValue("__config_version"),
+    answers: survey.data,
+    timings: window.__timings || {}
+  };
+
+  if (backendEnabled()) {
+    try { await rpc(cfg.SAVE_URL, payload); } catch (e) { console.warn("submit_response failed:", e); }
+  }
+  downloadJSON(`survey_${payload.uuid}_${Date.now()}.json`, payload);
+}
+]]></modify>
+    </changeset>
     <acceptance>
-      <a>node scripts/lint-bank.mjs item-banks/bank.demo.json exits 0.</a>
+      - On GitHub Pages/Netlify (no env.local.js), survey only downloads JSON; no network calls.
+      - On localhost, env.local.js flips to PROD + RPC endpoints; /assign and /submit are called.
+      - If backend errors, the runner gracefully falls back to local behavior.
     </acceptance>
   </milestone>
 
-  <milestone id="M2" title="Builder + default logic (uniform random)">
-    <files>
-      <add path="src/builder.js"/>
-      <add path="src/logic.default.js"/>
-    </files>
-    <steps>
-      <s>builder: load background JSON (prepend pages); select 2 testlets uniformly from bank.testlets; within each, pick one item per construct (A/B random if multiple); if one_question_per_page: emit one page per question; else a page per testlet; append diagnostics as final pages.</s>
-      <s>logic.default: expose hooks (onInit, selectBlocks [default uniform], selectItems, beforeRender, onGrade, onComplete) but keep defaults active.</s>
-    </steps>
-    <acceptance>
-      <a>With bank.demo.json and config.demo.json, the survey renders: Background pages → 8 AP question pages (2×4) → 3 diagnostic pages.</a>
-    </acceptance>
-  </milestone>
+  <milestone name="M3: Study helper + smoke tests + docs" id="m3">
+    <changeset>
+      <add path="studies/ap_v1/runner.env.example.js"><![CDATA[
+window.__SURVEY_CONFIG__ = {
+  TITLE: "Avalanche Problems (AP v1)",
+  BANK_URL: "/item-banks/bank.demo.json",
+  CONFIG_URL: "/item-banks/config.demo.json",
+  BACKGROUND_URL: "/item-banks/background.json",
+  MODE: "prod",
+  SURVEY_ID: "ap_v1",
+  ASSIGN_URL: "http://localhost:8787/rpc/assign_pair",
+  SAVE_URL:   "http://localhost:8787/rpc/submit_response",
+  STRATUM_FROM_FIELD: "experience_band"
+};
+]]></add>
+      <add path="studies/ap_v1/Makefile"><![CDATA[
+up:
+\tdocker compose -f ../../packages/backend/docker-compose.yml up -d
+down:
+\tdocker compose -f ../../packages/backend/docker-compose.yml down
+smoke:
+\tcurl -s http://localhost:8787/rpc/assign_pair -H 'Content-Type: application/json' \
+\t  -d '{"p_uuid":"U1","p_stratum":"novice","p_ap_list":["storm","wind","persistent","cornice"]}' && echo
+\tcurl -s http://localhost:8787/rpc/submit_response -H 'Content-Type: application/json' \
+\t  -d '{"uuid":"U1","survey_id":"ap_v1","pair":["persistent","wind"],"stratum":"novice","answers":{},"timings":{},"panel_member":true}' && echo
+]]></add>
+      <add path="README.feature-branch.md"><![CDATA[
+# Backend Experiment (feature/backend-experiment)
 
-  <milestone id="M3" title="Timing instrumentation (no backend)">
-    <files>
-      <add path="src/instrumentation.js"/>
-    </files>
-    <steps>
-      <s>attachTiming(survey): onCurrentPageChanged capture per-page RT for single-question pages as rt_{questionName}_final (ms); track idle_ms via document.visibilitychange; ensure clearInvisibleValues='none'.</s>
-    </steps>
-    <acceptance>
-      <a>Completing the demo survey yields rt_* fields for every question page and idle_ms in survey.data.</a>
-    </acceptance>
-  </milestone>
+This branch adds a Dockerized Postgres + PostgREST backend and wires the runner to use it **only** in local dev. GitHub Pages/Netlify builds remain static (JSON download only).
 
-  <milestone id="M4" title="Grading + feedback + local download">
-    <files>
-      <add path="src/feedback.js"/>
-    </files>
-    <steps>
-      <s>grade(model): per-item correctness using correctAnswer; renderFeedback(rows, mode): 'full' table (your vs correct + explanation) or 'summary'.</s>
-      <s>In onComplete: set completedHtml=feedback; then trigger a JSON file download containing { ts, uuid, surveyVersion, bankVersion, data } via a Blob (no backend). UUID from ?uuid= or random.</s>
-    </steps>
-    <acceptance>
-      <a>End screen shows score + table; a 'survey_&lt;uuid&gt;_&lt;ts&gt;.json' file is downloaded automatically.</a>
-    </acceptance>
-  </milestone>
+## Local dev
+1) `cd packages/backend && cp postgrest/.env.example postgrest/.env && docker compose up`
+2) Serve `/public` (e.g., `npx http-server public -p 5173`)
+3) Open `http://localhost:5173/?uuid=dev-1` → backend is auto-enabled via `env.local.js`
+4) Run `make -C studies/ap_v1 smoke` to test RPC endpoints.
 
-  <milestone id="M5" title="Main glue + progress polish">
-    <steps>
-      <s>main.js: load env → background/bank/config; optional logic module if present; build pages; create Survey.Model({ clearInvisibleValues:'none', showQuestionNumbers:'off' }); set goNextPageAutomatic + hide nav if auto_advance; add top progress bar if configured; set hidden uuid.</s>
-      <s>Verify one-question-per-page flow with auto-advance and that Back is off by default (or document the policy).</s>
-    </steps>
-    <acceptance>
-      <a>Smoke test with /?uuid=PILOT1: Background → AP pages (auto-advance) → Diagnostics → feedback; download fires; uuid, background answers, AP answers, diagnostics, rt_*, idle_ms appear in the JSON.</a>
-    </acceptance>
-  </milestone>
+## Static deploy safety
+- `public/env.js` leaves ASSIGN_URL/SAVE_URL empty and `MODE="test"`.
+- `public/env.local.js` loads only on localhost to flip backend on.
 
-  <milestone id="M6" title="Docs + dummy AP expansion (structure only)">
-    <files>
-      <add path="item-banks/bank.full.dummy.json"/>
-    </files>
-    <steps>
-      <s>README: hosting (static), how to swap banks/config, how to pilot (download JSON), how to later enable SAVE_URL or BIB API (future).</s>
-      <s>Create bank.full.dummy.json with all APs (storm, wind, persistent, deep_persistent, cornice, loose_dry, loose_wet, wet_slab). For each AP: 4 constructs, A/B variants, placeholder stems/choices/explain, valid keys. Include 3–6 diagnostics with placeholder content. Lint must pass.</s>
-    </steps>
+## Notes
+- Keep PII out of payloads; store only UUID + answers.
+- For production, host backend in EU and set CORS allowlist to your survey origin.
+]]></add>
+      <modify path=".gitignore"><![CDATA[
+# backend env and local overrides
+packages/backend/postgrest/.env
+public/env.local.js
+*.sqlite
+*.db
+.DS_Store
+node_modules/
+]]></modify>
+    </changeset>
     <acceptance>
-      <a>lint-bank passes on full dummy bank; app runs uniformly with any two APs.</a>
+      - Makefile smoke tests succeed
+      - Branch README clearly explains how to run locally and why static deploys are unaffected
     </acceptance>
   </milestone>
-</project>
+</task>
