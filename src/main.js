@@ -10,6 +10,36 @@ import { grade, renderFeedback, downloadSurveyData } from './feedback.js';
 // Get configuration
 const cfg = window.__SURVEY_CONFIG__ || {};
 
+// Force Avalanche Canada styling
+function forceAvalancheCanadaStyling() {
+    // Apply styles directly to elements
+    const titleElements = document.querySelectorAll('.sv-title, .sv-header__text, .sv-page__title');
+    titleElements.forEach(el => {
+        el.style.color = '#1e3a5f';
+        el.style.fontFamily = 'DM Sans, sans-serif';
+        el.style.fontWeight = '600';
+        el.style.borderBottom = '2px solid #1e3a5f';
+    });
+    
+    const questionTitles = document.querySelectorAll('.sv-question__title');
+    questionTitles.forEach(el => {
+        el.style.color = '#1e3a5f';
+        el.style.fontFamily = 'DM Sans, sans-serif';
+        el.style.fontWeight = '600';
+    });
+    
+    const progressBars = document.querySelectorAll('.sv-progress__bar');
+    progressBars.forEach(el => {
+        el.style.backgroundColor = '#1e3a5f';
+    });
+    
+    // Apply DM Sans to all survey elements
+    const surveyElements = document.querySelectorAll('#surveyContainer, #surveyContainer *');
+    surveyElements.forEach(el => {
+        el.style.fontFamily = 'DM Sans, sans-serif';
+    });
+}
+
 function backendEnabled() {
   return cfg.MODE === "prod" && !!cfg.ASSIGN_URL && !!cfg.SAVE_URL;
 }
@@ -135,6 +165,9 @@ async function initSurvey() {
         // Create SurveyJS model
         const survey = new Survey.Model(surveyDefinition);
         
+        // Apply minimal Avalanche Canada theming - fonts and colors only
+        // Don't override the entire CSS structure to avoid breaking functionality
+        
         // Configure survey behavior
         survey.clearInvisibleValues = "none";
         survey.showQuestionNumbers = "off";
@@ -173,8 +206,13 @@ async function initSurvey() {
         // Variable to store assignment for completion
         let assignedPair = null;
         
+        // Minimal styling approach - let SurveyJS handle structure, we'll just override colors/fonts
+        
         // Set up page change handler for pair assignment
         survey.onCurrentPageChanged.add(async function(sender, options) {
+            // Force Avalanche Canada styling on page change
+            setTimeout(forceAvalancheCanadaStyling, 50);
+            
             // Check if we just completed the background section and need to assign pairs
             if (!assignedPair && sender.getValue("experience_years") && sender.getValue("highest_training")) {
                 console.log('🎯 Background questions completed, assigning pair...');
@@ -292,6 +330,10 @@ async function initSurvey() {
         // Use jQuery SurveyJS rendering
         if (window.$ && window.$.fn.Survey) {
             $(container).Survey({ model: survey });
+            
+            // Force Avalanche Canada styling after render
+            setTimeout(forceAvalancheCanadaStyling, 100);
+            setTimeout(forceAvalancheCanadaStyling, 500);
             console.log('✅ Survey rendered using jQuery SurveyJS');
         } else {
             console.error('❌ jQuery or SurveyJS jQuery not available');

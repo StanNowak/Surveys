@@ -3,15 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avalanche Survey Prototype</title>
+    <title>Avalanche Canada - Avalanche Problems Research</title>
+    
+    <!-- Google Fonts - DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
     
     <!-- SurveyJS UI for vanilla JS -->
     <link href="https://unpkg.com/survey-jquery@1.9.131/defaultV2.min.css" type="text/css" rel="stylesheet" />
     
     <!-- Custom styles -->
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css?v=7">
 </head>
 <body>
+    <div class="avalanche-canada-header">
+        <div class="avalanche-canada-logo">🏔️ Avalanche Canada</div>
+        <div>
+            <h1>Avalanche Problems Research</h1>
+            <div class="subtitle">Helping improve avalanche safety through research</div>
+        </div>
+    </div>
     <div id="surveyContainer"></div>
     
     <!-- jQuery (required for survey-jquery) -->
@@ -33,5 +45,57 @@
     
     <!-- Main application module -->
     <script type="module" src="../src/main.js"></script>
+    
+    <!-- Force Avalanche Canada styling after SurveyJS loads -->
+    <script>
+      // Apply Avalanche Canada styling after DOM is ready
+      function applyAvalancheCanadaStyling() {
+        const style = document.createElement('style');
+        style.textContent = `
+          /* FORCE Avalanche Canada styling with maximum specificity */
+          .sv-root-modern .sv-title,
+          .sv-root-modern .sv-header__text,
+          .sv-title,
+          .sv-header__text,
+          #surveyContainer .sv-title,
+          #surveyContainer .sv-header__text,
+          .sv-root-modern .sv-page__title,
+          .sv-page__title {
+            color: #1e3a5f !important;
+            font-family: 'DM Sans', sans-serif !important;
+            font-weight: 600 !important;
+            border-bottom: 2px solid #1e3a5f !important;
+          }
+          
+          .sv-root-modern .sv-question__title,
+          .sv-question__title,
+          #surveyContainer .sv-question__title {
+            color: #1e3a5f !important;
+            font-family: 'DM Sans', sans-serif !important;
+            font-weight: 600 !important;
+          }
+          
+          .sv-root-modern .sv-progress__bar,
+          .sv-progress__bar,
+          #surveyContainer .sv-progress__bar {
+            background-color: #1e3a5f !important;
+          }
+          
+          .sv-root-modern,
+          .sv-root-modern *,
+          #surveyContainer,
+          #surveyContainer * {
+            font-family: 'DM Sans', sans-serif !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+      
+      // Apply styling immediately and after DOM changes
+      document.addEventListener('DOMContentLoaded', applyAvalancheCanadaStyling);
+      setTimeout(applyAvalancheCanadaStyling, 100);
+      setTimeout(applyAvalancheCanadaStyling, 500);
+      setTimeout(applyAvalancheCanadaStyling, 1000);
+    </script>
 </body>
 </html>

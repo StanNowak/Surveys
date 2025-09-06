@@ -1,18 +1,64 @@
-/* Basic styling for the survey application */
+/* Avalanche Canada Survey Application Styling */
+
+:root {
+    --avalanche-canada-navy: #1e3a5f;
+    --avalanche-canada-dark-navy: #152d47;
+    --avalanche-canada-light-blue: #e8f4f8;
+    --avalanche-canada-blue: #4a90a4;
+    --avalanche-canada-gray: #424242;
+    --avalanche-canada-light-gray: #f5f5f5;
+    --avalanche-canada-white: #ffffff;
+}
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: var(--avalanche-canada-light-gray);
     line-height: 1.6;
+}
+
+/* Avalanche Canada Header */
+.avalanche-canada-header {
+    background: var(--avalanche-canada-navy);
+    color: var(--avalanche-canada-white);
+    padding: 20px;
+    margin: 0 auto 20px auto;
+    border-radius: 8px 8px 0 0;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 800px;
+}
+
+.avalanche-canada-logo {
+    color: var(--avalanche-canada-white);
+    font-size: 1.5em;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.avalanche-canada-header h1 {
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: 500;
+    flex: 1;
+}
+
+.avalanche-canada-header .subtitle {
+    margin: 4px 0 0 0;
+    font-size: 0.9em;
+    opacity: 0.8;
+    font-weight: 400;
 }
 
 #surveyContainer {
     max-width: 800px;
     margin: 0 auto;
     background-color: white;
-    border-radius: 8px;
+    border-radius: 0 0 8px 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     min-height: 400px;
@@ -20,7 +66,215 @@ body {
 
 /* Ensure survey content is properly styled */
 .sv-root-modern {
-    font-family: inherit;
+    font-family: 'DM Sans', inherit !important;
+}
+
+/* Avalanche Canada SurveyJS Theme Customization - FORCE OVERRIDE */
+
+/* Page titles - Multiple selectors for maximum coverage */
+.sv-root-modern .sv-page__title,
+.sv-page__title,
+#surveyContainer .sv-page__title,
+.sv_main .sv_container .sv_page .sv_page_title,
+.sv_main .sv_page .sv_page_title,
+.sv_page_title,
+h4.sv_page_title,
+.sv-title,
+.sv-header__text {
+    color: var(--avalanche-canada-navy) !important;
+    border-bottom: 2px solid var(--avalanche-canada-navy) !important;
+    padding-bottom: 10px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+/* Question titles */
+.sv-root-modern .sv-question__title,
+.sv-question__title,
+#surveyContainer .sv-question__title {
+    color: var(--avalanche-canada-navy) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+/* Progress bar */
+.sv-root-modern .sv-progress__bar,
+.sv-progress__bar,
+#surveyContainer .sv-progress__bar {
+    background-color: var(--avalanche-canada-navy) !important;
+}
+
+/* Buttons - Comprehensive selectors */
+.sv-root-modern .sv-btn,
+.sv-btn,
+#surveyContainer .sv-btn,
+.sv-action-button,
+.sv_main .sv_nav .sv_prev_btn,
+.sv_main .sv_nav .sv_next_btn,
+.sv_main .sv_nav .sv_complete_btn,
+.sv_prev_btn,
+.sv_next_btn,
+.sv_complete_btn,
+input[type="button"],
+button {
+    background-color: var(--avalanche-canada-navy) !important;
+    border-color: var(--avalanche-canada-navy) !important;
+    color: white !important;
+    border: 1px solid var(--avalanche-canada-navy) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 500 !important;
+}
+
+.sv-root-modern .sv-btn:hover,
+.sv-btn:hover,
+#surveyContainer .sv-btn:hover,
+.sv-action-button:hover,
+.sv_main .sv_nav .sv_prev_btn:hover,
+.sv_main .sv_nav .sv_next_btn:hover,
+.sv_main .sv_nav .sv_complete_btn:hover,
+.sv_prev_btn:hover,
+.sv_next_btn:hover,
+.sv_complete_btn:hover,
+input[type="button"]:hover,
+button:hover {
+    background-color: var(--avalanche-canada-dark-navy) !important;
+    border-color: var(--avalanche-canada-dark-navy) !important;
+}
+
+/* Radio buttons */
+.sv-root-modern .sv-radio input[type="radio"]:checked + .sv-radio__decorator,
+.sv-radio input[type="radio"]:checked + .sv-radio__decorator,
+#surveyContainer .sv-radio input[type="radio"]:checked + .sv-radio__decorator {
+    background-color: var(--avalanche-canada-navy) !important;
+    border-color: var(--avalanche-canada-navy) !important;
+}
+
+/* Checkboxes */
+.sv-root-modern .sv-checkbox input[type="checkbox"]:checked + .sv-checkbox__decorator,
+.sv-checkbox input[type="checkbox"]:checked + .sv-checkbox__decorator,
+#surveyContainer .sv-checkbox input[type="checkbox"]:checked + .sv-checkbox__decorator {
+    background-color: var(--avalanche-canada-navy) !important;
+    border-color: var(--avalanche-canada-navy) !important;
+}
+
+/* Dropdown selections */
+.sv-root-modern .sv-dropdown select,
+.sv-dropdown select,
+#surveyContainer .sv-dropdown select {
+    border-color: var(--avalanche-canada-navy) !important;
+    font-family: 'DM Sans', sans-serif !important;
+}
+
+.sv-root-modern .sv-dropdown select:focus,
+.sv-dropdown select:focus,
+#surveyContainer .sv-dropdown select:focus {
+    border-color: var(--avalanche-canada-navy) !important;
+    box-shadow: 0 0 0 2px var(--avalanche-canada-light-blue) !important;
+}
+
+/* Navigation buttons */
+.sv-root-modern .sv-nav,
+.sv-nav,
+#surveyContainer .sv-nav {
+    margin-top: 20px !important;
+}
+
+.sv-root-modern .sv-nav .sv-btn,
+.sv-nav .sv-btn,
+#surveyContainer .sv-nav .sv-btn {
+    background-color: var(--avalanche-canada-navy) !important;
+    border-color: var(--avalanche-canada-navy) !important;
+    font-family: 'DM Sans', sans-serif !important;
+}
+
+.sv-root-modern .sv-nav .sv-btn:hover,
+.sv-nav .sv-btn:hover,
+#surveyContainer .sv-nav .sv-btn:hover {
+    background-color: var(--avalanche-canada-dark-navy) !important;
+}
+
+/* Add DM Sans to all survey text */
+.sv-root-modern,
+.sv-root-modern *,
+#surveyContainer,
+#surveyContainer * {
+    font-family: 'DM Sans', sans-serif !important;
+}
+
+/* CONSERVATIVE Avalanche Canada Theming - Colors and Fonts Only */
+/* Target specific SurveyJS elements without breaking functionality */
+
+/* Survey and page titles - Cast a wider net with more selectors */
+.sv-title,
+.sv-header__text,
+.sv-page__title,
+h4.sv-page__title,
+.sv-root-modern .sv-title,
+.sv-root-modern .sv-header__text,
+.sv-root-modern .sv-page__title,
+#surveyContainer .sv-title,
+#surveyContainer .sv-header__text,
+#surveyContainer .sv-page__title,
+#surveyContainer h4 {
+    color: var(--avalanche-canada-navy) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+/* Question titles - More comprehensive selectors */
+.sv-question__title,
+.sv-root-modern .sv-question__title,
+#surveyContainer .sv-question__title,
+.sv-question .sv-question__title,
+.sv-question__content .sv-question__title {
+    color: var(--avalanche-canada-navy) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+/* Progress bar and progress elements - Multiple selectors */
+.sv-progress__bar,
+.sv-root-modern .sv-progress__bar,
+#surveyContainer .sv-progress__bar,
+.sv-progress .sv-progress__bar,
+.sd-progress-buttons__list,
+.sd-progress-buttons__list-element,
+.sv-progress-toc,
+.sv-progress-toc__item {
+    background-color: var(--avalanche-canada-navy) !important;
+}
+
+/* Progress buttons - individual elements */
+.sd-progress-buttons__list .sd-progress-buttons__list-element--current,
+.sd-progress-buttons__list .sd-progress-buttons__list-element,
+.sv-progress-toc__item--current,
+.sv-progress-toc__item {
+    background-color: var(--avalanche-canada-navy) !important;
+    border-color: var(--avalanche-canada-navy) !important;
+}
+
+/* Progress container and lines */
+.sv-progress,
+.sv-root-modern .sv-progress,
+#surveyContainer .sv-progress {
+    border-top: 2px solid var(--avalanche-canada-navy) !important;
+}
+
+/* Catch-all for any headings in the survey */
+#surveyContainer h1,
+#surveyContainer h2,
+#surveyContainer h3,
+#surveyContainer h4,
+#surveyContainer h5 {
+    color: var(--avalanche-canada-navy) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+/* Also target any elements with "title" in their class name */
+#surveyContainer [class*="title"] {
+    color: var(--avalanche-canada-navy) !important;
+    font-family: 'DM Sans', sans-serif !important;
 }
 
 /* Manual survey rendering styles */
