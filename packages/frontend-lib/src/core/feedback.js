@@ -9,7 +9,6 @@
  * @returns {Object} Grading results with per-item correctness
  */
 export function grade(surveyModel, itemBank) {
-    
     const results = {
         totalItems: 0,
         correctItems: 0,
@@ -33,10 +32,29 @@ export function grade(surveyModel, itemBank) {
         allItems.push(...itemBank.diagnostics);
     }
     
-    
     // Grade each item
     allItems.forEach(item => {
         const userAnswer = surveyModel.data[item.id];
+        
+        // Skip grading for matrix-type questions (diagnostics with Likert scales)
+        // These don't have correct answers, just explanations
+        if (item.type === "matrix") {
+            results.items.push({
+                id: item.id,
+                construct: item.construct,
+                stem: item.stem,
+                userAnswer: userAnswer,
+                correctAnswer: null,
+                isCorrect: null, // No grading for matrix questions
+                explanation: item.explain || 'No explanation provided',
+                type: "matrix",
+                columns: item.columns || [],
+                rows: item.rows || []
+            });
+            // Don't count matrix questions in total/correct for scoring
+            return;
+        }
+        
         const correctAnswer = item.key;
         
         if (userAnswer !== undefined && correctAnswer !== undefined) {
@@ -90,6 +108,34 @@ export function renderFeedback(gradingResults, mode = 'full') {
     // Full feedback mode with detailed table
     let tableRows = '';
     gradingResults.items.forEach((item, index) => {
+        // Handle matrix-type questions (diagnostics) differently
+        if (item.type === "matrix") {
+            // Format matrix response (object with row:column mappings)
+            let userAnswerText = "See responses";
+            if (item.userAnswer && typeof item.userAnswer === 'object') {
+                const answerParts = Object.entries(item.userAnswer).map(([row, col]) => {
+                    const rowLabel = item.rows?.find(r => r.value === row)?.text || row;
+                    const colLabel = item.columns?.find(c => c.value === col)?.text || col;
+                    return `${rowLabel}: ${colLabel}`;
+                }).join("; ");
+                userAnswerText = answerParts || "No response";
+            }
+            
+            tableRows += `
+                <tr class="feedback-row diagnostic">
+                    <td class="question-num">${index + 1}</td>
+                    <td class="construct">${item.construct || 'Diagnostic'}</td>
+                    <td class="question-stem">${item.stem}</td>
+                    <td class="user-answer">${userAnswerText}</td>
+                    <td class="correct-answer">—</td>
+                    <td class="status">—</td>
+                    <td class="explanation">${item.explanation}</td>
+                </tr>
+            `;
+            return;
+        }
+        
+        // Regular multiple choice questions
         const statusIcon = item.isCorrect ? '✅' : '❌';
         const statusClass = item.isCorrect ? 'correct' : 'incorrect';
         

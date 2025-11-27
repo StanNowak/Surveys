@@ -7,19 +7,22 @@ const isGitHubPages = window.location.hostname === 'stannowak.github.io';
 const baseUrl = isLocalhost ? '' : (isGitHubPages ? '/Surveys' : window.location.origin);
 
 window.__SURVEY_CONFIG__ = {
-    // Survey metadata
-    TITLE: "Avalanche Survey Prototype",
-    
-    // Data source URLs (works for both local and deployed)
-    BACKGROUND_URL: `${baseUrl}/item-banks/background.json`,
-    BANK_URL: `${baseUrl}/item-banks/bank.full.dummy.json`,
-    CONFIG_URL: `${baseUrl}/item-banks/config.demo.json`,
-    
-    // Backend endpoints (leave empty for local-only mode)
-    SAVE_URL: "",
-    QUOTA_ENDPOINT: "",
-    
-    // Deployment info
-    IS_DEPLOYED: !isLocalhost,
-    BASE_URL: baseUrl
+    TITLE: "Avalanche Canada - Avalanche Problems Research",
+    // Backend API endpoints (preferred - served from study content)
+    BANK_URL: `${baseUrl}/api/studies/avalanche_2025/content/item_bank`,
+    CONFIG_URL: `${baseUrl}/api/studies/avalanche_2025/config`,
+    BACKGROUND_URL: `${baseUrl}/api/studies/avalanche_2025/content/background`,
+    AP_INTRO_URL: `${baseUrl}/api/studies/avalanche_2025/content/ap_intro`,
+    DIAGNOSTICS_URL: `${baseUrl}/api/studies/avalanche_2025/content/diagnostics`,
+    STUDY_DEFINITION_URL: `${baseUrl}/packages/frontend-lib/src/studies/avalanche_2025/study-definition.json`,
+
+    MODE: "test",                 // "test" | "prod"
+    SURVEY_ID: "avalanche_canada_ap_v1",
+
+    // Leave empty in Pages/Netlify to stay client-only (JSON download only)
+    ASSIGN_URL: "",
+    SAVE_URL:   "",
+
+    // field name where we store derived experience band
+    STRATUM_FROM_FIELD: "experience_band"
 };

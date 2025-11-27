@@ -1,11 +1,98 @@
 // Main application entry point
 // ES module for the survey application
 
-// Import builder, logic, instrumentation, and feedback modules
-import './builder.js';
-import './instrumentation.js';
+// Import core modules from new package structure
+import '../packages/frontend-lib/src/core/builder.js';
+import '../packages/frontend-lib/src/core/instrumentation.js';
+import { grade, renderFeedback, downloadSurveyData } from '../packages/frontend-lib/src/core/feedback.js';
+import { submitResponse } from '../packages/frontend-lib/src/core/api.js';
+import { deriveExperienceBand, getAssignedPair } from '../packages/frontend-lib/src/studies/avalanche_2025/logic.js';
 import defaultLogic from './logic.default.js';
-import { grade, renderFeedback, downloadSurveyData } from './feedback.js';
+
+// Get configuration
+const cfg = window.__SURVEY_CONFIG__ || {};
+
+// Removed forceAvalancheCanadaStyling - using SurveyJS defaults
+
+function backendEnabled() {
+  return cfg.MODE === "prod" && !!cfg.ASSIGN_URL && !!cfg.SAVE_URL;
+}
+
+// Log configuration on startup
+if (backendEnabled()) {
+} else {
+}
+
+function downloadJSON(filename, dataObj) {
+  const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: "application/json" });
+  const a = Object.assign(document.createElement("a"), {
+    href: URL.createObjectURL(blob),
+    download: filename
+  });
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+async function onCompleteSubmit(survey, assigned) {
+  const uuid = new URLSearchParams(location.search).get("uuid") || crypto.randomUUID();
+  
+  // Extract timing data from survey (response times and idle times)
+  const timingData = window.getTimingData ? window.getTimingData(survey) : {};
+  
+  // Separate answers from timing data
+  const answers = {};
+  const timings = {};
+  
+  Object.keys(survey.data || {}).forEach(key => {
+    if (key.startsWith('rt_') || key.startsWith('idle_') || key === 'idle_ms') {
+      // Timing data goes to timings
+      timings[key] = survey.data[key];
+    } else if (!key.startsWith('__') && key !== 'response_uuid' && key !== 'survey_start_time') {
+      // All actual survey answers (exclude internal __ fields and metadata)
+      answers[key] = survey.data[key];
+    }
+    // Internal fields (__*) are excluded from both
+  });
+  
+  // Merge any additional timing data from getTimingData
+  Object.assign(timings, timingData);
+  
+  const payload = {
+    uuid,
+    survey_id: cfg.SURVEY_ID || "ap_v1",
+    pair: assigned?.pair || survey.getValue("__assigned_pair"),
+    stratum: assigned?.stratum || survey.getValue("__assigned_stratum") || "global",
+    panel_member: !!survey.getValue("__panel_member"),
+    bank_version: survey.getValue("__bank_version"),
+    config_version: survey.getValue("__config_version"),
+    answers: answers,
+    timings: timings
+  };
+
+  console.log("💾 SURVEY SUBMISSION:");
+  console.log("  UUID:", payload.uuid);
+  console.log("  Survey ID:", payload.survey_id);
+  console.log("  Final pair:", payload.pair);
+  console.log("  Final stratum:", payload.stratum);
+  console.log("  Panel member:", payload.panel_member);
+  console.log("  Answers count:", Object.keys(payload.answers || {}).length);
+  console.log("  Timings count:", Object.keys(payload.timings || {}).length);
+  console.log("  Timing fields:", Object.keys(payload.timings || {}).filter(k => k.startsWith('rt_')).slice(0, 5).join(', '), "...");
+
+  if (backendEnabled()) {
+    console.log("  🌐 Submitting to BACKEND:", cfg.SAVE_URL);
+    try { 
+      const result = await submitResponse(cfg.SAVE_URL, payload);
+      console.log("  ✅ Backend submission successful!", result);
+    } catch (e) {
+      console.error("  ❌ Backend submission failed:", e);
+      console.error("  Error details:", e.message, e.stack);
+    }
+  } else {
+    console.log("  🏠 Backend disabled, local download only");
+  }
+  
+  downloadJSON(`survey_${payload.uuid}_${Date.now()}.json`, payload);
+}
 
 
 /**
@@ -33,41 +120,61 @@ async function initSurvey() {
             throw new Error('Survey configuration not found. Please copy env.example.js to env.js');
         }
         
-        console.log('🚀 Initializing Avalanche Survey Application');
-        console.log('Survey configuration:', window.__SURVEY_CONFIG__);
         
-        // Create survey builder with default logic
-        const builder = new window.SurveyBuilder(defaultLogic);
+        // Create survey builder - use new Study Engine if definition available
+        let builder;
+        let useStudyEngine = false;
+        if (window.__SURVEY_CONFIG__?.STUDY_DEFINITION_URL) {
+            try {
+                const { SurveyBuilderV2 } = await import('../packages/frontend-lib/src/core/builder-v2.js');
+                const { Avalanche2025StudyLogic } = await import('../packages/frontend-lib/src/studies/avalanche_2025/logic.js');
+                builder = new SurveyBuilderV2(new Avalanche2025StudyLogic());
+                useStudyEngine = true;
+            } catch (error) {
+                console.error('❌ Failed to load Study Engine, falling back to legacy:', error);
+                console.error('Error details:', error.message, error.stack);
+                builder = new window.SurveyBuilder(defaultLogic);
+            }
+        } else {
+            builder = new window.SurveyBuilder(defaultLogic);
+        }
         
         // Load external data
         await builder.loadData(window.__SURVEY_CONFIG__);
         
-        // Build survey definition
+        // Build survey definition (assignment happens after background questions)
         const surveyDefinition = builder.buildSurvey();
         
         // Create SurveyJS model
         const survey = new Survey.Model(surveyDefinition);
         
+        // Apply minimal Avalanche Canada theming - fonts and colors only
+        // Don't override the entire CSS structure to avoid breaking functionality
+        
         // Configure survey behavior
         survey.clearInvisibleValues = "none";
         survey.showQuestionNumbers = "off";
         
+        // Enable HTML rendering globally
+        survey.enableHTML = true;
+        
         // Configure UI settings based on config
         if (builder.config?.ui?.auto_advance) {
             survey.goNextPageAutomatic = true;
-            survey.showNavigationButtons = false;
-            console.log('✅ Auto-advance enabled, navigation hidden');
+            survey.showNavigationButtons = true; // Always show buttons as fallback
+            survey.showPrevButton = true;
+        } else {
+            survey.showNavigationButtons = true;
+            survey.showPrevButton = true;
         }
         
         // Configure progress bar
         if (builder.config?.ui?.progress_bar) {
             survey.showProgressBar = 'top';
-            console.log('✅ Progress bar enabled');
         }
         
         // Ensure one question per page if configured
         if (builder.config?.ui?.one_question_per_page) {
-            console.log('✅ One question per page mode');
         }
         
         // Attach timing instrumentation
@@ -79,9 +186,47 @@ async function initSurvey() {
         survey.setValue('response_uuid', uuid);
         survey.setValue('survey_start_time', defaultLogic.getCurrentTimestamp());
         
+        // Store bank and config versions for backend tracking
+        const bankData = builder.bankData || builder.itemBank;
+        survey.setValue('__bank_version', bankData?.schema_version || 'unknown');
+        survey.setValue('__config_version', builder.config?.version || builder.configData?.version || 'unknown');
+        
+        // Minimal styling approach - let SurveyJS handle structure, we'll just override colors/fonts
+        
+        // Variable to store assignment for completion
+        let assignedPair = null;
+        
+        // Set up page change handler for pair assignment
+        survey.onCurrentPageChanged.add(async function(sender, options) {
+            
+            // Check if we just completed the background section and need to assign pairs
+            // This happens after background section, before experimental blocks
+            const currentPageName = sender.currentPage?.name || '';
+            const previousPageName = options.oldCurrentPage?.name || '';
+            
+            // Detect transition from background to experimental section
+            // Check for new or old field names
+            const hasExperience = sender.getValue("experience_matrix") || sender.getValue("experience_years");
+            const hasTraining = sender.getValue("highest_training");
+            
+            if (!assignedPair && previousPageName.startsWith('background_') && 
+                !currentPageName.startsWith('background_') &&
+                hasExperience && hasTraining) {
+                try {
+                    const bankData = builder.bankData || builder.itemBank;
+                    assignedPair = await getAssignedPair(bankData, sender, cfg);
+                    
+                    // If using study engine, we may need to rebuild survey with assignment
+                    // For now, assignment is used for tracking, blocks are already selected
+                } catch (error) {
+                    console.error('❌ Failed to assign pair:', error);
+                    // Continue with local fallback - getAssignedPair handles this
+                }
+            }
+        });
+        
         // Set up completion handler
-        survey.onComplete.add(function(sender, options) {
-            console.log('✅ Survey completed!');
+        survey.onComplete.add(async function(sender, options) {
             
             // Ensure final page timing is captured
             if (sender._timingInstrument && sender.currentPage) {
@@ -95,41 +240,42 @@ async function initSurvey() {
                         if (responseTime !== null) {
                             const timingFieldName = `rt_${questionName}_final`;
                             sender.setValue(timingFieldName, responseTime);
-                            console.log(`💾 Final page timing: ${timingFieldName} = ${responseTime}ms`);
                             
                             // Store final question's idle time
                             const questionIdleTime = sender._timingInstrument.getQuestionIdleTime(questionName);
                             const idleFieldName = `idle_${questionName}_ms`;
                             sender.setValue(idleFieldName, questionIdleTime);
-                            console.log(`💾 Final page idle time: ${idleFieldName} = ${questionIdleTime}ms`);
                         }
                     }
                 }
             }
             
-            // Get timing data (including idle time)
-            const timingData = window.getTimingData(sender);
-            
             // Ensure idle time is captured
             if (sender._timingInstrument) {
                 const totalIdle = sender._timingInstrument.getTotalIdleTime();
                 sender.setValue('idle_ms', totalIdle);
-                console.log(`💤 Total idle time: ${totalIdle}ms`);
             }
             
             // Get updated timing data after adding idle_ms
             const finalTimingData = window.getTimingData(sender);
-            console.log('⏱️ Complete timing data:', finalTimingData);
             
             // Grade the survey responses
-            const gradingResults = grade(sender, builder.bankData);
-            console.log('🎯 Grading results:', gradingResults);
+            const bankDataForGrading = builder.bankData || builder.itemBank;
+            const gradingResults = grade(sender, bankDataForGrading);
             
+            // Backend integration: submit response if enabled
+            try {
+                await onCompleteSubmit(sender, assignedPair);
+            } catch (error) {
+                console.error('❌ Failed to submit to backend:', error);
+            }
+            
+            const bankDataForResponse = builder.bankData || builder.itemBank;
             const responseData = {
                 ts: defaultLogic.getCurrentTimestamp(),
                 uuid: uuid,
                 surveyVersion: "1.0.0",
-                bankVersion: builder.bankData?.schema_version || "unknown",
+                bankVersion: bankDataForResponse?.schema_version || "unknown",
                 data: {
                     ...sender.data,
                     ...finalTimingData
@@ -158,20 +304,12 @@ async function initSurvey() {
                 }
             }, 100);
             
-            // Trigger JSON download
-            downloadSurveyData(responseData, uuid);
-            
-            console.log('🎉 Survey completion process finished!');
         });
         
         // Clear loading screen and render survey
         container.innerHTML = '';
-        console.log('🎨 Container cleared, rendering survey...');
-        console.log('Survey definition:', surveyDefinition);
-        console.log('Survey model:', survey);
         
         // Use the correct SurveyJS jQuery rendering approach
-        console.log('Using SurveyJS jQuery version');
         
         // Clear container and use jQuery to render
         container.innerHTML = '';
@@ -179,7 +317,6 @@ async function initSurvey() {
         // Use jQuery SurveyJS rendering
         if (window.$ && window.$.fn.Survey) {
             $(container).Survey({ model: survey });
-            console.log('✅ Survey rendered using jQuery SurveyJS');
         } else {
             console.error('❌ jQuery or SurveyJS jQuery not available');
             container.innerHTML = `
@@ -191,8 +328,6 @@ async function initSurvey() {
             `;
         }
         
-        console.log('✅ Survey rendered successfully');
-        console.log('Container content after render:', container.innerHTML.substring(0, 200) + '...');
         
         // Check if survey actually rendered
         setTimeout(() => {
@@ -214,7 +349,6 @@ SurveyJS loaded: ${typeof Survey !== 'undefined'}
                     </div>
                 `;
             } else {
-                console.log('✅ Survey is visible in container');
             }
         }, 1000);
         

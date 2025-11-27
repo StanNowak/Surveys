@@ -61,7 +61,7 @@
     },
     "question": {
       "type": "object",
-      "required": ["id", "construct", "stem", "choices", "key", "explain"],
+      "required": ["id", "stem", "choices", "key", "explain"],
       "properties": {
         "id": {
           "type": "string",
@@ -70,7 +70,7 @@
         },
         "construct": {
           "type": "string",
-          "description": "Assessment construct category",
+          "description": "Assessment construct category (metadata for analysis, not used for selection)",
           "enum": ["development", "behaviour", "assessment", "mitigation"]
         },
         "form": {

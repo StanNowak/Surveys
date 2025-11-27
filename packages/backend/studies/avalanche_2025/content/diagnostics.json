@@ -1,0 +1,197 @@
+[
+  {
+    "id": "diagnostic_ps_vs_dps_load",
+    "construct": "diagnostic",
+    "stem": "PERSISTENT vs DEEP PERSISTENT \u2014 Load Reactivity Scenario: After 10 days with no avalanche activity and quiet, cold weather, a storm brings 20 cm of new snow with moderate wind. During the storm a large natural avalanche releases. Question: How surprised would you be that this event occurred when the only avalanche problem in the forecast was\u2026",
+    "type": "matrix",
+    "columns": [
+      {
+        "value": "1",
+        "text": "Not surprised at all"
+      },
+      {
+        "value": "2",
+        "text": "Slightly surprised"
+      },
+      {
+        "value": "3",
+        "text": "Moderately surprised"
+      },
+      {
+        "value": "4",
+        "text": "Very surprised"
+      },
+      {
+        "value": "5",
+        "text": "Extremely surprised"
+      }
+    ],
+    "rows": [
+      {
+        "value": "persistent_slab",
+        "text": "Persistent Slab?"
+      },
+      {
+        "value": "deep_persistent_slab",
+        "text": "Deep Persistent Slab?"
+      }
+    ],
+    "explain": "Expected Key: Persistent Slab = moderately expected; Deep Persistent Slab = far less expected from modest loading."
+  },
+  {
+    "id": "diagnostic_ps_vs_dps_remote",
+    "construct": "diagnostic",
+    "stem": "PERSISTENT vs DEEP PERSISTENT \u2014 Remote Trigger + Depth Scenario: A skier on a low-angle bench remotely triggers a large avalanche on an adjacent slope. The crown is 150 cm deep and the fracture propagates widely across connected terrain. Question: How surprised would you be that this event occurred when the only avalanche problem in the forecast was\u2026",
+    "type": "matrix",
+    "columns": [
+      {
+        "value": "1",
+        "text": "Not surprised at all"
+      },
+      {
+        "value": "2",
+        "text": "Slightly surprised"
+      },
+      {
+        "value": "3",
+        "text": "Moderately surprised"
+      },
+      {
+        "value": "4",
+        "text": "Very surprised"
+      },
+      {
+        "value": "5",
+        "text": "Extremely surprised"
+      }
+    ],
+    "rows": [
+      {
+        "value": "persistent_slab",
+        "text": "Persistent Slab?"
+      },
+      {
+        "value": "deep_persistent_slab",
+        "text": "Deep Persistent Slab?"
+      }
+    ],
+    "explain": "Expected Key: Persistent Slab = very surprising (rare to remote-trigger a 150 cm crown); Deep Persistent Slab = not very surprising (classic DPS behavior)."
+  },
+  {
+    "id": "diagnostic_storm_vs_wind",
+    "construct": "diagnostic",
+    "stem": "STORM SLAB vs WIND SLAB \u2014 Co-Occurrence Recognition Scenario: After a storm with 25 cm new snow and moderate wind, small human-triggered avalanches occur on lee wind-loaded slope with lens-shaped slabs. Question: How surprised would you be that this pattern occurred when the only avalanche problem in the bulletin was\u2026",
+    "type": "matrix",
+    "columns": [
+      {
+        "value": "1",
+        "text": "Not surprised at all"
+      },
+      {
+        "value": "2",
+        "text": "Slightly surprised"
+      },
+      {
+        "value": "3",
+        "text": "Moderately surprised"
+      },
+      {
+        "value": "4",
+        "text": "Very surprised"
+      },
+      {
+        "value": "5",
+        "text": "Extremely surprised"
+      }
+    ],
+    "rows": [
+      {
+        "value": "storm_slab",
+        "text": "Storm Slab?"
+      },
+      {
+        "value": "wind_slab",
+        "text": "Wind Slab?"
+      }
+    ],
+    "explain": "Expected Key: Both = not surprised; storm and wind slabs commonly co-occur even if only one is listed."
+  },
+  {
+    "id": "diagnostic_ps_vs_dps_mitigation",
+    "construct": "diagnostic",
+    "stem": "RISK MITIGATION \u2014 PS vs DPS Scenario: A group skis a steep open alpine slope with a deep (>200 cm) uniform snowpack above a large terrain trap. Their justification: \"It hasn't avalanched in weeks and the snowpack seems strong. We'll just spread out and ski one at a time.\" A large destructive natural avalanche later releases on similar terrain. Question: How surprised would you be that this terrain choice resulted in a destructive avalanche when the avalanche problem was\u2026",
+    "type": "matrix",
+    "columns": [
+      {
+        "value": "1",
+        "text": "Not surprised at all"
+      },
+      {
+        "value": "2",
+        "text": "Slightly surprised"
+      },
+      {
+        "value": "3",
+        "text": "Moderately surprised"
+      },
+      {
+        "value": "4",
+        "text": "Very surprised"
+      },
+      {
+        "value": "5",
+        "text": "Extremely surprised"
+      }
+    ],
+    "rows": [
+      {
+        "value": "persistent_slab",
+        "text": "Persistent Slab?"
+      },
+      {
+        "value": "deep_persistent_slab",
+        "text": "Deep Persistent Slab?"
+      }
+    ],
+    "explain": "Expected Key: Persistent Slab = moderately surprised; Deep Persistent Slab = not surprised (high-consequence DPS terrain)."
+  },
+  {
+    "id": "diagnostic_ps_vs_dps_warning",
+    "construct": "diagnostic",
+    "stem": "WARNING SIGNS \u2014 PS vs DPS Scenario: You observe no cracking, no whumpfs, no recent avalanches, clear visibility, and a generally right-side-up snowpack. Late afternoon: a large destructive natural avalanche releases nearby with no visible trigger. Question: How surprised would you be that this event occurred when the avalanche problem was\u2026",
+    "type": "matrix",
+    "columns": [
+      {
+        "value": "1",
+        "text": "Not surprised at all"
+      },
+      {
+        "value": "2",
+        "text": "Slightly surprised"
+      },
+      {
+        "value": "3",
+        "text": "Moderately surprised"
+      },
+      {
+        "value": "4",
+        "text": "Very surprised"
+      },
+      {
+        "value": "5",
+        "text": "Extremely surprised"
+      }
+    ],
+    "rows": [
+      {
+        "value": "persistent_slab",
+        "text": "Persistent Slab?"
+      },
+      {
+        "value": "deep_persistent_slab",
+        "text": "Deep Persistent Slab?"
+      }
+    ],
+    "explain": "Expected Key: Persistent Slab = somewhat surprised; Deep Persistent Slab = not surprised (DPS often shows no surface clues)."
+  }
+]

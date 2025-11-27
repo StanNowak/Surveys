@@ -207,7 +207,7 @@ async function lintBank(bankPath) {
 
     try {
         // Load schema
-        const schemaPath = path.join(__dirname, '../src/schema/bank.schema.json');
+        const schemaPath = path.join(__dirname, '../packages/shared/schemas/bank.schema.json');
         const schema = loadJSON(schemaPath);
         
         // Load bank

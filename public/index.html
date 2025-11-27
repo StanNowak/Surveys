@@ -3,15 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avalanche Survey Prototype</title>
+    <title>Avalanche Canada - Avalanche Problems Research</title>
+    
+    <!-- Google Fonts - DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
     
     <!-- SurveyJS UI for vanilla JS -->
     <link href="https://unpkg.com/survey-jquery@1.9.131/defaultV2.min.css" type="text/css" rel="stylesheet" />
     
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="./styles.css">
+    <!-- Custom styles - minimal, using SurveyJS defaults -->
+    <link rel="stylesheet" href="./styles.css?v=8">
+    <link rel="stylesheet" href="./survey-custom.css?v=10">
 </head>
 <body>
+    <div class="avalanche-canada-header">
+        <div class="avalanche-canada-logo">🏔️ Avalanche Canada</div>
+        <div>
+            <h1>Avalanche Problems Research</h1>
+            <div class="subtitle">Helping improve avalanche safety through research</div>
+        </div>
+    </div>
     <div id="surveyContainer"></div>
     
     <!-- jQuery (required for survey-jquery) -->
@@ -22,8 +35,16 @@
     
     <!-- Environment configuration -->
     <script src="./env.js"></script>
+    <script>
+      // Auto-load local overrides only in local dev
+      if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+        const s = document.createElement("script");
+        s.src = "./env.local.js";
+        document.head.appendChild(s);
+      }
+    </script>
     
     <!-- Main application module -->
-    <script type="module" src="../src/main.js"></script>
+    <script type="module" src="../src/main.js?v=7"></script>
 </body>
 </html>

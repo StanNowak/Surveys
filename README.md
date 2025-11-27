@@ -1,268 +1,134 @@
-# Avalanche Survey Prototype
+# Study Engine - Avalanche Problems Research
 
-A vanilla JavaScript SurveyJS-based survey application for avalanche education research. This prototype loads external item banks, randomizes testlets, captures timing data, provides grading feedback, and downloads responses as JSON files.
+A modular monorepo for building and deploying survey studies, currently configured for the Avalanche Problems research study.
 
-## 🚀 Quick Start
+## 📚 Documentation
 
-### Local Development
+- **[Survey Designer Guide](docs/SURVEY-DESIGNER-GUIDE.md)** - For researchers creating/modifying surveys
+- **[Developer Handover](docs/DEVELOPER-HANDOVER.md)** - Complete technical documentation for developers
 
-1. **Start the server**:
+## Architecture
+
+The project is organized as a monorepo with the following structure:
+
+```
+packages/
+├── backend/          # FastAPI backend (Python)
+│   ├── core/         # Reusable core logic
+│   └── studies/      # Study-specific implementations
+├── frontend-lib/     # Frontend library (JavaScript/ES modules)
+│   ├── core/         # Reusable core components
+│   └── studies/      # Study-specific implementations
+└── shared/           # Shared schemas and types
+```
+
+**Entry Points:**
+- Frontend: `public/index.html` → `src/main.js`
+- Backend: `packages/backend/main.py`
+
+## Quick Start
+
+### Backend (FastAPI)
+
+1. **Set up Python environment**:
+   ```bash
+   cd packages/backend
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+2. **Start database** (PostgreSQL):
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Start FastAPI server**:
+   ```bash
+   ./start.sh
+   # Or manually:
+   uvicorn backend.main:app --reload --port 8000
+   ```
+
+The API will be available at `http://localhost:8000`
+
+### Frontend
+
+1. **Start static file server**:
    ```bash
    ./start-server.sh
-   ```
-   Or manually:
-   ```bash
+   # Or manually:
    npx serve . -p 3000
    ```
 
 2. **Open in browser**:
-   - **Demo survey**: http://localhost:3000/public/
-   - **With custom UUID**: http://localhost:3000/public/?uuid=PILOT1
+   - http://localhost:3000/public/
 
-### Production Hosting
+## Study Content
 
-This is a **static web application** that can be hosted on any static file server:
+All study content is located in:
+- `packages/backend/studies/avalanche_2025/content/`
+  - `item_bank.json` - AP blocks (testlets)
+  - `background.json` - Background questionnaire
+  - `ap_intro.json` - AP intro section
+  - `diagnostics.json` - Assessment questions
+- `packages/backend/studies/avalanche_2025/config.json` - Study configuration
+- `packages/frontend-lib/src/studies/avalanche_2025/study-definition.json` - Study structure
 
-- **GitHub Pages**: Upload to a repository and enable Pages
-- **Netlify**: Drag and drop the project folder
-- **AWS S3**: Upload files and configure as static website
-- **Any web server**: Serve the project root directory
+## API Endpoints
 
-**Requirements**: Only static file hosting - no server-side processing needed.
+- `GET /` - Health check
+- `GET /api/studies/avalanche_2025/config` - Get study configuration
+- `GET /api/studies/avalanche_2025/content/item_bank` - Get item bank
+- `GET /api/studies/avalanche_2025/content/background` - Get background questionnaire
+- `GET /api/studies/avalanche_2025/content/ap_intro` - Get AP intro section
+- `GET /api/studies/avalanche_2025/content/diagnostics` - Get assessment questions
+- `POST /api/studies/avalanche_2025/assign` - Assign participant to condition
+- `POST /api/studies/avalanche_2025/submit` - Submit survey response
 
-## 📋 Survey Flow
+API docs available at: http://localhost:8000/docs
 
-1. **Background Questions** (3 questions)
-2. **AP Testlet Questions** (8 questions, randomized from 2 testlets)
-3. **Diagnostic Questions** (3 questions)
-4. **Feedback & Results** (graded with explanations)
-5. **JSON Download** (complete response data with timing)
+## Development
 
-## ⚙️ Configuration
+### Local Development
 
-### Swapping Item Banks
+The frontend is configured to use the backend API when running locally. See `public/env.local.js` for local overrides.
 
-To use different survey content:
+### Authentication
 
-1. **Replace item bank files** in `item-banks/`:
-   - `background.json` - Background questionnaire
-   - `bank.demo.json` - AP testlets and diagnostics
-   - `config.demo.json` - Survey configuration
+Auth0 is configured in dev mode (no external setup required). Set `AUTH0_DOMAIN` environment variable to enable production Auth0 verification.
 
-2. **Update environment** in `public/env.js`:
-   ```javascript
-   window.__SURVEY_CONFIG__ = {
-     BACKGROUND_URL: "/item-banks/your-background.json",
-     BANK_URL: "/item-banks/your-bank.json",
-     CONFIG_URL: "/item-banks/your-config.json",
-     TITLE: "Your Survey Title"
-   };
-   ```
+### Production Deployment
 
-3. **Validate your bank**:
-   ```bash
-   python3 scripts/lint-bank.py item-banks/your-bank.json
-   ```
+The frontend will be deployed as **React components** on a Prismic site. The backend will be deployed separately and must be accessible from the Prismic domain.
 
-### Configuration Options
+## Repository Structure
 
-Edit `item-banks/config.demo.json`:
+**Core Code:**
+- `packages/` - Monorepo packages (backend, frontend-lib, shared)
+- `public/` - Frontend entry point and static assets
+- `src/` - Frontend application code
+- `scripts/` - Validation and utility scripts
 
-```json
-{
-  "routing": {
-    "randomize_blocks": true,      // Randomize testlet order
-    "blocks_to_draw": 2,           // Number of testlets to select
-    "randomize_within_block": true, // Shuffle questions within testlets
-    "include_diagnostics": true    // Include diagnostic questions
-  },
-  "ui": {
-    "one_question_per_page": true, // One question per page
-    "auto_advance": true,          // Auto-advance after answering
-    "progress_bar": true           // Show progress bar at top
-  },
-  "quiz": {
-    "feedback_mode": "full",       // "full" table or "summary" score only
-    "show_explanations": true      // Include explanations in feedback
-  }
-}
-```
+**Configuration:**
+- `packages/backend/docker-compose.yml` - Database setup
 
-## 🧪 Running Pilots
+**Documentation:**
+- `docs/` - User and developer documentation
+- `README.md` - This file
 
-### For Participants
+## Testing
 
-1. **Share the URL**: `https://your-domain.com/public/?uuid=PARTICIPANT_ID`
-2. **Participants complete** the survey (auto-advance, ~5-10 minutes)
-3. **JSON file downloads** automatically: `survey_PARTICIPANT_ID_timestamp.json`
-
-### For Researchers
-
-The downloaded JSON contains:
-
-```json
-{
-  "ts": "2025-01-09T19:34:18.000Z",
-  "uuid": "PARTICIPANT_ID", 
-  "surveyVersion": "1.0.0",
-  "bankVersion": "1.0.0",
-  "data": {
-    // All survey responses (background, AP questions, diagnostics)
-    "primary_activity": "skiing",
-    "storm_q1": "A",
-    // ... all responses
-    
-    // Timing data (milliseconds)
-    "rt_storm_q1_final": 3421,
-    "rt_storm_q2_final": 2156,
-    "idle_ms": 1250
-    // ... timing for each question
-  },
-  "grading": {
-    "totalItems": 8,
-    "correctItems": 6, 
-    "score": 75,
-    "items": [
-      // Detailed per-item results with correct answers and explanations
-    ]
-  }
-}
-```
-
-### Data Analysis
-
-- **Response data**: All participant answers in `data` object
-- **Performance data**: Per-question response times (`rt_*_final`) and idle time
-- **Grading data**: Correctness, scores, and detailed feedback per item
-- **Metadata**: Timestamps, UUIDs, survey versions for tracking
-
-## 🔧 Development
-
-### Project Structure
-
-```
-/
-├── public/                 # Static web assets
-│   ├── index.html         # Main HTML page
-│   ├── styles.css         # Custom styles
-│   ├── env.js            # Environment configuration
-│   └── env.example.js    # Environment template
-├── src/                   # JavaScript modules
-│   ├── main.js           # Application entry point
-│   ├── builder.js        # Survey building logic
-│   ├── feedback.js       # Grading and feedback
-│   ├── instrumentation.js # Timing capture
-│   └── logic.default.js  # Default survey logic
-├── item-banks/           # Survey content
-│   ├── background.json   # Background questions
-│   ├── bank.demo.json    # AP testlets + diagnostics
-│   └── config.demo.json  # Survey configuration
-├── scripts/              # Validation tools
-│   ├── lint-bank.py      # Python bank validator
-│   └── lint-bank.mjs     # Node.js bank validator
-└── src/schema/           # JSON schemas
-    ├── bank.schema.json  # Item bank schema
-    └── config.schema.json # Configuration schema
-```
-
-### Adding New Question Types
-
-The system supports SurveyJS question types:
-- `html` - Information/instructions
-- `radiogroup` - Single choice
-- `checkbox` - Multiple choice  
-- `dropdown` - Select dropdown
-- `comment` - Text input
-
-Add new types by updating the schemas and testing with the linter.
-
-### Custom Logic
-
-Replace `src/logic.default.js` with custom logic:
-
-```javascript
-export default {
-  onInit: (survey, config) => { /* Custom initialization */ },
-  selectBlocks: (testlets, config) => { /* Custom testlet selection */ },
-  selectItems: (items, config) => { /* Custom item selection */ },
-  beforeRender: (survey) => { /* Pre-render customization */ },
-  onGrade: (results, survey) => { /* Custom grading logic */ },
-  onComplete: (survey, data) => { /* Custom completion handling */ }
-};
-```
-
-## 🔮 Future Enhancements
-
-### Backend Integration
-
-To enable server-side data collection:
-
-1. **Set SAVE_URL** in `public/env.js`:
-   ```javascript
-   SAVE_URL: "https://your-api.com/survey/save"
-   ```
-
-2. **The app will POST** survey data to this endpoint on completion
-
-3. **Response format**:
-   ```json
-   {
-     "method": "POST",
-     "headers": { "Content-Type": "application/json" },
-     "body": "{ /* complete survey data */ }"
-   }
-   ```
-
-### BIB API Integration
-
-For integration with existing research systems:
-
-1. **Set QUOTA_ENDPOINT** in `public/env.js`
-2. **Implement quota checking** before survey start
-3. **Add participant management** and session tracking
-
-### Advanced Features
-
-- **Adaptive testing**: Adjust difficulty based on responses
-- **Real-time analytics**: Dashboard for monitoring pilot progress  
-- **Multi-language support**: Internationalization for global studies
-- **Offline capability**: Service worker for unreliable connections
-
-## 📊 Validation
-
-### Item Bank Validation
-
+Test assignment balancing:
 ```bash
-# Python (recommended)
-python3 scripts/lint-bank.py item-banks/bank.demo.json
-
-# Node.js (if available)
-node scripts/lint-bank.mjs item-banks/bank.demo.json
+./test-assignment.sh
 ```
 
-### Testing Checklist
+Stop all servers:
+```bash
+./STOP-SERVERS.sh
+```
 
-- [ ] Survey loads without errors
-- [ ] Background questions display correctly
-- [ ] AP testlets randomize (refresh to verify)
-- [ ] Questions advance automatically
-- [ ] Progress bar shows and updates
-- [ ] Grading feedback displays with correct scores
-- [ ] JSON downloads with complete data
-- [ ] Timing data captures per-question response times
-- [ ] UUID parameter works: `?uuid=TEST123`
+## License
 
-## 📄 License
-
-This prototype is for research purposes. Modify and distribute as needed for educational research.
-
-## 🤝 Contributing
-
-1. Test with different item banks and configurations
-2. Validate using the lint tools
-3. Document any issues or enhancement requests
-4. Follow the established project structure for new features
-
----
-
-**Built with**: Vanilla JavaScript, SurveyJS, and modern web standards for maximum compatibility and performance.
+[Add license information here]

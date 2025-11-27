@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "title": "Background Information",
+  "description": "Please answer the following questions about your Canadian backcountry experience.",
+  "pages": [
+    {
+      "name": "background",
+      "title": "Background Information",
+      "elements": [
+        {
+          "type": "html",
+          "name": "background_intro",
+          "html": "<p>Please answer a few quick questions about your Canadian winter backcountry experience. This research is conducted in partnership with Avalanche Canada to improve avalanche safety education.</p>"
+        },
+        {
+          "type": "radiogroup",
+          "name": "primary_activity",
+          "title": "What recreational winter backcountry activities do you most often engage in?",
+          "isRequired": true,
+          "colCount": 1,
+          "enableHTML": true,
+          "choices": [
+            { "value": "backcountry_skiing", "text": "Backcountry skiing/snowboarding" },
+            { "value": "out_of_bounds", "text": "Out-of-bounds Skiing" },
+            { "value": "snowmobiling", "text": "Mountain snowmobiling/snowbiking" },
+            { "value": "mountaineering", "text": "Alpine mountaineering" },
+            { "value": "ice_climbing", "text": "Ice climbing" },
+            { "value": "snowshoeing", "text": "Snowshoeing or winter hiking" },
+            { "value": "other", "text": "Other" }
+          ],
+          "hasOther": true,
+          "otherText": "Please specify:",
+          "otherErrorText": "Please specify your activity",
+          "otherPlaceholder": "Enter your activity"
+        },
+        {
+          "type": "matrix",
+          "name": "experience_matrix",
+          "title": "Overall, how much experience do you have in all your recreational winter backcountry activities combined?\nPlease select the appropriate option in each column.",
+          "isRequired": true,
+          "enableHTML": false,
+          "columnMinWidth": "120px",
+          "columns": [
+            { "value": "first_winter", "text": "This is/was my first winter." },
+            { "value": "second_winter", "text": "This is/was my second winter." },
+            { "value": "3-5_winters", "text": "3-5 winters" },
+            { "value": "6-10_winters", "text": "6-10 winters" },
+            { "value": "11-20_winters", "text": "11-20 winters" },
+            { "value": "20+_winters", "text": "More than 20 winters" }
+          ],
+          "rows": [
+            { "value": "number_of_winters", "text": "Number of winters:" }
+          ],
+          "cells": {}
+        },
+        {
+          "type": "matrix",
+          "name": "days_per_winter",
+          "title": "Average number of days per winter:",
+          "isRequired": true,
+          "columns": [
+            { "value": "1-2_days", "text": "1-2 days per winter" },
+            { "value": "3-5_days", "text": "3-5 days per winter" },
+            { "value": "6-10_days", "text": "6-10 days per winter" },
+            { "value": "11-20_days", "text": "11-20 days per winter" },
+            { "value": "21-50_days", "text": "21-50 days per winter" },
+            { "value": "50+_days", "text": "More than 50 days per winter" }
+          ],
+          "rows": [
+            { "value": "average_days", "text": "Average number of days per winter:" }
+          ],
+          "cells": {}
+        },
+        {
+          "type": "radiogroup",
+          "name": "highest_training",
+          "title": "What is the highest level of formal avalanche safety training you have completed?\nPlease select one of the following options.",
+          "isRequired": true,
+          "colCount": 1,
+          "enableHTML": true,
+          "choices": [
+            { "value": "none", "text": "None" },
+            { "value": "awareness", "text": "Indoor/live online avalanche awareness seminar (e.g., evening seminar)" },
+            { "value": "intro", "text": "Introductory recreational avalanche safety course with a field component (1-2 day course)" },
+            { "value": "advanced", "text": "Advanced recreational avalanche safety course (3-5 day course)" },
+            { "value": "professional", "text": "Avalanche training aimed at avalanche professionals (e.g., guides, mountain rescue, avalanche technicians)" },
+            { "value": "other", "text": "Other" }
+          ],
+          "hasOther": true,
+          "otherText": "Please specify:",
+          "otherErrorText": "Please specify your training level",
+          "otherPlaceholder": "Enter your training level"
+        },
+        {
+          "type": "checkbox",
+          "name": "avalanche_services",
+          "title": "Which avalanche warning services do you regularly check forecast with?",
+          "isRequired": true,
+          "colCount": 1,
+          "enableHTML": false,
+          "choices": [
+            { "value": "avalanche_canada", "text": "Avalanche Canada" },
+            { "value": "caic", "text": "CAIC" },
+            { "value": "nwac", "text": "NWAC" },
+            { "value": "other", "text": "Other" }
+          ],
+          "hasOther": true,
+          "otherText": "Please specify:",
+          "otherErrorText": "Please specify the service name",
+          "otherPlaceholder": "Enter service name"
+        }
+      ]
+    }
+  ]
+}

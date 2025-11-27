@@ -1,0 +1,747 @@
+{
+  "schema_version": "1.0.0",
+  "testlets": [
+    {
+      "ap_type": "loose_dry_wet",
+      "label": "Loose Dry and Loose Wet Snow Avalanches",
+      "items": [
+        {
+          "id": "loose_development_01",
+          "construct": "development",
+          "stem": "Which statement best describes how loose-snow avalanches develop?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They occur when surface snow loses cohesion \u2014 either remaining cold and unconsolidated or becoming weakened by moisture from warming, solar input, or rain."
+            },
+            {
+              "value": "B",
+              "text": "They form when snowfall intensity exceeds a threshold, causing the freshest storm snow to bond poorly to the old surface, creating a shallow but reactive layer."
+            },
+            {
+              "value": "C",
+              "text": "They develop when small near-surface facets form under clear, cold conditions and create a thin \"crust-facet\" combo that sheds easily on steep slopes."
+            },
+            {
+              "value": "D",
+              "text": "They occur when surface wind redistributes snow into small, chalky pockets that release as the wind-affected snow becomes unstable."
+            }
+          ],
+          "key": "A",
+          "explain": "Loose-snow avalanches develop when surface snow loses cohesion, either remaining cold and unconsolidated (loose dry) or becoming weakened by moisture from warming, solar input, or rain (loose wet)."
+        },
+        {
+          "id": "loose_activity_01",
+          "construct": "avalanche activity patterns",
+          "stem": "Which pattern best reflects the typical size and propagation of loose-snow avalanches?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They generally begin from a point and fan outward downslope, often remaining small but capable of entraining significant mass in steep terrain, especially during intense warming or rain."
+            },
+            {
+              "value": "B",
+              "text": "They commonly release as widespread, thin slabs that propagate under the new snow surface but break up into loose debris shortly after initiation."
+            },
+            {
+              "value": "C",
+              "text": "They often release simultaneously across multiple aspects when rapid surface temperature changes create uniform instability over large areas."
+            },
+            {
+              "value": "D",
+              "text": "They typically trigger chain reactions in adjacent slopes, where small failures in one gully cause sympathetic releases in nearby features."
+            }
+          ],
+          "key": "A",
+          "explain": "Loose-snow avalanches typically begin from a point and fan outward downslope. While often small, they can entrain significant mass in steep terrain, especially during intense warming or rain."
+        },
+        {
+          "id": "loose_recognition_01",
+          "construct": "recognition & assessment",
+          "stem": "Which set of field observations is most diagnostic of loose-snow avalanche problems?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Small loose slides initiating at a point, visible snowballing or pinwheeling on steep slopes, and surface snow that easily moves downslope when disturbed."
+            },
+            {
+              "value": "B",
+              "text": "Cracking limited to the upper 5\u201310 cm of snow, with thin lens-shaped slabs forming only around subtle terrain rolls."
+            },
+            {
+              "value": "C",
+              "text": "Smooth, stiff, chalky surface textures that sound hollow underfoot on exposed or cross-loaded features."
+            },
+            {
+              "value": "D",
+              "text": "Surface snow that feels punchy over a shallow melt-freeze crust, with occasional soft spots producing short, localized collapses."
+            }
+          ],
+          "key": "A",
+          "explain": "Small loose slides initiating at a point, visible snowballing or pinwheeling on steep slopes, and surface snow that easily moves downslope when disturbed are the most diagnostic signs of loose-snow avalanche problems."
+        },
+        {
+          "id": "loose_mitigation_01",
+          "construct": "risk management",
+          "stem": "Which strategy best addresses the consequences of loose-snow avalanches?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Choose a line that allows any loose snow to run beside you rather than over you, and avoid terrain traps or obstacles where even small avalanches can have severe consequences."
+            },
+            {
+              "value": "B",
+              "text": "Use frequent ski cuts or slope tests to \"release\" any loose snow before committing to steep terrain."
+            },
+            {
+              "value": "C",
+              "text": "Move slowly directly down the fall line, periodically stopping to let any loose snow pass by you."
+            },
+            {
+              "value": "D",
+              "text": "Prioritize slopes with uniform, planar surfaces and avoid convexities, which are more prone to triggering loose avalanches."
+            }
+          ],
+          "key": "A",
+          "explain": "The best strategy is to choose a line that allows loose snow to run beside you rather than over you, and to avoid terrain traps or obstacles where even small avalanches can have severe consequences."
+        }
+      ]
+    },
+    {
+      "ap_type": "cornice",
+      "label": "Cornice Avalanche Problems",
+      "items": [
+        {
+          "id": "cornice_development_01",
+          "construct": "development",
+          "stem": "Which statement best describes how cornices form and become hazardous?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They develop when repeated thaw\u2013freeze cycles cause surface crusts to peel off on steep slopes, leaving unsupported blocks of snow that resemble overhangs."
+            },
+            {
+              "value": "B",
+              "text": "They form as wind deposits snow onto the leeward side of ridges and rollovers, creating overhanging masses that can grow large, become unsupported, and fail naturally or under small triggers."
+            },
+            {
+              "value": "C",
+              "text": "They form only when dense storm snow settles unevenly on convex rollovers during heavy snowfall without wind."
+            },
+            {
+              "value": "D",
+              "text": "They form when slabs crack away from ridge crests due to strong temperature inversions, leaving horizontal shelves of snow that can collapse."
+            }
+          ],
+          "key": "B",
+          "explain": "Cornices form as wind deposits snow onto the leeward side of ridges and rollovers, creating overhanging masses that can grow large, become unsupported, and fail naturally or under small triggers."
+        },
+        {
+          "id": "cornice_activity_01",
+          "construct": "avalanche activity patterns",
+          "stem": "Which pattern best reflects the avalanche activity and triggering behavior of cornices?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Cornice failures are usually predictable and occur only during active loading, rarely failing once the storm has ended."
+            },
+            {
+              "value": "B",
+              "text": "Cornices often fail well after loading has stopped, may break farther back than expected, and can trigger avalanches on slopes below even if the slab beneath seems unreactive."
+            },
+            {
+              "value": "C",
+              "text": "Cornice falls usually result in small, localized sluffs because the snow blocks break apart on impact rather than transmitting force downslope."
+            },
+            {
+              "value": "D",
+              "text": "Cornices tend to fail symmetrically across entire ridgelines, releasing long, uniform sections rather than isolated chunks."
+            }
+          ],
+          "key": "B",
+          "explain": "Cornices often fail well after loading has stopped, may break farther back than expected, and can trigger avalanches on slopes below even if the slab beneath seems unreactive."
+        },
+        {
+          "id": "cornice_recognition_01",
+          "construct": "recognition & assessment",
+          "stem": "Which field observations are most diagnostic of cornice hazard?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Smooth wind-affected snow with a chalky feel on lee slopes, and isolated cracks forming around pillows in open terrain."
+            },
+            {
+              "value": "B",
+              "text": "Large overhanging blocks of snow on leeward ridge edges, hollow \"drummy\" sounds underfoot near the crest, and evidence of older cornice fall debris below."
+            },
+            {
+              "value": "C",
+              "text": "Widespread cracking across entire slopes and deep \"whumpfs\" heard at mid-slope elevations."
+            },
+            {
+              "value": "D",
+              "text": "A hard crust with facets just below the surface, especially on shaded slopes with preserved surface hoar."
+            }
+          ],
+          "key": "B",
+          "explain": "Large overhanging blocks of snow on leeward ridge edges, hollow \"drummy\" sounds underfoot near the crest, and evidence of older cornice fall debris below are the most diagnostic signs of cornice hazard."
+        },
+        {
+          "id": "cornice_mitigation_01",
+          "construct": "risk management",
+          "stem": "Which strategy best reduces risk when traveling near cornices?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Approach cornice edges cautiously and stomp gently on the overhang to test how far it extends before committing to travel along the ridge."
+            },
+            {
+              "value": "B",
+              "text": "Travel directly below ridgelines beneath cornices early in the morning when the snow is colder, since low temperatures fully eliminate cornice hazard."
+            },
+            {
+              "value": "C",
+              "text": "Maintain a wide margin from ridge edges, avoid traveling directly below overhangs, and assume cornices can break farther back than expected\u2014especially during warming or after storms."
+            },
+            {
+              "value": "D",
+              "text": "Move quickly underneath corniced areas to minimize exposure time, as brief exposure greatly reduces the risk from falling cornices."
+            }
+          ],
+          "key": "C",
+          "explain": "The best strategy is to maintain a wide margin from ridge edges, avoid traveling directly below overhangs, and assume cornices can break farther back than expected\u2014especially during warming or after storms."
+        }
+      ]
+    },
+    {
+      "ap_type": "wet_slab",
+      "label": "Wet Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "wet_slab_development_01",
+          "construct": "development",
+          "stem": "Which statement best describes how wet slab avalanches develop?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They develop when rapidly falling new snow overloads a weak interface, causing the upper snowpack to fracture during a storm."
+            },
+            {
+              "value": "B",
+              "text": "They occur when liquid water penetrates deeply enough into the snowpack to weaken or lubricate a buried weak layer, allowing the overlying slab to detach."
+            },
+            {
+              "value": "C",
+              "text": "They form when strong winds create stiff surface slabs that later fail as temperatures rise during the afternoon."
+            },
+            {
+              "value": "D",
+              "text": "They happen when shallow surface crusts melt away, allowing loose wet snow to entrain deeper layers into a slab-like release."
+            }
+          ],
+          "key": "B",
+          "explain": "Wet slab avalanches occur when liquid water penetrates deeply enough into the snowpack to weaken or lubricate a buried weak layer, allowing the overlying slab to detach."
+        },
+        {
+          "id": "wet_slab_activity_01",
+          "construct": "avalanche activity patterns",
+          "stem": "Which pattern best reflects the avalanche activity associated with wet slabs?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Wet slabs typically release as small, slow-moving avalanches that affect only the uppermost surface layers and rarely involve the full avalanche path."
+            },
+            {
+              "value": "B",
+              "text": "Wet slabs often release as larger, more destructive avalanches once water reaches a critical weak layer, and the failure often occurs in terrain where the slab structure is continuous and the weak layer is widespread."
+            },
+            {
+              "value": "C",
+              "text": "Wet slab avalanches tend to release repeatedly throughout the day in rapid succession as temperatures fluctuate across all aspects."
+            },
+            {
+              "value": "D",
+              "text": "Wet slabs usually release only after a strong overnight refreeze, when the snowpack becomes brittle and prone to cracking."
+            }
+          ],
+          "key": "B",
+          "explain": "Wet slabs often release as larger, more destructive avalanches once water reaches a critical weak layer, and the failure often occurs in terrain where the slab structure is continuous and the weak layer is widespread."
+        },
+        {
+          "id": "wet_slab_recognition_01",
+          "construct": "recognition & assessment",
+          "stem": "Which field observations are most diagnostic of developing wet slab instability?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Small dry loose avalanches on shady slopes and widespread sluffing in new storm snow."
+            },
+            {
+              "value": "B",
+              "text": "Deep boot penetration, free water pooling beneath crusts, collapsing wet layers during snowpack tests, and evidence that liquid water has penetrated well below the surface."
+            },
+            {
+              "value": "C",
+              "text": "Sastrugi, stiff wind features, and hollow-sounding wind-loaded pillows near ridgelines."
+            },
+            {
+              "value": "D",
+              "text": "Small rollerballs and surface pinwheels forming only on solar aspects shortly after the sun rises."
+            }
+          ],
+          "key": "B",
+          "explain": "Deep boot penetration, free water pooling beneath crusts, collapsing wet layers during snowpack tests, and evidence that liquid water has penetrated well below the surface are the most diagnostic signs of developing wet slab instability."
+        },
+        {
+          "id": "wet_slab_mitigation_01",
+          "construct": "risk management",
+          "stem": "When managing wet slab hazards, which strategy best reflects recommended terrain choices?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Travel only on slopes above 2,500 m since wet slabs cannot form at high elevations."
+            },
+            {
+              "value": "B",
+              "text": "Prioritize shaded slopes in the afternoon, as they refreeze quickly and eliminate wet slab hazard."
+            },
+            {
+              "value": "C",
+              "text": "Avoid all avalanche terrain when there has been no solid overnight freeze or when melt-freeze cycles are just beginning to re-establish after prolonged warm periods."
+            },
+            {
+              "value": "D",
+              "text": "Rely on ski cuts on small test slopes to assess whether meltwater has weakened deeper layers."
+            }
+          ],
+          "key": "C",
+          "explain": "The best strategy is to avoid all avalanche terrain when there has been no solid overnight freeze or when melt-freeze cycles are just beginning to re-establish after prolonged warm periods."
+        }
+      ]
+    },
+    {
+      "ap_type": "storm",
+      "label": "Storm Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "storm_development_01",
+          "construct": "development",
+          "stem": "Which statement best describes how storm slabs develop?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They develop when strong winds drift surface snow into stiff pillows that bond poorly with the layers beneath."
+            },
+            {
+              "value": "B",
+              "text": "They form when new storm snow consolidates into a cohesive layer over weaker storm snow or the old snow surface, creating a slab that can fail during or shortly after the storm."
+            },
+            {
+              "value": "C",
+              "text": "They occur only when surface hoar is buried deeply beneath very cold storm snow."
+            },
+            {
+              "value": "D",
+              "text": "They develop when a melt-freeze crust forms beneath new snow and immediately collapses due to warming."
+            }
+          ],
+          "key": "B",
+          "explain": "Storm slabs form when new storm snow consolidates into a cohesive layer over weaker storm snow or the old snow surface, creating a slab that can fail during or shortly after the storm."
+        },
+        {
+          "id": "storm_activity_01",
+          "construct": "avalanche activity patterns",
+          "stem": "The day after a major storm, which pattern best describes the spatial distribution and activity of storm slabs?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They are usually limited to isolated pockets on lee ridgelines and rarely occur on open slopes."
+            },
+            {
+              "value": "B",
+              "text": "They can be widespread across steep open terrain, often larger at higher elevations or where snowfall/loading was greatest, and typically stabilize within the first 24\u201336 hours after the storm."
+            },
+            {
+              "value": "C",
+              "text": "They primarily occur on low-elevation slopes because the snowpack at higher elevations is too cold and well-bonded to react as a slab."
+            },
+            {
+              "value": "D",
+              "text": "Once storm snow bonds to the old surface, storm slabs generally remain active for a week or more regardless of temperature or wind."
+            }
+          ],
+          "key": "B",
+          "explain": "Storm slabs can be widespread across steep open terrain, often larger at higher elevations or where snowfall/loading was greatest, and typically stabilize within the first 24\u201336 hours after the storm."
+        },
+        {
+          "id": "storm_recognition_01",
+          "construct": "recognition & assessment",
+          "stem": "Which field observations are most diagnostic of storm slab instability?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Shooting cracks or localized failures within the new snow layer, slabby behavior in the top 20\u201340 cm, and easy shears in quick hand pits."
+            },
+            {
+              "value": "B",
+              "text": "Deep collapses and loud whumpfs, indicating a failure layer 50\u2013100 cm down."
+            },
+            {
+              "value": "C",
+              "text": "Hollow, drum-like sounds specifically on ridgelines and convexities, with dense wind-packed surfaces."
+            },
+            {
+              "value": "D",
+              "text": "Small rollerballs and pinwheels forming across all aspects during the warmest part of the day."
+            }
+          ],
+          "key": "A",
+          "explain": "Shooting cracks or localized failures within the new snow layer, slabby behavior in the top 20\u201340 cm, and easy shears in quick hand pits are the most diagnostic signs of storm slab instability."
+        },
+        {
+          "id": "storm_mitigation_01",
+          "construct": "risk management",
+          "stem": "Which travel strategy is most appropriate during the first day after a heavy storm?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Move quickly through avalanche paths to minimize the amount of time spent in hazardous areas."
+            },
+            {
+              "value": "B",
+              "text": "Ski steep open slopes early, before warming increases slab cohesion and fracture propagation."
+            },
+            {
+              "value": "C",
+              "text": "Avoid avalanche paths and runouts during and shortly after the storm, and only expand terrain choices as evidence of natural activity decreases and bonding improves."
+            },
+            {
+              "value": "D",
+              "text": "Favor lee slopes, since wind loading stiffens the snowpack and reduces the likelihood of storm slabs."
+            }
+          ],
+          "key": "C",
+          "explain": "The most appropriate strategy is to avoid avalanche paths and runouts during and shortly after the storm, and only expand terrain choices as evidence of natural activity decreases and bonding improves."
+        }
+      ]
+    },
+    {
+      "ap_type": "wind_slab",
+      "label": "Wind Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "wind_slab_development_01",
+          "construct": "development",
+          "stem": "Which statement best describes how wind slabs develop?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They form when windy storm snow settles uniformly across all aspects, creating a soft, cohesionless layer that later stiffens with cooling."
+            },
+            {
+              "value": "B",
+              "text": "They develop when wind transports snow and deposits it onto leeward or cross-loaded terrain features, creating denser, more cohesive slabs over weaker surfaces."
+            },
+            {
+              "value": "C",
+              "text": "They occur only when buried surface hoar is overloaded by rapidly drifting snow near ridge crests."
+            },
+            {
+              "value": "D",
+              "text": "They form when the top layer of a melt-freeze crust shatters due to cold temperatures, creating shallow but reactive slabs."
+            }
+          ],
+          "key": "B",
+          "explain": "Wind slabs develop when wind transports snow and deposits it onto leeward or cross-loaded terrain features, creating denser, more cohesive slabs over weaker surfaces."
+        },
+        {
+          "id": "wind_slab_activity_01",
+          "construct": "avalanche activity patterns",
+          "stem": "What pattern best describes where wind slabs form and how they behave?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They form only near treeline, where swirling winds redistribute snow into deep drifts that fail catastrophically across entire basins."
+            },
+            {
+              "value": "B",
+              "text": "They are typically confined to lee slopes, cross-loaded gullies, and terrain features that act as snow fences; they often vary greatly over short distances and can be quite sensitive shortly after formation."
+            },
+            {
+              "value": "C",
+              "text": "They occur predominantly at lower elevations, where lighter winds preserve uniform slab thickness across all aspects."
+            },
+            {
+              "value": "D",
+              "text": "They form evenly across slopes during storms but require several days of settlement before they become reactive."
+            }
+          ],
+          "key": "B",
+          "explain": "Wind slabs are typically confined to lee slopes, cross-loaded gullies, and terrain features that act as snow fences; they often vary greatly over short distances and can be quite sensitive shortly after formation."
+        },
+        {
+          "id": "wind_slab_recognition_01",
+          "construct": "recognition & assessment",
+          "stem": "Which field observations are most diagnostic of wind slab hazard?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Smooth or slightly rippled surfaces with a chalky or stiff feel, sometimes sounding hollow underfoot, especially below ridgelines or behind terrain breaks."
+            },
+            {
+              "value": "B",
+              "text": "Areas where the surface snow feels supportive in some spots but suddenly collapses into a softer layer beneath, especially near terrain transitions like ridges and gullies."
+            },
+            {
+              "value": "C",
+              "text": "Rapid snowballing and pinwheeling on solar aspects during the afternoon, with wet surface snow peeling away easily."
+            },
+            {
+              "value": "D",
+              "text": "Loose, unconsolidated powder sluffing readily from small test slopes with no cohesive behavior."
+            }
+          ],
+          "key": "A",
+          "explain": "Smooth or slightly rippled surfaces with a chalky or stiff feel, sometimes sounding hollow underfoot, especially below ridgelines or behind terrain breaks are the most diagnostic signs of wind slab hazard."
+        },
+        {
+          "id": "wind_slab_mitigation_01",
+          "construct": "risk management",
+          "stem": "Which strategy best reduces risk when traveling in terrain prone to wind slabs?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Prioritize lee slopes and convex rollovers early in the morning before warming makes wind slabs more reactive."
+            },
+            {
+              "value": "B",
+              "text": "Use formal stability tests in sheltered areas to evaluate wind slab reactivity, since wind slabs often extend uniformly across nearby terrain."
+            },
+            {
+              "value": "C",
+              "text": "Identify and avoid wind-loaded slopes and cross-loaded features, especially stiff or hollow-sounding surfaces, and choose sheltered terrain until wind slabs bond or stabilize."
+            },
+            {
+              "value": "D",
+              "text": "Prefer traveling on slopes with firm, supportive wind-pressed snow, since the denser surface indicates that the underlying snowpack is structurally well-bonded."
+            }
+          ],
+          "key": "C",
+          "explain": "The best strategy is to identify and avoid wind-loaded slopes and cross-loaded features, especially stiff or hollow-sounding surfaces, and choose sheltered terrain until wind slabs bond or stabilize."
+        }
+      ]
+    },
+    {
+      "ap_type": "persistent",
+      "label": "Persistent Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "persistent_development_01",
+          "construct": "development",
+          "stem": "Which statement best describes how persistent slabs develop?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They form when dense storm snow settles onto a hardened melt-freeze crust that weakens rapidly within 12\u201324 hours."
+            },
+            {
+              "value": "B",
+              "text": "They occur when a buried weak layer\u2014such as facets, depth hoar, or surface hoar\u2014fails to bond or strengthen over time, allowing the overlying slab to remain reactive for days to months."
+            },
+            {
+              "value": "C",
+              "text": "They always develop after multiple storms stack up deep, heavy snow that compresses the mid-pack into a brittle slab."
+            },
+            {
+              "value": "D",
+              "text": "They form only when strong solar radiation melts surface hoar before it is buried, creating a thin, fragile layer."
+            }
+          ],
+          "key": "B",
+          "explain": "Persistent slabs occur when a buried weak layer\u2014such as facets, depth hoar, or surface hoar\u2014fails to bond or strengthen over time, allowing the overlying slab to remain reactive for days to months."
+        },
+        {
+          "id": "persistent_activity_01",
+          "construct": "avalanche activity patterns",
+          "stem": "Which pattern best describes the avalanche activity associated with persistent slabs?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Persistent slab activity typically mirrors storm slab behavior, with natural avalanches tapering rapidly once snowfall intensity decreases."
+            },
+            {
+              "value": "B",
+              "text": "Persistent slabs often produce sporadic avalanche activity: long quiet periods, occasional sudden releases, and the potential for wide propagation when slopes fail once conditions change."
+            },
+            {
+              "value": "C",
+              "text": "Persistent slab avalanches always initiate near ridge crests at thin spots and rarely propagate across open slopes."
+            },
+            {
+              "value": "D",
+              "text": "Persistent slab activity usually ramps up gradually over time as the weak layer becomes progressively weaker until widespread natural avalanches occur."
+            }
+          ],
+          "key": "B",
+          "explain": "Persistent slabs often produce sporadic avalanche activity: long quiet periods, occasional sudden releases, and the potential for wide propagation when slopes fail once conditions change."
+        },
+        {
+          "id": "persistent_recognition_01",
+          "construct": "recognition & assessment",
+          "stem": "Which set of field observations is most diagnostic of a persistent slab problem?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Frequent shallow cracking in the top 10\u201320 cm of storm snow, with slabby behavior only in the newest layers."
+            },
+            {
+              "value": "B",
+              "text": "Hollow, drum-like surfaces on ridgelines, with stiff pockets that break into blocks when stepped on."
+            },
+            {
+              "value": "C",
+              "text": "Remote triggers, whumpfs, collapsing, and sudden planar failures in snowpack tests involving a layer buried deeper in the snowpack\u2014often without recent natural avalanche activity."
+            },
+            {
+              "value": "D",
+              "text": "Consistent cracking in the upper snowpack throughout the day, showing that the instability is active and present at all times."
+            }
+          ],
+          "key": "C",
+          "explain": "Remote triggers, whumpfs, collapsing, and sudden planar failures in snowpack tests involving a layer buried deeper in the snowpack\u2014often without recent natural avalanche activity\u2014are the most diagnostic signs of a persistent slab problem."
+        },
+        {
+          "id": "persistent_mitigation_01",
+          "construct": "risk management",
+          "stem": "Which strategy best reflects appropriate risk management when a persistent slab problem exists?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Ski steep slopes early in the morning before warming increases the likelihood of triggering persistent weak layers."
+            },
+            {
+              "value": "B",
+              "text": "Rely on snowpack tests in sheltered terrain, as they reliably represent slab behavior elsewhere on the mountain."
+            },
+            {
+              "value": "C",
+              "text": "Favor simple, low-consequence terrain, avoid thin-spot trigger zones, and assume the slab may remain reactive even long after the last loading event."
+            },
+            {
+              "value": "D",
+              "text": "Use repeated ski cuts to collapse or \"flush out\" the weak layer on small slopes before committing to bigger terrain."
+            }
+          ],
+          "key": "C",
+          "explain": "The best strategy is to favor simple, low-consequence terrain, avoid thin-spot trigger zones, and assume the slab may remain reactive even long after the last loading event."
+        }
+      ]
+    },
+    {
+      "ap_type": "deep_persistent",
+      "label": "Deep Persistent Slab Avalanche Problems",
+      "items": [
+        {
+          "id": "deep_persistent_development_01",
+          "construct": "development",
+          "stem": "Which statement best describes how deep persistent slabs develop?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "They form when strong winds create hard slabs over shallow faceted layers near the surface, allowing failure once the slab becomes stiff enough."
+            },
+            {
+              "value": "B",
+              "text": "They occur when deeply buried weak layers\u2014typically depth hoar or large basal facets\u2014remain weak for long periods under a thick, cohesive slab, creating conditions for rare but very large destructive failures."
+            },
+            {
+              "value": "C",
+              "text": "They develop only when multiple melt\u2013freeze cycles convert mid-pack weak layers into brittle crust\u2013facet combinations that collapse under new loading."
+            },
+            {
+              "value": "D",
+              "text": "They form when surface hoar layers gradually sink deeper into the snowpack over time due to compaction from new snow."
+            }
+          ],
+          "key": "B",
+          "explain": "Deep persistent slabs occur when deeply buried weak layers\u2014typically depth hoar or large basal facets\u2014remain weak for long periods under a thick, cohesive slab, creating conditions for rare but very large destructive failures."
+        },
+        {
+          "id": "deep_persistent_activity_01",
+          "construct": "avalanche activity patterns",
+          "stem": "Which pattern best reflects avalanche activity for deep persistent slabs?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Deep persistent slabs tend to produce regular natural avalanches following each new loading event, with activity tapering gradually as the slab strengthens."
+            },
+            {
+              "value": "B",
+              "text": "Deep persistent slab activity is infrequent, highly unpredictable, and capable of producing very large avalanches after long dormant periods, often triggered only when a major load or large trigger finally stresses the deep weak layer."
+            },
+            {
+              "value": "C",
+              "text": "Once a deep persistent slab has failed once, the weak layer generally \"cycles out\" quickly and does not produce additional avalanches later in the season."
+            },
+            {
+              "value": "D",
+              "text": "Deep persistent slabs primarily release as small failures at isolated thin spots, with limited propagation because the weak layer sits too deep to transmit fractures efficiently."
+            }
+          ],
+          "key": "B",
+          "explain": "Deep persistent slab activity is infrequent, highly unpredictable, and capable of producing very large avalanches after long dormant periods, often triggered only when a major load or large trigger finally stresses the deep weak layer."
+        },
+        {
+          "id": "deep_persistent_recognition_01",
+          "construct": "recognition & assessment",
+          "stem": "Which field observations are most diagnostic of a deep persistent slab problem?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Widespread cracking across the snow surface and large collapses that travel hundreds of meters, showing the deep weak layer is very active."
+            },
+            {
+              "value": "B",
+              "text": "Rare but very large avalanches, step-down avalanches from more shallow instabilities, and unexplained deep crown lines despite a lack of obvious surface instability."
+            },
+            {
+              "value": "C",
+              "text": "Coordinated natural avalanche cycles occurring across multiple aspects, indicating sustained reactivity in the upper and middle snowpack."
+            },
+            {
+              "value": "D",
+              "text": "Rapid warming-induced pinwheeling, small surface sluffs, and rollerballs indicating the deep weak layer is becoming saturated with liquid water."
+            }
+          ],
+          "key": "B",
+          "explain": "Rare but very large avalanches, step-down avalanches from more shallow instabilities, and unexplained deep crown lines despite a lack of obvious surface instability are the most diagnostic signs of a deep persistent slab problem."
+        },
+        {
+          "id": "deep_persistent_mitigation_01",
+          "construct": "risk management",
+          "stem": "Which strategy best reflects safe risk management when deep persistent slabs are present?",
+          "choices": [
+            {
+              "value": "A",
+              "text": "Evaluate small steep test slopes for signs of slab instability, since small terrain features can reliably indicate whether the deep weak layer is reactive."
+            },
+            {
+              "value": "B",
+              "text": "Choose simple, low-consequence terrain, avoid large alpine features completely, and adopt a strict consequences-based approach since deep persistent slabs are low-likelihood but extremely high-consequence events."
+            },
+            {
+              "value": "C",
+              "text": "Favor areas with deep, uniform snowpacks at higher elevations where triggers rarely reach the weak layer."
+            },
+            {
+              "value": "D",
+              "text": "Travel early in the morning before solar input increases slab cohesion, reducing the chance of a deep persistent failure."
+            }
+          ],
+          "key": "B",
+          "explain": "The best strategy is to choose simple, low-consequence terrain, avoid large alpine features completely, and adopt a strict consequences-based approach since deep persistent slabs are low-likelihood but extremely high-consequence events."
+        }
+      ]
+    }
+  ]
+}

@@ -1,139 +1,68 @@
-/* Basic styling for the survey application */
+/* Minimal Avalanche Canada Styling - Only Header and Container */
+/* Using SurveyJS defaults for all question styling */
+
+:root {
+    --avalanche-canada-navy: #1e3a5f;
+    --avalanche-canada-dark-navy: #152d47;
+    --avalanche-canada-light-blue: #e8f4f8;
+    --avalanche-canada-blue: #4a90a4;
+    --avalanche-canada-gray: #424242;
+    --avalanche-canada-light-gray: #f5f5f5;
+    --avalanche-canada-white: #ffffff;
+}
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: var(--avalanche-canada-light-gray);
     line-height: 1.6;
+}
+
+/* Avalanche Canada Header */
+.avalanche-canada-header {
+    background: var(--avalanche-canada-navy);
+    color: var(--avalanche-canada-white);
+    padding: 20px;
+    margin: 0 auto 20px auto;
+    border-radius: 8px 8px 0 0;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 800px;
+}
+
+.avalanche-canada-logo {
+    color: var(--avalanche-canada-white);
+    font-size: 1.5em;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.avalanche-canada-header h1 {
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: 500;
+    flex: 1;
+}
+
+.avalanche-canada-header .subtitle {
+    margin: 4px 0 0 0;
+    font-size: 0.9em;
+    opacity: 0.8;
+    font-weight: 400;
 }
 
 #surveyContainer {
     max-width: 800px;
     margin: 0 auto;
     background-color: white;
-    border-radius: 8px;
+    border-radius: 0 0 8px 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     min-height: 400px;
-}
-
-/* Ensure survey content is properly styled */
-.sv-root-modern {
-    font-family: inherit;
-}
-
-/* Manual survey rendering styles */
-.survey-page {
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.survey-header {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.survey-header h2 {
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.survey-content {
-    margin-bottom: 30px;
-}
-
-.survey-content h3 {
-    color: #444;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-}
-
-.survey-question {
-    margin-bottom: 25px;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    border-left: 4px solid #007bff;
-}
-
-.question-title {
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: #333;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-.question-choices {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.choice-label {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-}
-
-.choice-label:hover {
-    background-color: #e9ecef;
-}
-
-.choice-label input[type="radio"],
-.choice-label input[type="checkbox"] {
-    margin-top: 2px;
-    flex-shrink: 0;
-}
-
-.choice-label span {
-    flex: 1;
-    line-height: 1.4;
-}
-
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    background-color: white;
-}
-
-.survey-navigation {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 0;
-    border-top: 1px solid #e0e0e0;
-    margin-top: 30px;
-}
-
-.survey-navigation button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background-color 0.2s;
-}
-
-.survey-navigation button:hover {
-    background: #0056b3;
-}
-
-.survey-navigation button:disabled {
-    background: #6c757d;
-    cursor: not-allowed;
 }
 
 /* Loading state */
@@ -173,7 +102,7 @@ select {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .feedback-header {

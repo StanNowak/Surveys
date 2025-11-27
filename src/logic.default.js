@@ -19,10 +19,6 @@ class DefaultSurveyLogic {
      * @param {Object} backgroundData - Background questionnaire data
      */
     onInit(bankData, configData, backgroundData) {
-        console.log(`📋 Survey initialized with ${this.name} v${this.version}`);
-        console.log(`  - Testlets available: ${bankData.testlets?.length || 0}`);
-        console.log(`  - Diagnostics available: ${bankData.diagnostics?.length || 0}`);
-        console.log(`  - Background enabled: ${configData.background?.enabled || false}`);
     }
     
     /**
@@ -33,13 +29,11 @@ class DefaultSurveyLogic {
      * @returns {Array} Selected testlets
      */
     selectBlocks(availableTestlets, blocksToSelect) {
-        console.log(`🎲 Selecting ${blocksToSelect} testlets uniformly at random`);
         
         // Shuffle and select
         const shuffled = this.shuffleArray([...availableTestlets]);
         const selected = shuffled.slice(0, blocksToSelect);
         
-        console.log(`  - Selected: ${selected.map(t => t.ap_type).join(', ')}`);
         return selected;
     }
     
@@ -73,7 +67,6 @@ class DefaultSurveyLogic {
      * @param {Object} surveyDefinition - Complete survey definition
      */
     beforeRender(surveyDefinition) {
-        console.log(`🎨 Preparing survey for render: ${surveyDefinition.pages.length} pages`);
         
         // Add any last-minute modifications here
         // For example, could add custom CSS classes, modify titles, etc.
@@ -85,7 +78,6 @@ class DefaultSurveyLogic {
      * @param {Object} results - Grading results
      */
     onGrade(surveyModel, results) {
-        console.log(`📊 Survey graded: ${results.correct}/${results.total} correct`);
         
         // Could implement custom scoring logic here
         return results;
@@ -97,7 +89,6 @@ class DefaultSurveyLogic {
      * @param {Object} responseData - Complete response data
      */
     onComplete(surveyModel, responseData) {
-        console.log(`✅ Survey completed with ${Object.keys(responseData).length} responses`);
         
         // Could implement custom completion logic here
         // For example, custom data transformation, additional metadata, etc.
