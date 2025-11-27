@@ -9,7 +9,7 @@ if [ ! -d "venv" ]; then
     python3 -m venv venv
     source venv/bin/activate
     pip install --upgrade pip -q
-    pip install fastapi uvicorn[standard] sqlalchemy python-dotenv pydantic pydantic-settings python-jose[cryptography] python-multipart -q
+    pip install fastapi uvicorn[standard] psycopg2-binary python-dotenv pydantic pydantic-settings python-jose[cryptography] python-multipart -q
 else
     source venv/bin/activate
 fi

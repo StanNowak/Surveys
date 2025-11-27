@@ -6,7 +6,6 @@ A modular monorepo for building and deploying survey studies, currently configur
 
 - **[Survey Designer Guide](docs/SURVEY-DESIGNER-GUIDE.md)** - For researchers creating/modifying surveys
 - **[Developer Handover](docs/DEVELOPER-HANDOVER.md)** - Complete technical documentation for developers
-- **[Refactoring Plan](REFACTORING-PLAN.md)** - Architecture decisions and refactoring history
 
 ## Architecture
 
@@ -99,6 +98,10 @@ The frontend is configured to use the backend API when running locally. See `pub
 
 Auth0 is configured in dev mode (no external setup required). Set `AUTH0_DOMAIN` environment variable to enable production Auth0 verification.
 
+### Production Deployment
+
+The frontend will be deployed as **React components** on a Prismic site. The backend will be deployed separately and must be accessible from the Prismic domain.
+
 ## Repository Structure
 
 **Core Code:**
@@ -108,13 +111,11 @@ Auth0 is configured in dev mode (no external setup required). Set `AUTH0_DOMAIN`
 - `scripts/` - Validation and utility scripts
 
 **Configuration:**
-- `netlify.toml` - Frontend deployment config
 - `packages/backend/docker-compose.yml` - Database setup
 
 **Documentation:**
 - `docs/` - User and developer documentation
 - `README.md` - This file
-- `REFACTORING-PLAN.md` - Architecture reference
 
 ## Testing
 

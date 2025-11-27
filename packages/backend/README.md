@@ -13,7 +13,7 @@
    ```
    
    This will:
-   - Pull PostgreSQL 15 image (first time only)
+   - Pull PostgreSQL 16 image (first time only)
    - Start database on port 5433
    - Initialize schema from `db/init/` scripts
 
@@ -63,6 +63,8 @@ The database is required for:
 **Database connection**: `postgresql://postgres:postgres@localhost:5433/surveys`
 
 **Schema**: `s_ap_v1` (created automatically on first startup)
+
+**Database Library**: Uses `psycopg2-binary` directly (no ORM)
 
 ## Troubleshooting
 

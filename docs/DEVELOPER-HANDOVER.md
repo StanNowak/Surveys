@@ -27,8 +27,7 @@ packages/
 ### Backend
 - **FastAPI** (Python 3.13+)
 - **PostgreSQL 16** (via Docker)
-- **SQLAlchemy** (ORM)
-- **psycopg2-binary** (PostgreSQL adapter)
+- **psycopg2-binary** (PostgreSQL adapter - direct connection, no ORM)
 
 ### Frontend
 - **Vanilla JavaScript** (ES modules)
@@ -37,7 +36,7 @@ packages/
 
 ### Infrastructure
 - **Docker Compose** (PostgreSQL)
-- **Netlify** (frontend deployment)
+- **Prismic** (production deployment - React components)
 
 ## Setup Instructions
 
@@ -89,14 +88,15 @@ Backend runs on `http://localhost:8000`
 ### Backend Core
 
 **`packages/backend/core/database.py`**
-- Database connection management
+- Database connection management using psycopg2
+- Connection pooling (SimpleConnectionPool)
 - Lazy initialization (allows startup without DB)
-- Session management
 
 **`packages/backend/core/randomization.py`**
 - Stratified least-filled bucket algorithm
 - Balances individual items within strata
 - Generic and reusable for any study
+- Uses raw SQL with psycopg2
 
 **`packages/backend/core/auth.py`**
 - Auth0 middleware (dev mode: accepts any token)
@@ -222,16 +222,32 @@ This ensures each AP type appears roughly equally within each experience level.
 
 ## Deployment
 
-### Frontend (Netlify)
-- Static files in `public/`
-- `netlify.toml` configures build
-- Serves from `public/` directory
+### Production Deployment (Prismic)
 
-### Backend
-- FastAPI application
-- Requires PostgreSQL database
-- Deploy with `uvicorn` or similar ASGI server
-- Set `DATABASE_URL` environment variable
+The frontend will be deployed as **React components** on a Prismic site:
+
+1. **Frontend Library:**
+   - The `packages/frontend-lib/` code will be wrapped in React components
+   - Components will be integrated into Prismic pages
+   - SurveyJS functionality remains the same, wrapped in React
+
+2. **Backend:**
+   - FastAPI application deployed separately
+   - Requires PostgreSQL database
+   - Deploy with `uvicorn` or similar ASGI server
+   - Set `DATABASE_URL` environment variable
+   - Configure CORS to allow Prismic domain
+
+3. **Integration:**
+   - React component imports frontend-lib modules
+   - Component handles survey initialization
+   - API calls go to backend endpoint
+   - Survey data saved to database
+
+### Local Development
+
+- Frontend: `./start-server.sh` → `http://localhost:3000/public/`
+- Backend: `cd packages/backend && ./start.sh` → `http://localhost:8000`
 
 ## Testing
 
@@ -286,17 +302,14 @@ This ensures each AP type appears roughly equally within each experience level.
 
 ## Future Enhancements
 
-- [ ] Real Auth0 JWT verification
-- [ ] Additional study types
-- [ ] Advanced randomization strategies
-- [ ] Analytics dashboard
-- [ ] Export tools for data analysis
+- [ ] Real Auth0 JWT verification (currently in dev mode)
 
 ## Key Files Reference
 
 **Backend:**
 - `packages/backend/main.py` - API entry point
 - `packages/backend/core/randomization.py` - Balancing logic
+- `packages/backend/core/database.py` - Database connection (psycopg2)
 - `packages/backend/db/init/001-core.sql` - Database schema
 
 **Frontend:**
@@ -310,7 +323,5 @@ This ensures each AP type appears roughly equally within each experience level.
 
 ## Support
 
-- Architecture details: See `REFACTORING-PLAN.md`
 - Survey design: See `docs/SURVEY-DESIGNER-GUIDE.md`
 - Backend API docs: `http://localhost:8000/docs` (Swagger UI)
-

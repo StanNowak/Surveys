@@ -1,9 +1,11 @@
 """
 Database Connection Module
+Simplified to use psycopg2 directly (no SQLAlchemy)
 """
 
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker, Session
+import psycopg2
+from psycopg2 import pool
+from psycopg2.extras import RealDictCursor
 from contextlib import contextmanager
 import os
 from dotenv import load_dotenv
@@ -16,73 +18,69 @@ DATABASE_URL = os.getenv(
     "postgresql://postgres:postgres@localhost:5433/surveys"
 )
 
-# Lazy initialization - only create engine when needed
-_engine = None
-_SessionLocal = None
+# Connection pool (lazy initialization)
+_connection_pool = None
 
-def get_engine():
-    """Get or create database engine (lazy initialization)"""
-    global _engine
-    if _engine is None:
+
+def get_connection_pool():
+    """Get or create database connection pool (lazy initialization)"""
+    global _connection_pool
+    if _connection_pool is None:
         try:
-            _engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+            _connection_pool = psycopg2.pool.SimpleConnectionPool(
+                1, 20,  # min 1, max 20 connections
+                dsn=DATABASE_URL
+            )
             # Test connection
-            with _engine.connect() as conn:
-                conn.execute(text("SELECT 1"))
+            conn = _connection_pool.getconn()
+            with conn.cursor() as cur:
+                cur.execute("SELECT 1")
+            _connection_pool.putconn(conn)
         except Exception as e:
             print(f"Warning: Could not connect to database: {e}")
             print("Database operations will fail, but API will start")
             import traceback
             traceback.print_exc()
-            # Create a dummy engine that will fail on use
-            _engine = None
-    return _engine
-
-def get_session_local():
-    """Get or create session maker (lazy initialization)"""
-    global _SessionLocal
-    if _SessionLocal is None:
-        engine = get_engine()
-        if engine:
-            _SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-        else:
-            # Return None if no engine
-            return None
-    return _SessionLocal
+            _connection_pool = None
+    return _connection_pool
 
 
 @contextmanager
 def get_db():
     """
-    Database session context manager.
+    Database connection context manager.
     Usage:
-        with get_db() as db:
-            # use db
+        with get_db() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT ...")
+            conn.commit()
     """
-    SessionLocal = get_session_local()
-    if SessionLocal is None:
+    pool = get_connection_pool()
+    if pool is None:
         raise RuntimeError("Database not available. Check connection.")
-    db = SessionLocal()
+    
+    conn = pool.getconn()
     try:
-        yield db
-        db.commit()
+        yield conn
+        conn.commit()
     except Exception:
-        db.rollback()
+        conn.rollback()
         raise
     finally:
-        db.close()
+        pool.putconn(conn)
 
 
-def get_db_session():
+def get_db_connection():
     """
-    Get a database session (for dependency injection).
+    Get a database connection (for dependency injection in FastAPI).
+    Returns a generator that yields a connection.
     """
-    SessionLocal = get_session_local()
-    if SessionLocal is None:
+    pool = get_connection_pool()
+    if pool is None:
         raise RuntimeError("Database not available. Check connection.")
-    db = SessionLocal()
+    
+    conn = pool.getconn()
     try:
-        yield db
+        yield conn
     finally:
-        db.close()
-
+        pool.putconn(conn)

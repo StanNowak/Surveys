@@ -6,14 +6,12 @@ Study Engine Backend API
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from sqlalchemy.orm import Session
-from sqlalchemy import text
 from typing import List, Dict, Optional
 import json
 import os
 from pathlib import Path
 
-from backend.core.database import get_db_session
+from backend.core.database import get_db_connection
 from backend.core.randomization import StratifiedBalancer
 from backend.core.auth import optional_auth
 from backend.studies.avalanche_2025.logic import derive_experience_band
@@ -80,8 +78,8 @@ async def assign_pair(
         if not ap_list:
             raise HTTPException(status_code=400, detail="p_ap_list is required")
         
-        # Get database session (required for balancing)
-        db = next(get_db_session())
+        # Get database connection (required for balancing)
+        db = next(get_db_connection())
         balancer = StratifiedBalancer(db, SCHEMA_NAME)
         result = balancer.assign_pair(uuid, stratum, ap_list)
         return result
@@ -95,7 +93,7 @@ async def assign_pair(
 @app.post("/api/studies/avalanche_2025/submit")
 async def submit_response(
     request: Dict,
-    db: Session = Depends(get_db_session),
+    db = Depends(get_db_connection),
     # auth: Optional[dict] = Depends(optional_auth)  # Uncomment when Auth0 is ready
 ):
     """
@@ -143,23 +141,24 @@ async def submit_response(
         payload_json = json.dumps(payload)
         print(f"💾 Saving response: uuid={uuid}, payload_size={len(payload_json)} chars")
         
-        db.execute(
-            text(f"""
+        with db.cursor() as cur:
+            cur.execute(
+                f"""
                 INSERT INTO {SCHEMA_NAME}.responses(
                     uuid, survey_id, payload, panel_member, bank_version, config_version
                 ) VALUES (
-                    :uuid, :survey_id, CAST(:payload AS jsonb), :panel_member, :bank_version, :config_version
+                    %s, %s, %s::jsonb, %s, %s, %s
                 )
-            """),
-            {
-                "uuid": uuid,
-                "survey_id": survey_id,
-                "payload": payload_json,
-                "panel_member": payload.get("panel_member", False),
-                "bank_version": payload.get("bank_version"),
-                "config_version": payload.get("config_version")
-            }
-        )
+                """,
+                (
+                    uuid,
+                    survey_id,
+                    payload_json,
+                    payload.get("panel_member", False),
+                    payload.get("bank_version"),
+                    payload.get("config_version")
+                )
+            )
         db.commit()
         print(f"✅ Response saved successfully")
         
