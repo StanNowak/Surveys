@@ -1,0 +1,51 @@
+{
+  "sections": [
+    {
+      "id": "background",
+      "type": "background",
+      "title": "Background Information",
+      "source": "background.json"
+    },
+    {
+      "id": "ap_intro",
+      "type": "standalone",
+      "title": "Avalanche Problem Understanding",
+      "source": "ap_intro",
+      "randomization": {
+        "questions": false
+      }
+    },
+    {
+      "id": "experimental",
+      "type": "block_group",
+      "title": "Avalanche Problem Assessment",
+      "blocks": {
+        "source": "testlets",
+        "select": {
+          "strategy": "stratified",
+          "stratum_field": "experience_band",
+          "count": 2
+        }
+      },
+      "randomization": {
+        "blocks": true,
+        "within_block": true
+      },
+      "afterBlock": true
+    },
+    {
+      "id": "diagnostics",
+      "type": "standalone",
+      "title": "Assessment Questions",
+      "source": "diagnostics",
+      "conditional": {
+        "field": "routing.include_diagnostics",
+        "value": true
+      },
+      "randomization": {
+        "questions": true
+      }
+    }
+  ]
+}
+

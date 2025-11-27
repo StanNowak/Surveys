@@ -1,0 +1,7 @@
+/* Minimal custom CSS - using SurveyJS defaults */
+/* Only essential text wrapping */
+
+.sv-question__title {
+    white-space: normal;
+    word-wrap: break-word;
+}

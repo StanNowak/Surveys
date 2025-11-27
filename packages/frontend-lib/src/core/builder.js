@@ -31,56 +31,106 @@ function shuffleArray(array) {
 }
 
 /**
- * Select items from testlet ensuring one per construct
+ * Select items from testlet
+ * @param {Object} testlet - Testlet object with items
+ * @param {boolean} randomizeWithinBlock - Whether to randomize order
+ * @returns {Array} Selected items (all items, randomized if requested)
+ * 
+ * Note: No longer filters by construct - all items in block are used.
+ * Construct is now just metadata for analysis.
  */
 function selectItemsFromTestlet(testlet, randomizeWithinBlock = true) {
-    const constructs = ['development', 'behaviour', 'assessment', 'mitigation'];
-    const selectedItems = [];
-    
-    for (const construct of constructs) {
-        // Find all items for this construct
-        const constructItems = testlet.items.filter(item => item.construct === construct);
-        
-        if (constructItems.length === 0) {
-            continue;
-        }
-        
-        // Select one item (randomly if multiple available)
-        const selectedItem = constructItems[Math.floor(Math.random() * constructItems.length)];
-        selectedItems.push(selectedItem);
-    }
+    const items = testlet.items || [];
     
     // Randomize order within block if requested
-    return randomizeWithinBlock ? shuffleArray(selectedItems) : selectedItems;
+    return randomizeWithinBlock ? shuffleArray([...items]) : items;
 }
 
 /**
  * Convert question to SurveyJS format
+ * Handles both multiple choice (radiogroup) and matrix-type questions
  */
+/**
+ * Strip HTML tags from text
+ */
+function stripHTML(text) {
+    if (!text || typeof text !== 'string') return text;
+    // Replace <br> and <br/> with newline, then strip all other HTML tags
+    return text
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;/g, ' ')
+        .trim();
+}
+
 function questionToSurveyJS(question, pagePerQuestion = true) {
+    // Strip HTML from question stem
+    const cleanStem = stripHTML(question.stem);
+    
+    // Handle matrix-type questions (for diagnostics)
+    if (question.type === "matrix") {
+        const rows = question.rows || [];
+        const columns = question.columns || [];
+        
+        return {
+            type: "matrix",
+            name: question.id,
+            title: cleanStem,
+            enableHTML: false,
+            columns: columns.map(col => ({
+                value: col.value,
+                text: stripHTML(col.text),
+                enableHTML: false
+            })),
+            rows: rows.map(row => ({
+                value: row.value,
+                text: stripHTML(row.text),
+                enableHTML: false
+            })),
+            isRequired: true,
+            explanation: question.explain,
+            construct: question.construct
+        };
+    }
+    
+    // Handle regular multiple choice questions
+    if (!question.choices || !Array.isArray(question.choices)) {
+        // Question missing choices array, fallback to text input
+        return {
+            type: "text",
+            name: question.id,
+            title: cleanStem || "Question",
+            isRequired: false,
+            explanation: question.explain,
+            construct: question.construct,
+            enableHTML: false
+        };
+    }
+    
     const surveyQuestion = {
         type: "radiogroup",
         name: question.id,
-        title: question.stem,
+        title: cleanStem,
+        enableHTML: false, // No HTML - we stripped it
         choices: question.choices.map(choice => ({
             value: choice.value,
-            text: choice.text
+            text: stripHTML(choice.text),
+            enableHTML: false
         })),
         isRequired: true,
-        correctAnswer: question.key
+        correctAnswer: question.key,
+        colCount: 1 // Vertical layout (1 = single column per SurveyJS docs)
     };
     
-    // Add explanation as a custom property for later use
     surveyQuestion.explanation = question.explain;
-    
-    // Add construct information
     surveyQuestion.construct = question.construct;
     
     return surveyQuestion;
 }
 
 /**
- * Build survey pages from selected content
+ * Build survey pages from selected content (Legacy method - kept for compatibility)
+ * New code should use StudyEngine instead
  */
 function buildSurveyPages(backgroundData, selectedTestlets, diagnostics, config) {
     const pages = [];
@@ -105,7 +155,7 @@ function buildSurveyPages(backgroundData, selectedTestlets, diagnostics, config)
         }
     }
     
-    // Add testlet pages
+    // Add testlet pages (all items, no construct filtering)
     for (let i = 0; i < selectedTestlets.length; i++) {
         const testlet = selectedTestlets[i];
         const testletItems = selectItemsFromTestlet(testlet, config.routing.randomize_within_block);
@@ -115,8 +165,8 @@ function buildSurveyPages(backgroundData, selectedTestlets, diagnostics, config)
             for (let j = 0; j < testletItems.length; j++) {
                 const question = testletItems[j];
                 pages.push({
-                    name: `${testlet.ap_type}_${question.construct}_page`,
-                    title: `${testlet.label} - ${question.construct.charAt(0).toUpperCase() + question.construct.slice(1)}`,
+                    name: `${testlet.ap_type}_question_${j}`,
+                    title: testlet.label,
                     elements: [questionToSurveyJS(question)]
                 });
             }
@@ -254,8 +304,10 @@ class SurveyBuilder {
             clearInvisibleValues: "none",
             showQuestionNumbers: "off",
             showProgressBar: this.configData.ui.progress_bar ? "top" : "off",
-            goNextPageAutomatic: this.configData.ui.auto_advance,
-            showNavigationButtons: !this.configData.ui.auto_advance
+            goNextPageAutomatic: this.configData.ui.auto_advance || false,
+            showNavigationButtons: true, // Always show buttons (even with auto-advance as fallback)
+            showPrevButton: true,
+            enableHTML: true // Enable HTML rendering globally
         };
         
         // Apply custom logic hooks
@@ -269,3 +321,6 @@ class SurveyBuilder {
 
 // Export for use in other modules
 window.SurveyBuilder = SurveyBuilder;
+
+// ES module export
+export { SurveyBuilder, loadJSON, shuffleArray, selectItemsFromTestlet, questionToSurveyJS, buildSurveyPages };

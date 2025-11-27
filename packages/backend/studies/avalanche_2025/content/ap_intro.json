@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "title": "Avalanche Problem Understanding",
+  "description": "Self-assessment of avalanche problem understanding",
+  "pages": [
+    {
+      "name": "ap_intro_ranking",
+      "title": "Section 2a — Avalanche Problem Intro",
+      "elements": [
+        {
+          "type": "ranking",
+          "name": "trip_planning_influence",
+          "title": "Please rank the following according to how much influence each has on your trip planning and decision-making.",
+          "description": "Drag to rank from \"Most Influence\" to \"Least Influence\"",
+          "isRequired": true,
+          "choices": [
+            { "value": "danger_ratings", "text": "Danger Ratings" },
+            { "value": "avalanche_problems", "text": "Avalanche Problems" },
+            { "value": "summaries", "text": "Snowpack, Weather, and Avalanche Summaries" },
+            { "value": "trip_reports", "text": "Trip Reports and Observations" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ap_intro_understand",
+      "title": "Section 2a — Avalanche Problem Intro",
+      "elements": [
+        {
+          "type": "matrix",
+          "name": "problem_understanding",
+          "title": "How easy do you find each avalanche problem type to understand?",
+          "description": "Response scale: Very difficult – Difficult – Neutral – Easy – Very easy",
+          "isRequired": true,
+          "columns": [
+            { "value": "very_difficult", "text": "Very difficult" },
+            { "value": "difficult", "text": "Difficult" },
+            { "value": "neutral", "text": "Neutral" },
+            { "value": "easy", "text": "Easy" },
+            { "value": "very_easy", "text": "Very easy" }
+          ],
+          "rows": [
+            { "value": "storm_slab", "text": "Storm Slab" },
+            { "value": "wind_slab", "text": "Wind Slab" },
+            { "value": "persistent_slab", "text": "Persistent Slab" },
+            { "value": "deep_persistent_slab", "text": "Deep Persistent Slab" },
+            { "value": "loose_dry", "text": "Loose Dry" },
+            { "value": "loose_wet", "text": "Loose Wet" },
+            { "value": "wet_slab", "text": "Wet Slab" },
+            { "value": "cornice", "text": "Cornice" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ap_intro_apply",
+      "title": "Section 2a — Avalanche Problem Intro",
+      "elements": [
+        {
+          "type": "matrix",
+          "name": "problem_application",
+          "title": "How easy do you find each avalanche problem type to apply in your decision-making?",
+          "description": "Response scale: Very difficult – Difficult – Neutral – Easy – Very easy",
+          "isRequired": true,
+          "columns": [
+            { "value": "very_difficult", "text": "Very difficult" },
+            { "value": "difficult", "text": "Difficult" },
+            { "value": "neutral", "text": "Neutral" },
+            { "value": "easy", "text": "Easy" },
+            { "value": "very_easy", "text": "Very easy" }
+          ],
+          "rows": [
+            { "value": "storm_slab", "text": "Storm Slab" },
+            { "value": "wind_slab", "text": "Wind Slab" },
+            { "value": "persistent_slab", "text": "Persistent Slab" },
+            { "value": "deep_persistent_slab", "text": "Deep Persistent Slab" },
+            { "value": "loose_dry", "text": "Loose Dry" },
+            { "value": "loose_wet", "text": "Loose Wet" },
+            { "value": "wet_slab", "text": "Wet Slab" },
+            { "value": "cornice", "text": "Cornice" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

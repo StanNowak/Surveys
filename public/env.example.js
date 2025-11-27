@@ -6,9 +6,10 @@ window.__SURVEY_CONFIG__ = {
     TITLE: "Avalanche Survey Prototype",
     
     // Data source URLs (relative to the public directory)
-    BACKGROUND_URL: "/item-banks/background.json",
-    BANK_URL: "/item-banks/bank.demo.json",
-    CONFIG_URL: "/item-banks/config.demo.json",
+    // Backend API endpoints (preferred)
+    BACKGROUND_URL: "/api/studies/avalanche_2025/content/background",
+    BANK_URL: "/api/studies/avalanche_2025/content/item_bank",
+    CONFIG_URL: "/api/studies/avalanche_2025/config",
     
     // Backend endpoints (leave empty for local-only mode)
     SAVE_URL: "",

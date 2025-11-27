@@ -8,9 +8,13 @@ const baseUrl = isLocalhost ? '' : (isGitHubPages ? '/Surveys' : window.location
 
 window.__SURVEY_CONFIG__ = {
     TITLE: "Avalanche Canada - Avalanche Problems Research",
-    BANK_URL: `${baseUrl}/item-banks/bank.demo.json`,
-    CONFIG_URL: `${baseUrl}/item-banks/config.demo.json`,
-    BACKGROUND_URL: `${baseUrl}/item-banks/background.json`,
+    // Backend API endpoints (preferred - served from study content)
+    BANK_URL: `${baseUrl}/api/studies/avalanche_2025/content/item_bank`,
+    CONFIG_URL: `${baseUrl}/api/studies/avalanche_2025/config`,
+    BACKGROUND_URL: `${baseUrl}/api/studies/avalanche_2025/content/background`,
+    AP_INTRO_URL: `${baseUrl}/api/studies/avalanche_2025/content/ap_intro`,
+    DIAGNOSTICS_URL: `${baseUrl}/api/studies/avalanche_2025/content/diagnostics`,
+    STUDY_DEFINITION_URL: `${baseUrl}/packages/frontend-lib/src/studies/avalanche_2025/study-definition.json`,
 
     MODE: "test",                 // "test" | "prod"
     SURVEY_ID: "avalanche_canada_ap_v1",

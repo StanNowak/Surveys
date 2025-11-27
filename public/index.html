@@ -13,8 +13,9 @@
     <!-- SurveyJS UI for vanilla JS -->
     <link href="https://unpkg.com/survey-jquery@1.9.131/defaultV2.min.css" type="text/css" rel="stylesheet" />
     
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="./styles.css?v=7">
+    <!-- Custom styles - minimal, using SurveyJS defaults -->
+    <link rel="stylesheet" href="./styles.css?v=8">
+    <link rel="stylesheet" href="./survey-custom.css?v=10">
 </head>
 <body>
     <div class="avalanche-canada-header">
@@ -44,58 +45,6 @@
     </script>
     
     <!-- Main application module -->
-    <script type="module" src="../src/main.js"></script>
-    
-    <!-- Force Avalanche Canada styling after SurveyJS loads -->
-    <script>
-      // Apply Avalanche Canada styling after DOM is ready
-      function applyAvalancheCanadaStyling() {
-        const style = document.createElement('style');
-        style.textContent = `
-          /* FORCE Avalanche Canada styling with maximum specificity */
-          .sv-root-modern .sv-title,
-          .sv-root-modern .sv-header__text,
-          .sv-title,
-          .sv-header__text,
-          #surveyContainer .sv-title,
-          #surveyContainer .sv-header__text,
-          .sv-root-modern .sv-page__title,
-          .sv-page__title {
-            color: #1e3a5f !important;
-            font-family: 'DM Sans', sans-serif !important;
-            font-weight: 600 !important;
-            border-bottom: 2px solid #1e3a5f !important;
-          }
-          
-          .sv-root-modern .sv-question__title,
-          .sv-question__title,
-          #surveyContainer .sv-question__title {
-            color: #1e3a5f !important;
-            font-family: 'DM Sans', sans-serif !important;
-            font-weight: 600 !important;
-          }
-          
-          .sv-root-modern .sv-progress__bar,
-          .sv-progress__bar,
-          #surveyContainer .sv-progress__bar {
-            background-color: #1e3a5f !important;
-          }
-          
-          .sv-root-modern,
-          .sv-root-modern *,
-          #surveyContainer,
-          #surveyContainer * {
-            font-family: 'DM Sans', sans-serif !important;
-          }
-        `;
-        document.head.appendChild(style);
-      }
-      
-      // Apply styling immediately and after DOM changes
-      document.addEventListener('DOMContentLoaded', applyAvalancheCanadaStyling);
-      setTimeout(applyAvalancheCanadaStyling, 100);
-      setTimeout(applyAvalancheCanadaStyling, 500);
-      setTimeout(applyAvalancheCanadaStyling, 1000);
-    </script>
+    <script type="module" src="../src/main.js?v=7"></script>
 </body>
 </html>

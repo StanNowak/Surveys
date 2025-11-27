@@ -13,6 +13,15 @@ CREATE TABLE IF NOT EXISTS s_ap_v1.pair_counts(
   PRIMARY KEY (stratum, ap_a, ap_b)
 );
 
+-- Track individual AP type counts per stratum for balanced assignment
+CREATE TABLE IF NOT EXISTS s_ap_v1.ap_type_counts(
+  stratum    text NOT NULL DEFAULT 'global',
+  ap_type    text NOT NULL,
+  count      int  NOT NULL DEFAULT 0,
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (stratum, ap_type)
+);
+
 CREATE TABLE IF NOT EXISTS s_ap_v1.allocations(
   uuid       text PRIMARY KEY,
   stratum    text NOT NULL DEFAULT 'global',
