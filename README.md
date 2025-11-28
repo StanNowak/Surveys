@@ -28,6 +28,11 @@ packages/
 
 ## Quick Start
 
+### Prerequisites
+- Node.js (for frontend server)
+- Python 3.13+ (for backend)
+- Docker Desktop (for PostgreSQL)
+
 ### Backend (FastAPI)
 
 1. **Set up Python environment**:
@@ -38,7 +43,7 @@ packages/
    pip install -r requirements.txt
    ```
 
-2. **Start database** (PostgreSQL):
+2. **Start database** (PostgreSQL 16):
    ```bash
    docker-compose up -d
    ```
@@ -64,6 +69,8 @@ The API will be available at `http://localhost:8000`
 2. **Open in browser**:
    - http://localhost:3000/public/
 
+**Note**: The frontend automatically loads `public/env.local.js` when running on localhost, which points all API calls to `http://localhost:8000`.
+
 ## Study Content
 
 All study content is located in:
@@ -88,11 +95,27 @@ All study content is located in:
 
 API docs available at: http://localhost:8000/docs
 
+## Technology Stack
+
+### Backend
+- **FastAPI** (Python 3.13+)
+- **PostgreSQL 16** (via Docker)
+- **psycopg2-binary** (PostgreSQL adapter - direct connection, no ORM)
+
+### Frontend
+- **Vanilla JavaScript** (ES modules)
+- **SurveyJS** (jQuery version)
+- **jQuery** (required for SurveyJS)
+
+### Infrastructure
+- **Docker Compose** (PostgreSQL)
+- **Prismic** (production deployment - React components)
+
 ## Development
 
 ### Local Development
 
-The frontend is configured to use the backend API when running locally. See `public/env.local.js` for local overrides.
+The frontend is configured to use the backend API when running locally. The `public/env.local.js` file (auto-loaded on localhost) points all URLs to `http://localhost:8000`. This file is gitignored and should not be committed.
 
 ### Authentication
 
@@ -100,7 +123,7 @@ Auth0 is configured in dev mode (no external setup required). Set `AUTH0_DOMAIN`
 
 ### Production Deployment
 
-The frontend will be deployed as **React components** on a Prismic site. The backend will be deployed separately and must be accessible from the Prismic domain.
+The frontend will be deployed as **React components** on a Prismic site. The backend will be deployed separately and must be accessible from the Prismic domain. See `docs/DEVELOPER-HANDOVER.md` for detailed deployment instructions.
 
 ## Repository Structure
 
@@ -112,6 +135,8 @@ The frontend will be deployed as **React components** on a Prismic site. The bac
 
 **Configuration:**
 - `packages/backend/docker-compose.yml` - Database setup
+- `public/env.js` - Production environment config
+- `public/env.local.js` - Local development overrides (gitignored)
 
 **Documentation:**
 - `docs/` - User and developer documentation
